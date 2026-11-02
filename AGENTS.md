@@ -112,4 +112,8 @@ The application must start and remain 100% testable in local development even wh
   - Delete temporary feature branches only after PR merge into `main` (or after phase signoff).
 - **Agent Concurrency**: One modifying agent per task branch. Parallel modifying agents must use separate branches and preferably separate Git worktrees—never allow uncoordinated concurrent edits to the same files.
 - **Logical Checkpoint Commits**: Commit at coherent, working checkpoints rather than after every micro-edit. Format changed files, run lint/typecheck and tests, review diffs, and ensure zero secrets/`.env` files before committing.
-- **Standard Flow**: Follow the full lifecycle (`main` / `develop` → feature branch → implement & test → security check → logical commits → push approval → PR approval → CI review → merge approval → Phase milestone checkpoint branch creation & push approval).
+- **Standard Flow**: Follow the full lifecycle (`develop` → temporary feature branch → implement & test → security check → logical commits locally → user manually pushes, creates PR & merges → create Phase milestone checkpoint branch locally).
+- **STRICT REMOTE WORKFLOW RULE (AGENT NEVER PUSHES)**:
+  - The agent must **NEVER** execute `git push`, `gh pr create`, `gh pr merge`, or remote branch deletion commands.
+  - All push, pull request creation, merging, and remote branch management are strictly handled **by the user manually**.
+  - The agent's role is strictly limited to local operations: creating local branches, writing code/tests, running quality checks, creating local commits, and reminding the user when it is time to push, merge into `develop`/`main`, or sync persistent checkpoint branches.

@@ -133,7 +133,7 @@ Run the checks in this order: formatting, lint, typecheck, unit/integration test
 - [ ] Run phase checks from `AGENTS.md` when closing a phase; record outcomes and known limitations in the PR.
 - [ ] At phase completion, create/update the persistent Phase milestone checkpoint branch (e.g. `phase-N-checkpoint`), commit/tag, and prompt the user for approval to push to remote.
 - [ ] Review the final diff freshly for correctness, maintainability, tests, security, docs, and unnecessary complexity.
-- [ ] Commit and push the reviewed change and open a PR when authorized for the task; ensure PR CI passes and review its final diff before merge.
+- [ ] Commit reviewed changes locally. Prompt and remind the user to push to remote, open a PR, and merge manually (the agent never runs `git push` or PR merge commands).
 
 ## Pull request review
 
