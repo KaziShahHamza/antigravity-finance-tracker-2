@@ -4,7 +4,7 @@ This document is the master roadmap for building, testing, and deploying the **A
 
 Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task X.Y.Z`).
 - Tests and synchronized docs are delivered in the same subphase as the feature they cover. Follow [`QUALITY.md`](QUALITY.md) and [`../AGENTS.md`](../AGENTS.md) for code style (including the 1–3 line purpose header on authored source files), test layers, security checks, and PR review workflow.
-- **Execution Rule**: Execute **1 atomic task at a time** (touching 1–3 files), run relevant checks, mark `[x]`, complete the local pre-commit checklist in [`QUALITY.md`](QUALITY.md), and make a focused Git commit before starting the next task.
+- **Execution Rule**: Work on temporary task branches (`feat/*`, `fix/*`, etc.). Execute **1 atomic task at a time** (touching 1–3 files), run relevant checks, mark `[x]`, complete the local pre-commit checklist in [`QUALITY.md`](QUALITY.md), commit at logical working checkpoints, and merge via PR into `main`.
 - **Quality Gates**:
   - **Every Atomic Task**: `format:check` -> `lint` -> `typecheck` -> focused unit/integration test -> diff & secret check -> `git commit`.
   - **End of Every Subphase**: Subphase unit/integration (and applicable E2E) tests green + [`QUALITY.md`](QUALITY.md) 5-point security & fresh diff review.

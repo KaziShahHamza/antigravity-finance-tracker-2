@@ -98,3 +98,13 @@ The application must start and remain 100% testable in local development even wh
 - Before committing, run the pre-commit checklist in `docs/QUALITY.md`, review `git diff`, check for secrets/generated files, update only affected docs and `docs/PROJECT_PLAN.md`, and run applicable checks. The project lifecycle includes focused commits, push, and PR creation; perform external actions only when authorized for the active task.
 - Review every change freshly as a PR. Check correctness, maintainability, coverage, security, docs, and unnecessary complexity. Resolve findings or document accepted limitations before merge.
 - Complete CI and final PR review before merge. Do not merge or publish a release unless the user authorizes it.
+
+---
+
+## 9. Git Workflow & Collaboration
+
+- **Single Persistent Branch**: `main` is the only persistent branch by default and must remain stable and production-ready. Do not create permanent environment or agent branches.
+- **Temporary Task Branches**: Create a short-lived branch for each feature, fix, refactor, or doc task (`feat/*`, `fix/*`, `refactor/*`, `docs/*`, `test/*`). Delete the branch immediately after its PR is merged.
+- **Agent Concurrency**: One modifying agent per task branch. Parallel modifying agents must use separate branches and preferably separate Git worktrees—never allow uncoordinated concurrent edits to the same files.
+- **Logical Checkpoint Commits**: Commit at coherent, working checkpoints rather than after every micro-edit. Format changed files, run lint/typecheck and tests, review diffs, and ensure zero secrets/`.env` files before committing.
+- **Standard Flow**: Follow the full lifecycle (`main` → task branch → implement & test → security check → logical commits → push → PR → CI review → merge → branch deletion) detailed in [`docs/QUALITY.md`](docs/QUALITY.md#git-workflow).

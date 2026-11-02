@@ -19,6 +19,82 @@ This document defines the standard project lifecycle for the Antigravity Finance
 
 The atomic task and phase gates in [`PROJECT_PLAN.md`](PROJECT_PLAN.md) apply within this sequence.
 
+## Git Workflow
+
+### Branch Strategy
+
+- `main` is the only persistent branch by default.
+- Keep `main` stable and production-ready.
+- Do not create permanent `frontend`, `backend`, `testing`, or agent-specific branches.
+- Create a temporary branch for each meaningful feature, fix, refactor, or documentation task.
+- Use clear branch names:
+  - `feat/task-filtering`
+  - `fix/login-redirect`
+  - `refactor/task-service`
+  - `docs/api`
+  - `test/auth-flow`
+- After a PR is merged, delete its temporary branch.
+- Add a persistent `develop` branch only if the project later has a genuine staging/integration requirement.
+
+### Agentic / Parallel Development
+
+- One agent modifying code should normally work on one task branch.
+- Multiple agents modifying code in parallel should use separate branches and preferably separate Git worktrees.
+- Do not allow multiple agents to make overlapping changes to the same files unless explicitly coordinated.
+- Read-only review, research, and analysis agents do not require separate branches.
+
+### Commit Strategy
+
+Commit at logical, working checkpoints rather than after every small edit.
+
+Examples:
+
+```text
+feat: add task filtering API
+test: add task filtering integration tests
+feat: add task filtering UI
+fix: preserve filters in URL
+docs: update task filtering documentation
+```
+
+Before committing:
+
+1. Ensure the current change is coherent.
+2. Format changed files.
+3. Run relevant lint/type checks.
+4. Run relevant tests.
+5. Run the build when appropriate.
+6. Review the Git diff for accidental or unrelated changes.
+7. Never commit secrets, `.env` files, generated junk, debug code, or unrelated modifications.
+
+A medium-sized feature may naturally contain several logical commits. Prefer meaningful commits over arbitrary commit frequency.
+
+### Standard Flow
+
+```text
+main
+  ↓
+create task branch
+  ↓
+plan / implement
+  ↓
+test + lint + build
+  ↓
+security/review checks
+  ↓
+logical commits
+  ↓
+push
+  ↓
+PR
+  ↓
+CI + final review
+  ↓
+merge into main
+  ↓
+delete task branch
+```
+
 ## Test layers and timing
 
 | Layer | Coverage | Timing |
