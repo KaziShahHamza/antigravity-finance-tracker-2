@@ -26,7 +26,7 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 1.2: Next.js 15 Client, Plain Tailwind CSS, Test Runners & UI Primitives
 
-- [ ] **Task 1.2.1 — Next.js 15 App Router, Tailwind & Client Test Config**: Initialize `client/` with Next.js 15 (App Router), TypeScript (`strict: true`), plain Tailwind CSS, `client/.env.example`, `client/vitest.config.ts`, and `client/playwright.config.ts` (Playwright strictly in `client/`); install `next-themes`, `lucide-react`, `recharts`, `jspdf`, `jspdf-autotable`, `papaparse`.
+- [x] **Task 1.2.1 — Next.js 15 App Router, Tailwind & Client Test Config**: Initialize `client/` with Next.js 15 (App Router), TypeScript (`strict: true`), plain Tailwind CSS, `client/.env.example`, `client/vitest.config.ts`, and `client/playwright.config.ts` (Playwright strictly in `client/`); install `next-themes`, `lucide-react`, `recharts`, `jspdf`, `jspdf-autotable`, `papaparse`.
 - [ ] **Task 1.2.2 — Theme Provider & Hydration-Safe Theme Toggle**: Create `client/src/context/ThemeProvider.tsx` (`attribute="class"`) and `client/src/components/layout/ThemeToggle.tsx` (Light / Dark / System mode with `mounted` guard) and wire into `client/src/app/layout.tsx`.
 - [ ] **Task 1.2.3 — Core Form & Action UI Primitives**: Build plain-Tailwind `Button.tsx`, `Input.tsx`, and `Select.tsx` in `client/src/components/ui/` with accessible focus states, error messages, and dark mode styling.
 - [ ] **Task 1.2.4 — Container & Feedback UI Primitives**: Build plain-Tailwind `Card.tsx`, `Modal.tsx`, `Badge.tsx`, `Spinner.tsx`, `Toast.tsx`, and `Skeleton.tsx` in `client/src/components/ui/`.
