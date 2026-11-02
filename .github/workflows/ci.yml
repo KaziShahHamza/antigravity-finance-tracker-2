@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  verify:
+    name: Code Quality & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install root dependencies
+        run: npm ci || npm install
+
+      - name: Install server dependencies
+        if: hashFiles('server/package.json') != ''
+        run: |
+          if [ -f server/package-lock.json ]; then
+            npm ci --prefix server
+          else
+            npm install --prefix server
+          fi
+
+      - name: Install client dependencies
+        if: hashFiles('client/package.json') != ''
+        run: |
+          if [ -f client/package-lock.json ]; then
+            npm ci --prefix client
+          else
+            npm install --prefix client
+          fi
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit Tests
+        run: npm run test:unit
+
+      - name: Build
+        run: npm run build

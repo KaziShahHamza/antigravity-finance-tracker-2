@@ -1,0 +1,24 @@
+{
+  "name": "antigravity-finance-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-currency financial tracking application",
+  "scripts": {
+    "dev": "concurrently -n \"server,client\" -c \"blue,green\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "(test ! -f server/package.json || npm run build --prefix server) && (test ! -f client/package.json || npm run build --prefix client)",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "(test ! -f server/package.json || npm run lint --prefix server) && (test ! -f client/package.json || npm run lint --prefix client)",
+    "typecheck": "(test ! -f server/package.json || npm run typecheck --prefix server) && (test ! -f client/package.json || npm run typecheck --prefix client)",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "(test ! -f server/package.json || npm run test:unit --prefix server) && (test ! -f client/package.json || npm run test:unit --prefix client)",
+    "test:integration": "test ! -f server/package.json || npm run test:integration --prefix server",
+    "test:e2e": "test ! -f client/package.json || npm run test:e2e --prefix client",
+    "audit": "npm audit --audit-level=high",
+    "install:all": "npm install && (test ! -f server/package.json || npm install --prefix server) && (test ! -f client/package.json || npm install --prefix client)"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3"
+  }
+}
