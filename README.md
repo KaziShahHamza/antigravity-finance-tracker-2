@@ -7,6 +7,7 @@ A modern, full-stack, multi-currency personal finance tracker built with **Next.
 ## Key Features
 
 ### 1. Authentication & Security
+
 - **Email & Password Registration**: Secure `bcryptjs` hashing with immediate **6-digit OTP email verification** via **Resend** (15-minute expiry, 60-second resend cooldown).
 - **Google Sign-In**: Seamless popup sign-in via **Google Identity Services (GIS)** verified on the backend with `google-auth-library`.
 - **Forgot & Reset Password**: Time-limited password reset codes sent via email.
@@ -14,24 +15,28 @@ A modern, full-stack, multi-currency personal finance tracker built with **Next.
 - **User Profile & Settings**: Manage display name, password, default display currency, light/dark/system theme, and optional demo data seeding.
 
 ### 2. Dashboard & Visual Analytics
-- **Live Local Greeting**: Dynamic greeting (*"Good morning / afternoon / evening"*) paired with a real-time **12-hour AM/PM local clock**.
+
+- **Live Local Greeting**: Dynamic greeting (_"Good morning / afternoon / evening"_) paired with a real-time **12-hour AM/PM local clock**.
 - **Financial Summary Cards**: Total Balance (converted to your default currency), Monthly Income, Monthly Expenses, and Net Savings Rate.
 - **Interactive Charts (Recharts)**: Monthly Income vs. Expense comparison and Category Expense Breakdown donut chart.
 - **Recent Transactions & Budget Alerts**: Quick overview of your latest activity and active overspending warnings.
 - **Light / Dark Mode**: Instant, zero-flicker theme switching powered by Tailwind CSS and `next-themes`.
 
 ### 3. Account & Wallet Management
+
 - **Multiple Wallet Types**: Native support for **Cash**, **Bank**, **bKash**, **Nagad**, **Credit Card**, and **Custom Wallets** with custom colors and icons.
 - **Live Balances**: Automatic balance updates across all transaction creations, edits, and deletions.
 - **Inter-Account Transfers**: Atomic transfers between wallets—including automatic cross-currency conversion when source and destination currencies differ.
 
 ### 4. Transaction Management & AI Receipt OCR
+
 - **Full CRUD**: Track Income, Expenses, and Transfers with notes, dates, categories, and receipt attachments.
 - **System & Custom Categories**: Pre-seeded essential categories (Food, Rent, Shopping, Salary, Transport, etc.) plus custom user categories.
 - **Search, Filter & Sort**: Filter by date range, wallet, category, or transaction type; search descriptions/vendors; sort by date or amount.
 - **Receipt Upload & AI OCR**: Upload receipt images to **Cloudinary** and automatically extract vendor, date, total amount, currency, and suggested category via **Google Gemini Vision API** for 1-click form auto-fill.
 
 ### 5. Budget Management & Alerts
+
 - **Monthly Spending Targets**: Set an overall monthly budget and category-specific limits.
 - **Live Progress Tracking**: Visual progress bars displaying spent vs. remaining amounts.
 - **Tiered Overspending Alerts**:
@@ -40,6 +45,7 @@ A modern, full-stack, multi-currency personal finance tracker built with **Next.
   - **Overspent** (`100%+`): Critical alert badge & banner
 
 ### 6. Multi-Currency & Exports
+
 - **Multi-Currency Support**: Assign distinct ISO currencies (`USD`, `BDT`, `EUR`, `GBP`, `INR`, etc.) per wallet while viewing unified totals in your preferred display currency using daily cached rates from `open.er-api.com` (with manual override support).
 - **Client-Side CSV & PDF Exports**: Instant **CSV** (`papaparse`) and formatted **PDF statements** (`jspdf` + `jspdf-autotable`) generated in the browser—zero memory overhead on Render's free tier.
 
@@ -47,13 +53,13 @@ A modern, full-stack, multi-currency personal finance tracker built with **Next.
 
 ## Tech Stack
 
-| Layer | Technologies |
-| :--- | :--- |
+| Layer                    | Technologies                                                                                                                                       |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Frontend (`/client`)** | Next.js 15 (App Router), React, TypeScript, Plain Tailwind CSS, `next-themes`, `lucide-react`, `recharts`, `jspdf`, `jspdf-autotable`, `papaparse` |
-| **Backend (`/server`)** | Node.js, Express, TypeScript (`tsx` / `tsc`), Mongoose, `zod`, `jsonwebtoken`, `bcryptjs`, `helmet`, `express-rate-limit` |
-| **Database** | MongoDB Atlas (M0 Free Tier) |
-| **External APIs** | Resend (Email OTP/Reset), Google Identity Services (OAuth), Cloudinary (Receipts), Google Gemini Vision API (OCR), Open Exchange Rates API |
-| **Deployment** | Vercel (`client/`), Render Web Service (`server/`) |
+| **Backend (`/server`)**  | Node.js, Express, TypeScript (`tsx` / `tsc`), Mongoose, `zod`, `jsonwebtoken`, `bcryptjs`, `helmet`, `express-rate-limit`                          |
+| **Database**             | MongoDB Atlas (M0 Free Tier)                                                                                                                       |
+| **External APIs**        | Resend (Email OTP/Reset), Google Identity Services (OAuth), Cloudinary (Receipts), Google Gemini Vision API (OCR), Open Exchange Rates API         |
+| **Deployment**           | Vercel (`client/`), Render Web Service (`server/`)                                                                                                 |
 
 ---
 
@@ -79,6 +85,7 @@ antigravity-finance-tracker/
 ## Local Development & Mock Fallbacks
 
 Built-in **local development fallbacks** allow the app to run immediately even before configuring third-party API keys:
+
 - **No `RESEND_API_KEY`**: Verification and password-reset OTP codes are printed directly to the `server` console.
 - **No `GEMINI_API_KEY` / `CLOUDINARY_*`**: Receipt upload & OCR returns realistic structured mock receipt data so you can test the full UI flow offline.
 - **Exchange Rates**: Cached daily in MongoDB with static baseline fallback rates if offline.

@@ -97,11 +97,11 @@ delete task branch
 
 ## Test layers and timing
 
-| Layer | Coverage | Timing |
-| --- | --- | --- |
-| Unit | Pure utilities, Zod schemas, currency conversion/rounding, budget thresholds, isolated service logic | During each subphase; on every pull request |
-| Integration | Express routes/services with an isolated test database; auth, authorization, persistence, transactions, balance consistency | As each API subphase is implemented; on every pull request |
-| End-to-end | Critical browser journeys across client and API, with external providers mocked or test-configured | Added alongside UI flows; run on pull requests where practical and before release |
+| Layer       | Coverage                                                                                                                    | Timing                                                                            |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Unit        | Pure utilities, Zod schemas, currency conversion/rounding, budget thresholds, isolated service logic                        | During each subphase; on every pull request                                       |
+| Integration | Express routes/services with an isolated test database; auth, authorization, persistence, transactions, balance consistency | As each API subphase is implemented; on every pull request                        |
+| End-to-end  | Critical browser journeys across client and API, with external providers mocked or test-configured                          | Added alongside UI flows; run on pull requests where practical and before release |
 
 Keep unit tests fast and deterministic. Integration tests use a dedicated test database (`MONGODB_TEST_URI`), never production data, and clean up afterward. E2E tests exercise user-visible behavior and avoid dependence on live email, OAuth, OCR, or exchange-rate providers.
 

@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  verify:
+    name: Code Quality & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci || npm install
+
+      - name: Install server dependencies
+        run: npm ci --prefix server || npm install --prefix server
+
+      - name: Install client dependencies
+        run: npm ci --prefix client || npm install --prefix client
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit Tests
+        run: npm run test:unit
+
+      - name: Build
+        run: npm run build

@@ -85,6 +85,7 @@ flowchart TD
   - **Database**: MongoDB Atlas (M0 Free Tier, 512MB).
 
 ### Directory Layout
+
 ```text
 antigravity-finance-tracker/
 ├── .github/workflows/ci.yml   # Pull request CI (format, lint, typecheck, test, build)
@@ -138,6 +139,7 @@ antigravity-finance-tracker/
 ## 3. Detailed Feature Specifications
 
 ### 3.1 Authentication & Profile Management
+
 - **User Signup**: Email & Password with `bcryptjs` hashing (12 salt rounds). Dispatches a 6-digit OTP code via Resend.
 - **OTP Verification**: Immediate 6-digit OTP entry screen before dashboard access (15-minute expiration, 60-second resend cooldown).
 - **User Login & Logout**: Issues short-lived JWT access token (`Authorization: Bearer`) + refresh token; logout clears client state and invalidates refresh token.
@@ -153,6 +155,7 @@ antigravity-finance-tracker/
   - Optional **"Load Demo Transactions"** trigger for instant sandbox exploration.
 
 ### 3.2 Dashboard & Visual Analytics
+
 - **Live Greeting & AM/PM Local Time**:
   - Client-rendered greeting (`"Good morning / afternoon / evening, [User]"`) paired with formatted local system date and 12-hour `AM/PM` clock (e.g., `Sunday, Nov 1 • 9:05 PM`).
 - **Financial Metric Cards**:
@@ -166,6 +169,7 @@ antigravity-finance-tracker/
 - **Recent Transactions**: Latest 5–8 transactions with category icons, wallet badges, and quick link to `/transactions`.
 
 ### 3.3 Transaction Management
+
 - **Add / Edit / Delete Transactions**:
   - Types: `income`, `expense`, `transfer`.
   - Atomic balance reconciliation when creating, updating, or deleting any transaction.
@@ -179,6 +183,7 @@ antigravity-finance-tracker/
 - **Transaction History**: Paginated list with receipt preview modal and instant filtered export.
 
 ### 3.4 Account & Wallet Management
+
 - **Supported Wallet Types**:
   - `cash` (Cash Wallet)
   - `bank` (Bank Account)
@@ -191,6 +196,7 @@ antigravity-finance-tracker/
   - Automatically computes exchange conversion when transferring across currencies (with manual exchange rate override option).
 
 ### 3.5 Budget Management & Overspending Alerts
+
 - **Monthly Budgets**:
   - Overall monthly spending target + category-specific monthly spending limits.
 - **Progress & Alerts**:
@@ -200,12 +206,14 @@ antigravity-finance-tracker/
   - **Overspent (`>= 100%`)**: Rose/Red progress indicator + `"Over Budget"` alert banner.
 
 ### 3.6 Receipt Upload & Intelligent OCR
+
 - Image uploaded via `multer` (memory buffer, max 5MB) -> stored on **Cloudinary** -> analyzed by **Google Gemini Vision API** into structured JSON:
   `{ vendor, date, totalAmount, currency, suggestedCategory, items }`.
 - Auto-fills the Transaction Modal for user review before saving.
 - Includes automatic local mock fallback when Cloudinary/Gemini keys are omitted.
 
 ### 3.7 Multi-Currency & Client-Side Exports
+
 - **Exchange Rates Cache**: Daily fetch from `https://open.er-api.com/v6/latest/USD` stored in MongoDB `ExchangeRate` collection, plus optional user manual rate overrides.
 - **Exports**:
   - **CSV**: `papaparse` client-side download of filtered transactions.
@@ -216,6 +224,7 @@ antigravity-finance-tracker/
 ## 4. Core Mongoose Schemas
 
 ### `User`
+
 ```typescript
 {
   name: string;
@@ -237,6 +246,7 @@ antigravity-finance-tracker/
 ```
 
 ### `Account`
+
 ```typescript
 {
   userId: ObjectId; // ref: 'User', indexed
@@ -253,6 +263,7 @@ antigravity-finance-tracker/
 ```
 
 ### `Category`
+
 ```typescript
 {
   userId: ObjectId; // ref: 'User', indexed
@@ -267,6 +278,7 @@ antigravity-finance-tracker/
 ```
 
 ### `Transaction`
+
 ```typescript
 {
   userId: ObjectId; // ref: 'User', compound index with date
@@ -291,6 +303,7 @@ antigravity-finance-tracker/
 ```
 
 ### `Budget`
+
 ```typescript
 {
   userId: ObjectId; // ref: 'User', compound unique index (userId, categoryId, month, year)
@@ -305,6 +318,7 @@ antigravity-finance-tracker/
 ```
 
 ### `ExchangeRate`
+
 ```typescript
 {
   baseCurrency: string; // 'USD'
@@ -318,19 +332,21 @@ antigravity-finance-tracker/
 ## 5. Deployment Environment Variables
 
 ### Frontend (`client/.env.local` / Vercel)
+
 - `NEXT_PUBLIC_API_URL` — Express API base URL (e.g., `https://your-api.onrender.com/api`)
 - `NEXT_PUBLIC_GOOGLE_CLIENT_ID` — Google Cloud OAuth 2.0 Web Client ID
 
 ### Backend (`server/.env` / Render)
+
 - `PORT` — `5000`
 - `NODE_ENV` — `development` | `production`
 - `CLIENT_URL` — Vercel frontend origin (e.g., `https://your-app.vercel.app`)
 - `MONGODB_URI` — MongoDB Atlas SRV connection string
-- `MONGODB_TEST_URI` — Isolated MongoDB database URI for automated integration tests *(local/CI only)*
+- `MONGODB_TEST_URI` — Isolated MongoDB database URI for automated integration tests _(local/CI only)_
 - `JWT_ACCESS_SECRET` — Cryptographic secret for access tokens
 - `JWT_REFRESH_SECRET` — Cryptographic secret for refresh tokens
 - `GOOGLE_CLIENT_ID` — Google OAuth Client ID (for `google-auth-library` token verification)
-- `RESEND_API_KEY` — Resend API key *(optional in local dev; falls back to console logger)*
+- `RESEND_API_KEY` — Resend API key _(optional in local dev; falls back to console logger)_
 - `EMAIL_FROM` — Sender address (e.g., `onboarding@resend.dev` or verified custom domain)
-- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` — Cloudinary credentials *(optional in local dev)*
-- `GEMINI_API_KEY` — Google AI Studio key *(optional in local dev; falls back to mock OCR)*
+- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` — Cloudinary credentials _(optional in local dev)_
+- `GEMINI_API_KEY` — Google AI Studio key _(optional in local dev; falls back to mock OCR)_
