@@ -1,9 +1,10 @@
 // client/src/components/layout/ThemeToggle.tsx
 
-// Hydration-safe light/dark/system mode toggle button guarded by mounted state.
+// Hydration-safe light/dark/system mode toggle button using Button primitive.
 
 'use client';
 
+import { Button } from '@/components/ui/Button';
 import { Laptop, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
@@ -32,16 +33,17 @@ export function ThemeToggle() {
   };
 
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
+      size="icon"
       onClick={cycleTheme}
-      className="btn btn-outline btn-icon"
       aria-label={`Toggle theme, current theme is ${theme}`}
       title={`Theme: ${theme}`}
     >
       {theme === 'light' && <Sun className="h-4 w-4" />}
       {theme === 'dark' && <Moon className="h-4 w-4" />}
       {theme === 'system' && <Laptop className="h-4 w-4" />}
-    </button>
+    </Button>
   );
 }
