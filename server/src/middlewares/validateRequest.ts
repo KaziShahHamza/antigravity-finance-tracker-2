@@ -1,4 +1,7 @@
+// server/src/middlewares/validateRequest.ts
+
 // Generic Express middleware factory validating request body, query, and params using Zod.
+
 import type { NextFunction, Request, Response } from 'express';
 import { ZodError, type ZodTypeAny } from 'zod';
 

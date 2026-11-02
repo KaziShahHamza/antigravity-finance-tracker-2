@@ -1,4 +1,7 @@
+// server/src/config/env.ts
+
 // Validates and exposes strongly-typed environment variables with safe development defaults.
+
 import dotenv from 'dotenv';
 import { z } from 'zod';
 

@@ -1,4 +1,7 @@
+// server/src/server.ts
+
 // Standalone HTTP server bootstrap listening on configured port.
+
 import { app } from './app.js';
 import { env } from './config/env.js';
 
