@@ -26,11 +26,11 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 1.2: Next.js 15 Client, Plain Tailwind CSS, Test Runners & UI Primitives
 
-- [ ] **Task 1.2.1 — Next.js 15 App Router, Tailwind & Client Test Config**: Initialize `client/` with Next.js 15 (App Router), TypeScript (`strict: true`), plain Tailwind CSS, `client/.env.example`, `client/vitest.config.ts`, and `client/playwright.config.ts` (Playwright strictly in `client/`); install `next-themes`, `lucide-react`, `recharts`, `jspdf`, `jspdf-autotable`, `papaparse`.
-- [ ] **Task 1.2.2 — Theme Provider & Hydration-Safe Theme Toggle**: Create `client/src/context/ThemeProvider.tsx` (`attribute="class"`) and `client/src/components/layout/ThemeToggle.tsx` (Light / Dark / System mode with `mounted` guard) and wire into `client/src/app/layout.tsx`.
-- [ ] **Task 1.2.3 — Core Form & Action UI Primitives**: Build plain-Tailwind `Button.tsx`, `Input.tsx`, and `Select.tsx` in `client/src/components/ui/` with accessible focus states, error messages, and dark mode styling.
-- [ ] **Task 1.2.4 — Container & Feedback UI Primitives**: Build plain-Tailwind `Card.tsx`, `Modal.tsx`, `Badge.tsx`, `Spinner.tsx`, `Toast.tsx`, and `Skeleton.tsx` in `client/src/components/ui/`.
-- [ ] **Task 1.2.5 — Frontend API Client, Shared Types & Unit Tests**: Create `client/src/types/index.ts` and `client/src/lib/api.ts` (Bearer header injection + silent `/auth/refresh` retry on `401`) along with `client/src/lib/__tests__/api.test.ts`.
+- [x] **Task 1.2.1 — Next.js 15 App Router, Tailwind & Client Test Config**: Initialize `client/` with Next.js 15 (App Router), TypeScript (`strict: true`), plain Tailwind CSS, `client/.env.example`, `client/vitest.config.ts`, and `client/playwright.config.ts` (Playwright strictly in `client/`); install `next-themes`, `lucide-react`, `recharts`, `jspdf`, `jspdf-autotable`, `papaparse`.
+- [x] **Task 1.2.2 — Theme Provider, Semantic Style Tokens & Hydration-Safe Theme Toggle**: Create `client/src/styles/tokens.css` (semantic CSS variables), `client/src/styles/primitives.css` (`@layer components` reusable classes), `client/src/context/ThemeProvider.tsx` (`attribute="class"`), and `client/src/components/layout/ThemeToggle.tsx` (Light / Dark / System mode with `mounted` guard) and wire into `client/src/app/layout.tsx`.
+- [x] **Task 1.2.3 — Core Form & Action UI Primitives**: Build `Button.tsx`, `Input.tsx`, and `Select.tsx` in `client/src/components/ui/` backed by `client/src/styles/primitives.css` with accessible focus states, error messages, and semantic theme styling.
+- [x] **Task 1.2.4 — Container & Feedback UI Primitives**: Build `Card.tsx`, `Modal.tsx`, `Badge.tsx`, `Spinner.tsx`, `Toast.tsx`, and `Skeleton.tsx` in `client/src/components/ui/` backed by `client/src/styles/primitives.css`.
+- [x] **Task 1.2.5 — Frontend API Client, Shared Types & Unit Tests**: Create `client/src/types/index.ts` and `client/src/lib/api.ts` (Bearer header injection + silent `/auth/refresh` retry on `401`) along with `client/src/lib/__tests__/api.test.ts`.
 
 ### Subphase 1.3: MongoDB Connection & Mongoose Data Models
 

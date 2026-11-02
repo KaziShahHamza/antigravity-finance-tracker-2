@@ -1,0 +1,29 @@
+/* client/src/styles/tokens.css */
+
+/* Semantic light and dark theme CSS custom properties eliminating repetitive dark:* utility chains. */
+
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-hover: #f1f5f9;
+  --fg: #0f172a;
+  --fg-muted: #475569;
+  --fg-subtle: #64748b;
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --ring-offset: #ffffff;
+}
+
+.dark {
+  --bg: #090d16;
+  --surface: #0f172a;
+  --surface-muted: #1e293b;
+  --surface-hover: #1e293b;
+  --fg: #f8fafc;
+  --fg-muted: #94a3b8;
+  --fg-subtle: #64748b;
+  --border-subtle: #1e293b;
+  --border-strong: #334155;
+  --ring-offset: #090d16;
+}

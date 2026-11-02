@@ -16,9 +16,13 @@ This file defines the architectural constraints, coding standards, and workflow 
 
 ## 2. Strict Technology & Styling Rules
 
-1. **Plain Tailwind CSS Only**:
-   - Use plain Tailwind CSS utility classes, `next-themes` (`darkMode: 'class'`), and `lucide-react` icons.
-   - **Do NOT** install heavy component libraries (no Material UI, Ant Design, Chakra UI, or unrequested component frameworks). Build clean, accessible, reusable UI primitives inside `client/src/components/ui/`.
+1. **Plain Tailwind CSS & Clean JSX Styling Architecture (Option A + B + D)**:
+   - Use plain Tailwind CSS, `next-themes` (`darkMode: 'class'`), and `lucide-react` icons.
+   - **Do NOT** install heavy component libraries (no Material UI, Ant Design, Chakra UI, or unrequested component frameworks).
+   - **No Long Utility Strings in JSX**: Never write long, multi-state Tailwind utility chains directly inside `.tsx` files. Enforce the 3-layer styling system:
+     1. **Semantic CSS Variables (`client/src/styles/tokens.css` — Option B)**: Define light (`:root`) and dark (`.dark`) CSS custom properties (`--bg`, `--surface`, `--surface-muted`, `--surface-hover`, `--fg`, `--fg-muted`, `--fg-subtle`, `--border-subtle`, `--border-strong`, `--ring-offset`) and map them in `client/tailwind.config.ts` (`bg-surface`, `text-fg`, `border-border-subtle`, etc.) to eliminate repetitive `dark:*` classes.
+     2. **Reusable `@apply` Component Classes (`client/src/styles/primitives.css` — Option A)**: Define semantic component classes inside `@layer components` (`.btn`, `.btn-primary`, `.btn-outline`, `.btn-icon`, `.field-control`, `.card`, `.modal-panel`, `.badge`, `.focus-ring`, etc.) and import them in `client/src/app/globals.css`.
+     3. **Strict UI Primitive Composition (`client/src/components/ui/` — Option D)**: Build clean, accessible UI primitives (`Button`, `Input`, `Select`, `Card`, `Modal`, `Badge`, `Spinner`, `Toast`, `Skeleton`) backed by `primitives.css`. Feature and layout components must compose these UI primitives and keep inline `className` props limited to concise 1–4 class layout utilities (e.g., `flex items-center gap-3`).
 2. **End-to-End TypeScript**:
    - Keep `"strict": true` enabled in both `client/tsconfig.json` and `server/tsconfig.json`.
    - Validate all incoming Express request bodies, query params, and route params using **Zod** schemas.
