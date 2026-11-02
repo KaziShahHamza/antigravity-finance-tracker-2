@@ -62,7 +62,7 @@ flowchart TD
 
 - **Frontend (`/client`)**:
   - **Framework**: Next.js 15 (App Router), React, TypeScript.
-  - **Styling**: Plain Tailwind CSS.
+  - **Styling**: Plain Tailwind CSS using a 3-layer clean JSX system (`client/src/styles/tokens.css` semantic CSS variables, `client/src/styles/primitives.css` `@layer components` classes, and `client/src/components/ui/` primitives).
   - **Theming**: `next-themes` (Dark / Light / System mode with zero flicker).
   - **Icons**: `lucide-react`.
   - **Charts**: `recharts` (Responsive Line, Bar, and Donut charts).
@@ -116,6 +116,7 @@ antigravity-finance-tracker/
 │   │   ├── context/           # AuthContext, CurrencyContext, ThemeProvider
 │   │   ├── hooks/             # Custom data fetching & state hooks
 │   │   ├── lib/               # api.ts, exportPdf.ts, exportCsv.ts, formatters.ts (+ unit tests)
+│   │   ├── styles/            # tokens.css (semantic theme variables) & primitives.css (@apply classes)
 │   │   └── types/             # User, Account, Transaction, Budget, Category interfaces
 └── server/                    # Express REST API (Render)
     ├── package.json

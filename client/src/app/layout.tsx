@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-white text-slate-900 antialiased dark:bg-[#090d16] dark:text-slate-100">
+      <body className="page-shell">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

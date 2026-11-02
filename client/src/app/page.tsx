@@ -6,14 +6,12 @@ import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 export default function HomePage() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center p-6 text-center">
+    <main className="hero-container">
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
-      <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-        Antigravity Finance Tracker
-      </h1>
-      <p className="mt-4 max-w-lg text-slate-600 dark:text-slate-400">
+      <h1 className="hero-title">Antigravity Finance Tracker</h1>
+      <p className="hero-subtitle">
         Multi-currency financial management with atomic reconciliation, budgets, and smart
         analytics.
       </p>

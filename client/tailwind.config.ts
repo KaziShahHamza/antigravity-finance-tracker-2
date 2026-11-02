@@ -1,6 +1,6 @@
 // client/tailwind.config.ts
 
-// Plain Tailwind CSS configuration with class-based dark mode and custom token palettes.
+// Plain Tailwind CSS configuration with class-based dark mode and semantic CSS variable tokens.
 
 import type { Config } from 'tailwindcss';
 
@@ -10,6 +10,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        bg: 'var(--bg)',
+        surface: {
+          DEFAULT: 'var(--surface)',
+          muted: 'var(--surface-muted)',
+          hover: 'var(--surface-hover)',
+        },
+        fg: {
+          DEFAULT: 'var(--fg)',
+          muted: 'var(--fg-muted)',
+          subtle: 'var(--fg-subtle)',
+        },
+        border: {
+          subtle: 'var(--border-subtle)',
+          strong: 'var(--border-strong)',
+        },
+        'ring-offset': 'var(--ring-offset)',
         brand: {
           50: '#eef2ff',
           100: '#e0e7ff',

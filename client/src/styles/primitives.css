@@ -1,0 +1,158 @@
+/* client/src/styles/primitives.css */
+
+/* Reusable Tailwind component classes (@apply) keeping JSX markup concise and free of long utility strings. */
+
+@tailwind components;
+
+@layer components {
+  /* Base Focus & Layout Helpers */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-ring-offset;
+  }
+
+  .page-shell {
+    @apply min-h-screen bg-bg text-fg antialiased;
+  }
+
+  .hero-container {
+    @apply relative flex min-h-screen flex-col items-center justify-center p-6 text-center;
+  }
+
+  .hero-title {
+    @apply text-4xl font-extrabold tracking-tight sm:text-5xl;
+  }
+
+  .hero-subtitle {
+    @apply mt-4 max-w-lg text-fg-muted;
+  }
+
+  /* Button Primitives */
+  .btn {
+    @apply focus-ring inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-brand-600 text-white shadow-sm hover:bg-brand-700;
+  }
+
+  .btn-secondary {
+    @apply bg-surface-muted text-fg hover:bg-surface-hover;
+  }
+
+  .btn-outline {
+    @apply border border-border-subtle bg-surface text-fg shadow-sm hover:bg-surface-hover;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-fg-muted hover:bg-surface-hover hover:text-fg;
+  }
+
+  .btn-danger {
+    @apply bg-rose-600 text-white shadow-sm hover:bg-rose-700;
+  }
+
+  .btn-sm {
+    @apply h-8 px-3 text-xs;
+  }
+
+  .btn-md {
+    @apply h-10 px-4 text-sm;
+  }
+
+  .btn-lg {
+    @apply h-11 px-6 text-base;
+  }
+
+  .btn-icon {
+    @apply h-9 w-9 p-0;
+  }
+
+  .btn-icon-placeholder {
+    @apply h-9 w-9 rounded-lg border border-border-subtle bg-transparent;
+  }
+
+  /* Form Input & Select Primitives */
+  .field-group {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .field-label {
+    @apply text-sm font-medium text-fg;
+  }
+
+  .field-control {
+    @apply focus-ring h-10 w-full rounded-lg border border-border-subtle bg-surface px-3 py-2 text-sm text-fg placeholder:text-fg-subtle disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .field-control-error {
+    @apply border-rose-500 focus:ring-rose-500;
+  }
+
+  .field-error {
+    @apply text-xs font-medium text-rose-500;
+  }
+
+  .field-hint {
+    @apply text-xs text-fg-muted;
+  }
+
+  /* Card & Container Primitives */
+  .card {
+    @apply rounded-xl border border-border-subtle bg-surface p-6 shadow-sm;
+  }
+
+  .card-header {
+    @apply mb-4 flex items-center justify-between gap-4;
+  }
+
+  .card-title {
+    @apply text-lg font-semibold text-fg;
+  }
+
+  .card-description {
+    @apply text-sm text-fg-muted;
+  }
+
+  /* Modal Primitives */
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm;
+  }
+
+  .modal-panel {
+    @apply relative w-full max-w-lg rounded-xl border border-border-subtle bg-surface p-6 shadow-xl;
+  }
+
+  /* Badge Primitives */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-neutral {
+    @apply bg-surface-muted text-fg-muted;
+  }
+
+  .badge-brand {
+    @apply bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300;
+  }
+
+  .badge-success {
+    @apply bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300;
+  }
+
+  .badge-danger {
+    @apply bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300;
+  }
+
+  /* Skeleton & Toast Primitives */
+  .skeleton {
+    @apply animate-pulse rounded-lg bg-surface-muted;
+  }
+
+  .toast {
+    @apply flex items-center gap-3 rounded-lg border border-border-subtle bg-surface px-4 py-3 text-sm text-fg shadow-lg;
+  }
+}
