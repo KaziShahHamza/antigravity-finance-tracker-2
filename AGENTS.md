@@ -77,3 +77,23 @@ The application must start and remain 100% testable in local development even wh
    - Create `docs/DEPLOYMENT.md` with step-by-step Vercel, Render, and MongoDB Atlas instructions (Phase 6).
 3. **Quality Gate per Phase**:
    - Run TypeScript checks (`tsc --noEmit`) in both `server/` and `client/` and verify zero compilation errors before closing a phase.
+
+## 7. Code Style, Comments & File Size
+
+- Use the repository formatter and lint configuration once established; prefer consistent, standard formatting, clear names, small functions, and the existing project's import conventions.
+- Every authored source/code file starts with a concise 1–3 line comment explaining the file's responsibility and how it works. Use the language's normal comment syntax. Keep it factual and update it when behavior changes. Do not add headers to JSON, lockfiles, generated files, or formats that do not support comments.
+- Add inline comments only for non-obvious decisions, invariants, security constraints, or tricky algorithms. Explain why the code takes a non-obvious path; do not narrate what the next line already says.
+- Keep files focused on one cohesive responsibility. Prefer roughly 100–300 lines; consider splitting around 300–500+ lines when responsibilities are mixed. These are guidelines, not hard limits; avoid fragmentation that makes code harder to follow.
+- Keep functions focused and testable. Extract shared behavior when it has multiple real callers or a clear independent responsibility; avoid speculative abstractions.
+
+## 8. Testing, Automation & Review Workflow
+
+- Add tests in the same subphase as the behavior they cover; do not defer tests until the end. Use the selected test runner and document commands in root and workspace `package.json` scripts.
+- **Unit tests** cover pure utilities, validation, currency math/rounding, auth helpers, and isolated service logic, including boundaries and failure paths.
+- **Integration tests** cover Express routes/services with an isolated test database, auth/authorization, validation, persistence, and balance reconciliation. Clean up test data.
+- **E2E tests** cover critical browser flows: register/verify/login, account setup and transfers, transaction CRUD, budget alerts, receipt OCR fallback, and exports. Mock external providers or use test credentials; never use production data.
+- Run relevant tests while implementing each subphase. At each phase gate run the full suite, lint, typecheck, and production build for both workspaces. Run dependency/security audits after dependency changes and before release. Report only checks actually run and inspected.
+- Provide root scripts for `test`, `test:unit`, `test:integration`, `test:e2e`, `lint`, `typecheck`, `build`, and `audit` as tooling becomes available. CI should run formatting/lint, typecheck, unit/integration tests, and builds on pull requests; run E2E checks on pull requests where CI resources permit and before release.
+- Before committing, run the pre-commit checklist in `docs/QUALITY.md`, review `git diff`, check for secrets/generated files, update only affected docs and `docs/PROJECT_PLAN.md`, and run applicable checks. The project lifecycle includes focused commits, push, and PR creation; perform external actions only when authorized for the active task.
+- Review every change freshly as a PR. Check correctness, maintainability, coverage, security, docs, and unnecessary complexity. Resolve findings or document accepted limitations before merge.
+- Complete CI and final PR review before merge. Do not merge or publish a release unless the user authorizes it.

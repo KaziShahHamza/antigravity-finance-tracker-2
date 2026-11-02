@@ -3,6 +3,7 @@
 This document is the master roadmap for building, testing, and deploying the **Antigravity Finance Tracker**.
 
 Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task X.Y.Z`).
+- Tests are written with the feature they cover. See [`QUALITY.md`](QUALITY.md) for test layers, automation, security checks, and PR review guidance.
 - **Execution Rule**: Execute **1 atomic task at a time** (touching 1–3 files), verify with typecheck/test, mark `[x]`, and make a focused Git commit before starting the next task.
 - **Quality Gates**:
   - **Every Atomic Task**: Fast TypeScript check (`tsc --noEmit`) + `git commit`.

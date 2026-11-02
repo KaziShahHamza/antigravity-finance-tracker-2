@@ -104,4 +104,5 @@ Built-in **local development fallbacks** allow the app to run immediately even b
 
 - [Architecture Specification](docs/ARCHITECTURE.md)
 - [Phased Project Plan](docs/PROJECT_PLAN.md)
+- [Quality, Testing & Review Workflow](docs/QUALITY.md)
 - [Agent Guidelines](AGENTS.md)
