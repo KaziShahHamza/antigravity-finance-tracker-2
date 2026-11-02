@@ -33,12 +33,14 @@ const exchangeRateSchema = new Schema<IExchangeRate>(
     expiresAt: {
       type: Date,
       required: true,
-      index: { expires: 0 }, // MongoDB TTL index to auto-expire old rate caches after 24h
     },
   },
   {
     timestamps: true,
   }
 );
+
+// MongoDB TTL index to auto-expire old rate caches after 24h
+exchangeRateSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export const ExchangeRate = model<IExchangeRate>('ExchangeRate', exchangeRateSchema);
