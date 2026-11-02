@@ -1,10 +1,15 @@
 // client/src/app/page.tsx
 
-// Home landing page with initial welcome heading and action links.
+// Home landing page with initial welcome heading, theme toggle, and action links.
+
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
+    <main className="relative flex min-h-screen flex-col items-center justify-center p-6 text-center">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
         Antigravity Finance Tracker
       </h1>

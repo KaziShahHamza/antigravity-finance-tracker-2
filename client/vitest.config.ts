@@ -1,6 +1,6 @@
 // client/vitest.config.ts
 
-// Vitest configuration for the Next.js client unit tests with JSDOM environment.
+// Vitest configuration for the Next.js client unit tests with JSDOM environment and DOM mocks.
 
 import react from '@vitejs/plugin-react';
 import path from 'path';
@@ -11,6 +11,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    setupFiles: ['./tests/unit/setupTests.ts'],
     include: ['src/**/*.test.{ts,tsx}', 'tests/unit/**/*.test.{ts,tsx}'],
   },
   resolve: {
