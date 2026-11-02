@@ -131,6 +131,7 @@ Run the checks in this order: formatting, lint, typecheck, unit/integration test
 - [ ] Confirm new behavior has suitable unit/integration/E2E coverage, including error and boundary cases.
 - [ ] Update `docs/API.md`, `docs/DB.md`, `docs/PROJECT_PLAN.md`, or other relevant docs with the implementation.
 - [ ] Run phase checks from `AGENTS.md` when closing a phase; record outcomes and known limitations in the PR.
+- [ ] At phase completion, create/update the persistent Phase milestone checkpoint branch (e.g. `phase-N-checkpoint`), commit/tag, and prompt the user for approval to push to remote.
 - [ ] Review the final diff freshly for correctness, maintainability, tests, security, docs, and unnecessary complexity.
 - [ ] Commit and push the reviewed change and open a PR when authorized for the task; ensure PR CI passes and review its final diff before merge.
 

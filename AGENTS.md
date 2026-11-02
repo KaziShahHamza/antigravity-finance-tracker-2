@@ -103,8 +103,13 @@ The application must start and remain 100% testable in local development even wh
 
 ## 9. Git Workflow & Collaboration
 
-- **Single Persistent Branch**: `main` is the only persistent branch by default and must remain stable and production-ready. Do not create permanent environment or agent branches.
-- **Temporary Task Branches**: Create a short-lived branch for each feature, fix, refactor, or doc task (`feat/*`, `fix/*`, `refactor/*`, `docs/*`, `test/*`). Delete the branch immediately after its PR is merged.
+- **Persistent Milestone Branches**:
+  - `main`: The primary, stable production branch.
+  - **Phase Milestone Checkpoint Branches** (`phase-1-checkpoint`, `phase-2-checkpoint`, `phase-3-checkpoint`, etc., and an active integration branch `develop`): Maintained as long-term checkpoints after every major Phase is verified, allowing easy diffing, inspection, and rollback of past work.
+  - After a Phase is completed and merged into `main`, the milestone branch (`phase-N-checkpoint`) is created or updated, and a push will be prompted for your approval.
+- **Temporary Subphase / Feature Branches**:
+  - Create a short-lived branch for each subphase or atomic task (`feat/subphase-*` or `feat/task-*`, `fix/*`, `refactor/*`, `docs/*`, `test/*`).
+  - Delete temporary feature branches only after PR merge into `main` (or after phase signoff).
 - **Agent Concurrency**: One modifying agent per task branch. Parallel modifying agents must use separate branches and preferably separate Git worktrees—never allow uncoordinated concurrent edits to the same files.
 - **Logical Checkpoint Commits**: Commit at coherent, working checkpoints rather than after every micro-edit. Format changed files, run lint/typecheck and tests, review diffs, and ensure zero secrets/`.env` files before committing.
-- **Standard Flow**: Follow the full lifecycle (`main` → task branch → implement & test → security check → logical commits → push → PR → CI review → merge → branch deletion) detailed in [`docs/QUALITY.md`](docs/QUALITY.md#git-workflow).
+- **Standard Flow**: Follow the full lifecycle (`main` / `develop` → feature branch → implement & test → security check → logical commits → push approval → PR approval → CI review → merge approval → Phase milestone checkpoint branch creation & push approval).
