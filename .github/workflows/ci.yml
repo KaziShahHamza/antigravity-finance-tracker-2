@@ -19,16 +19,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
       - name: Install root dependencies
         run: npm ci || npm install
 
       - name: Install server dependencies
-        run: npm ci --prefix server || npm install --prefix server
+        if: hashFiles('server/package.json') != ''
+        run: |
+          if [ -f server/package-lock.json ]; then
+            npm ci --prefix server
+          else
+            npm install --prefix server
+          fi
 
       - name: Install client dependencies
-        run: npm ci --prefix client || npm install --prefix client
+        if: hashFiles('client/package.json') != ''
+        run: |
+          if [ -f client/package-lock.json ]; then
+            npm ci --prefix client
+          else
+            npm install --prefix client
+          fi
 
       - name: Format check
         run: npm run format:check
