@@ -20,7 +20,7 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 ### Subphase 1.1: Root Workspace, Quality Tooling & Express Server Setup
 
 - [x] **Task 1.1.1 — Root Workspace, Prettier & CI Workflow**: Create root `package.json` with canonical scripts (`dev`, `build`, `format`, `format:check`, `lint`, `typecheck`, `test`, `test:unit`, `test:integration`, `test:e2e`, `audit`, `install:all`), root `.prettierrc` / `.prettierignore`, and `.github/workflows/ci.yml` for PR checks.
-- [ ] **Task 1.1.2 — Server Package, TypeScript, ESLint & Vitest Config**: Create `server/package.json`, `server/tsconfig.json` (`strict: true`), `server/eslint.config.mjs`, `server/vitest.config.ts`, and `server/.env.example`; install Express, Mongoose, Zod, security/auth packages, ESLint, Vitest, and Supertest.
+- [x] **Task 1.1.2 — Server Package, TypeScript, ESLint & Vitest Config**: Create `server/package.json`, `server/tsconfig.json` (`strict: true`), `server/eslint.config.mjs`, `server/vitest.config.ts`, and `server/.env.example`; install Express, Mongoose, Zod, security/auth packages, ESLint, Vitest, and Supertest.
 - [ ] **Task 1.1.3 — Server Env Validator, Request Validator & Unit Tests**: Implement `server/src/config/env.ts` (Zod env parser with local dev defaults), `server/src/middlewares/errorHandler.ts`, `server/src/middlewares/validateRequest.ts`, and unit tests (`server/tests/unit/validateRequest.test.ts`).
 - [ ] **Task 1.1.4 — Express App Entrypoint, Health Route & Integration Test**: Create `server/src/app.ts` (exported for Supertest) and `server/src/server.ts` with `helmet`, `cors`, JSON limits, and `GET /api/health`, plus `server/tests/integration/health.test.ts`.
 
