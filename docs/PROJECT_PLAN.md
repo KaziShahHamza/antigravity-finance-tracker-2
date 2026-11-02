@@ -34,7 +34,7 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 1.3: MongoDB Connection & Mongoose Data Models
 
-- [ ] **Task 1.3.1 — MongoDB Connection Manager, Test DB Helper & Math Utils**: Implement `server/src/config/db.ts`, `server/src/utils/mathUtils.ts` (`roundCurrency` 2-decimal helper), and unit tests (`server/tests/unit/mathUtils.test.ts`) plus isolated `MONGODB_TEST_URI` test setup helper.
+- [x] **Task 1.3.1 — MongoDB Connection Manager, Test DB Helper & Math Utils**: Implement `server/src/config/db.ts`, `server/src/utils/mathUtils.ts` (`roundCurrency` 2-decimal helper), and unit tests (`server/tests/unit/mathUtils.test.ts`) plus isolated `MONGODB_TEST_URI` test setup helper.
 - [ ] **Task 1.3.2 — `User` & `ExchangeRate` Mongoose Models**: Implement `server/src/models/User.ts` (email, password, googleId, verification/reset code hashes, `defaultCurrency`, `monthlyBudgetLimit`, `customExchangeRates`, `themePreference`) and `server/src/models/ExchangeRate.ts`.
 - [ ] **Task 1.3.3 — `Account` & `Category` Mongoose Models**: Implement `server/src/models/Account.ts` (`cash`, `bank`, `bkash`, `nagad`, `credit`, `other`) and `server/src/models/Category.ts` (`income`, `expense`, `isDefault`).
 - [ ] **Task 1.3.4 — `Transaction` & `Budget` Mongoose Models**: Implement `server/src/models/Transaction.ts` (compound `(userId, date)` index, transfer & OCR fields) and `server/src/models/Budget.ts` (unique `(userId, categoryId, month, year)` index).
