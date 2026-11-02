@@ -1,4 +1,7 @@
+// server/src/middlewares/errorHandler.ts
+
 // Global Express error handler returning structured JSON responses.
+
 import type { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { env } from '../config/env.js';

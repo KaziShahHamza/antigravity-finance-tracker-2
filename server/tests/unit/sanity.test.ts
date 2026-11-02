@@ -1,4 +1,7 @@
+// server/tests/unit/sanity.test.ts
+
 // Simple sanity check test to verify Vitest configuration in server workspace.
+
 import { describe, expect, it } from 'vitest';
 
 describe('Server Vitest sanity test', () => {

@@ -1,4 +1,7 @@
+// server/src/app.ts
+
 // Express application factory configured with security middlewares, CORS, parsing, and base routes.
+
 import cors from 'cors';
 import express, { type Application, type Request, type Response } from 'express';
 import helmet from 'helmet';

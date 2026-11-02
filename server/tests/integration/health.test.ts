@@ -1,4 +1,7 @@
+// server/tests/integration/health.test.ts
+
 // Integration test verifying Express app bootstrapping, security headers, 404 handler, and /api/health.
+
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 import { app } from '../../src/app.js';

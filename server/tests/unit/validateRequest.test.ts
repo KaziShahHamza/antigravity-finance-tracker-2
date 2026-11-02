@@ -1,4 +1,7 @@
+// server/tests/unit/validateRequest.test.ts
+
 // Unit tests for validateRequest middleware and env configuration.
+
 import type { Request, Response } from 'express';
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';

@@ -1,3 +1,7 @@
+// server/vitest.config.ts
+
+// Vitest configuration for the server workspace running unit and integration suites.
+
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({

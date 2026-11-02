@@ -1,3 +1,7 @@
+// server/eslint.config.mjs
+
+// ESLint flat configuration for TypeScript and Node in the server workspace.
+
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
