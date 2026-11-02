@@ -65,7 +65,8 @@ antigravity-finance-tracker/
 ├── server/                  # Express + TypeScript REST API (deploys to Render)
 ├── docs/
 │   ├── ARCHITECTURE.md      # Approved system design, schemas & workflows
-│   ├── PROJECT_PLAN.md      # Phased & subphased implementation roadmap
+│   ├── PROJECT_PLAN.md      # Atomic phased & subphased implementation roadmap
+│   ├── QUALITY.md           # Testing, security, code review & CI workflow
 │   ├── DB.md                # Mongoose schema & index reference (created in Phase 1)
 │   ├── API.md               # REST API endpoint specification (created in Phase 2)
 │   └── DEPLOYMENT.md        # Vercel, Render & Atlas deployment guide (created in Phase 6)
@@ -89,7 +90,7 @@ Built-in **local development fallbacks** allow the app to run immediately even b
    npm run install:all
    ```
 2. **Configure environment variables**:
-   - Copy `server/.env.example` to `server/.env` (set `MONGODB_URI` and `JWT_SECRET`).
+   - Copy `server/.env.example` to `server/.env` (set `MONGODB_URI`, `JWT_ACCESS_SECRET`, and `JWT_REFRESH_SECRET`).
    - Copy `client/.env.example` to `client/.env.local` (set `NEXT_PUBLIC_API_URL=http://localhost:5000/api`).
 3. **Start both servers in development mode**:
    ```bash

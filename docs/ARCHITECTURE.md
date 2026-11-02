@@ -75,6 +75,10 @@ flowchart TD
   - **Email**: `resend` (with console fallback for local dev).
   - **File Upload & OCR**: `multer`, `cloudinary`, `@google/genai` (Gemini Vision).
   - **Validation**: `zod`.
+- **Quality, Formatting & Testing**:
+  - **Formatting & Linting**: `prettier` and `eslint` across `client/` and `server/`.
+  - **Unit & Integration Tests**: `vitest` (`client/` & `server/`) and `supertest` (`server/` against isolated `MONGODB_TEST_URI`).
+  - **End-to-End Tests**: `@playwright/test` configured strictly in `client/` `devDependencies` (never in `server/`).
 - **Hosting Targets**:
   - **Frontend**: Vercel (Hobby Free Tier).
   - **Backend**: Render Web Service (Free Tier, 512MB RAM).
@@ -83,15 +87,18 @@ flowchart TD
 ### Directory Layout
 ```text
 antigravity-finance-tracker/
-├── package.json               # Root scripts to orchestrate client & server concurrently
+├── .github/workflows/ci.yml   # Pull request CI (format, lint, typecheck, test, build)
+├── package.json               # Root scripts for dev, build, lint, format, test & audit
 ├── AGENTS.md                  # Workspace guidelines and engineering conventions
 ├── README.md                  # Project overview & setup instructions
-├── docs/                      # Living architecture, plan, DB, API & deployment docs
+├── docs/                      # ARCHITECTURE.md, PROJECT_PLAN.md, QUALITY.md, DB.md, API.md, DEPLOYMENT.md
 ├── client/                    # Next.js 15 App Router (Vercel)
 │   ├── package.json
 │   ├── tsconfig.json
 │   ├── tailwind.config.ts
 │   ├── next.config.ts
+│   ├── playwright.config.ts   # E2E browser test configuration
+│   ├── e2e/                   # Critical-path Playwright E2E specs
 │   ├── src/
 │   │   ├── app/
 │   │   │   ├── (auth)/        # /login, /register, /verify-otp, /forgot-password, /reset-password
@@ -100,27 +107,30 @@ antigravity-finance-tracker/
 │   │   │   └── page.tsx       # Landing page / Auth redirector
 │   │   ├── components/
 │   │   │   ├── layout/        # Navbar, Sidebar, ThemeToggle, TimeGreeting
-│   │   │   ├── dashboard/     # MetricCards, CashFlowChart, ExpenseBreakdown, RecentTransactions
+│   │   │   ├── dashboard/     # MetricCards, CashFlowChart, ExpenseBreakdownChart, RecentTransactions
 │   │   │   ├── transactions/  # TransactionModal, TransactionTable, FiltersBar, ReceiptUploader
 │   │   │   ├── accounts/      # AccountCard, AccountModal, TransferModal
 │   │   │   ├── budgets/       # BudgetCard, BudgetModal, OverspendingBadge
-│   │   │   └── ui/            # Button, Input, Select, Modal, Badge, Alert, Skeleton
-│   │   ├── context/           # AuthContext, CurrencyContext
+│   │   │   └── ui/            # Button, Input, Select, Modal, Card, Badge, Spinner, Toast, Skeleton
+│   │   ├── context/           # AuthContext, CurrencyContext, ThemeProvider
 │   │   ├── hooks/             # Custom data fetching & state hooks
-│   │   ├── lib/               # api.ts, exportPdf.ts, exportCsv.ts, formatters.ts
+│   │   ├── lib/               # api.ts, exportPdf.ts, exportCsv.ts, formatters.ts (+ unit tests)
 │   │   └── types/             # User, Account, Transaction, Budget, Category interfaces
 └── server/                    # Express REST API (Render)
     ├── package.json
     ├── tsconfig.json
+    ├── vitest.config.ts       # Unit & integration test configuration
+    ├── tests/                 # Unit & Supertest integration suites
     ├── src/
     │   ├── config/            # db.ts, env.ts, cloudinary.ts, gemini.ts, resend.ts
-    │   ├── controllers/       # auth, account, transaction, category, budget, user, ocr, rates
+    │   ├── controllers/       # auth, account, transaction, category, budget, user, ocr, rates, dashboard
     │   ├── middlewares/       # authMiddleware, errorHandler, rateLimiter, validateRequest
     │   ├── models/            # User, Account, Transaction, Category, Budget, ExchangeRate
     │   ├── routes/            # Express route modules mounted under /api/*
-    │   ├── services/          # emailService, geminiOcrService, ratesService, seedService
+    │   ├── services/          # emailService, ocrService, ratesService, seedService
     │   ├── utils/             # tokenUtils, mathUtils, defaultCategories, mockOcr
-    │   └── server.ts          # Express app entrypoint
+    │   ├── app.ts             # Configured Express instance (imported by server.ts & Supertest)
+    │   └── server.ts          # DB connection & HTTP listener entrypoint
 ```
 
 ---
@@ -316,6 +326,7 @@ antigravity-finance-tracker/
 - `NODE_ENV` — `development` | `production`
 - `CLIENT_URL` — Vercel frontend origin (e.g., `https://your-app.vercel.app`)
 - `MONGODB_URI` — MongoDB Atlas SRV connection string
+- `MONGODB_TEST_URI` — Isolated MongoDB database URI for automated integration tests *(local/CI only)*
 - `JWT_ACCESS_SECRET` — Cryptographic secret for access tokens
 - `JWT_REFRESH_SECRET` — Cryptographic secret for refresh tokens
 - `GOOGLE_CLIENT_ID` — Google OAuth Client ID (for `google-auth-library` token verification)

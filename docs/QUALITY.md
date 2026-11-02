@@ -27,7 +27,9 @@ The atomic task and phase gates in [`PROJECT_PLAN.md`](PROJECT_PLAN.md) apply wi
 | Integration | Express routes/services with an isolated test database; auth, authorization, persistence, transactions, balance consistency | As each API subphase is implemented; on every pull request |
 | End-to-end | Critical browser journeys across client and API, with external providers mocked or test-configured | Added alongside UI flows; run on pull requests where practical and before release |
 
-Keep unit tests fast and deterministic. Integration tests use a dedicated test database, never production data, and clean up afterward. E2E tests exercise user-visible behavior and avoid dependence on live email, OAuth, OCR, or exchange-rate providers.
+Keep unit tests fast and deterministic. Integration tests use a dedicated test database (`MONGODB_TEST_URI`), never production data, and clean up afterward. E2E tests exercise user-visible behavior and avoid dependence on live email, OAuth, OCR, or exchange-rate providers.
+
+**Standard Tooling**: **Prettier** (formatting), **ESLint** (linting), **Vitest** (unit tests in `server/` and `client/`), **Vitest + Supertest** (API integration tests in `server/`), and **Playwright** (E2E tests in `client/` only—never installed in `server/`).
 
 ## Automated checks
 

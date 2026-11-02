@@ -10,7 +10,7 @@ This file defines the architectural constraints, coding standards, and workflow 
   - `client/`: Next.js 15 (App Router) frontend in TypeScript. Deployed to **Vercel**.
   - `server/`: Node.js + Express REST API in TypeScript (`tsx` in dev, `tsc` build in prod). Deployed to **Render**.
 - Each folder (`client/` and `server/`) maintains its own independent `package.json` and `tsconfig.json` so Vercel and Render can deploy directly from their respective root directories without monorepo build friction.
-- A lightweight root `package.json` provides convenience scripts (`dev`, `build`, `typecheck`, `install:all`) for local development.
+- A lightweight root `package.json` provides unified scripts (`dev`, `build`, `format`, `format:check`, `lint`, `typecheck`, `test`, `test:unit`, `test:integration`, `test:e2e`, `audit`, `install:all`) for local development and CI.
 
 ---
 
@@ -23,7 +23,7 @@ This file defines the architectural constraints, coding standards, and workflow 
    - Keep `"strict": true` enabled in both `client/tsconfig.json` and `server/tsconfig.json`.
    - Validate all incoming Express request bodies, query params, and route params using **Zod** schemas.
 3. **Render Free-Tier Memory Guardrails (512MB RAM)**:
-   - Never add Puppeteer, Playwright, Chromium, or heavy native C++ binaries to `server/`.
+   - Never add Puppeteer, Playwright, Chromium, `mongodb-memory-server`, or heavy native C++ binaries to `server/` (keep Playwright strictly in `client/` `devDependencies` so Render builds stay lightweight).
    - Keep **CSV (`papaparse`)** and **PDF (`jspdf` + `jspdf-autotable`)** generation strictly **client-side** in `client/src/lib/`.
    - Use `multer` memory storage with strict file-size limits (e.g., max `5MB` per receipt image).
 4. **Next.js 15 Hydration Safety**:
@@ -68,15 +68,16 @@ The application must start and remain 100% testable in local development even wh
 
 ## 6. Phased Execution & Living Documentation
 
-1. **Follow `docs/PROJECT_PLAN.md`**:
-   - Implement work sequentially by Phase and Subphase.
-   - Mark completed items (`- [x]`) in `docs/PROJECT_PLAN.md` at the end of each subphase/phase.
+1. **Follow `docs/PROJECT_PLAN.md` & `docs/QUALITY.md`**:
+   - Implement work sequentially by Phase, Subphase, and Atomic Task.
+   - Mark completed items (`- [x]`) in `docs/PROJECT_PLAN.md` as each atomic task is verified.
 2. **Keep Documentation Synchronized**:
+   - Follow `docs/QUALITY.md` for test layers, security checks, pre-commit checklist, and PR review workflow.
    - Create and maintain `docs/DB.md` alongside Mongoose schema changes (Phase 1+).
    - Create and maintain `docs/API.md` alongside Express route & controller implementations (Phase 2+).
    - Create `docs/DEPLOYMENT.md` with step-by-step Vercel, Render, and MongoDB Atlas instructions (Phase 6).
 3. **Quality Gate per Phase**:
-   - Run TypeScript checks (`tsc --noEmit`) in both `server/` and `client/` and verify zero compilation errors before closing a phase.
+   - Run formatting check, lint, TypeScript checks (`tsc --noEmit`), unit/integration tests, and production builds in both `server/` and `client/` (plus `audit` after dependency changes) and verify zero errors before closing a phase.
 
 ## 7. Code Style, Comments & File Size
 
@@ -88,7 +89,7 @@ The application must start and remain 100% testable in local development even wh
 
 ## 8. Testing, Automation & Review Workflow
 
-- Add tests in the same subphase as the behavior they cover; do not defer tests until the end. Use the selected test runner and document commands in root and workspace `package.json` scripts.
+- Add tests in the same subphase as the behavior they cover; do not defer tests until the end. Standard runners: **Prettier** + **ESLint** (formatting/lint), **Vitest** (unit tests in `server/` and `client/`), **Vitest + Supertest** against `MONGODB_TEST_URI` (integration tests in `server/`), and **Playwright** in `client/` (E2E tests). Document commands in root and workspace `package.json` scripts.
 - **Unit tests** cover pure utilities, validation, currency math/rounding, auth helpers, and isolated service logic, including boundaries and failure paths.
 - **Integration tests** cover Express routes/services with an isolated test database, auth/authorization, validation, persistence, and balance reconciliation. Clean up test data.
 - **E2E tests** cover critical browser flows: register/verify/login, account setup and transfers, transaction CRUD, budget alerts, receipt OCR fallback, and exports. Mock external providers or use test credentials; never use production data.
