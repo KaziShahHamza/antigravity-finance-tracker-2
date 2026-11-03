@@ -113,17 +113,19 @@ The application must start and remain 100% testable in local development even wh
 
 ## 9. Git Workflow & Collaboration
 
-- **Persistent Milestone Branches**:
+- **Branches & Milestones Architecture**:
   - `main`: The primary, stable production branch.
-  - **Phase Milestone Checkpoint Branches** (`phase-1-checkpoint`, `phase-2-checkpoint`, `phase-3-checkpoint`, etc., and an active integration branch `develop`): Maintained as long-term checkpoints after every major Phase is verified, allowing easy diffing, inspection, and rollback of past work.
-  - After a Phase is completed and merged into `main`, the milestone branch (`phase-N-checkpoint`) is created or updated, and a push will be prompted for your approval.
+  - `develop`: The active integration branch. Daily feature branches always branch off `develop` and target `develop` via Pull Requests.
+  - **Milestone Version Tags (`v0.1.0` / `phase-1`, `v0.2.0` / `phase-2`, etc.)**: Use annotated Git tags (`git tag -a v0.1.0 -m "..."`) at `main` when each major Phase is completed and merged, rather than accumulating permanent checkpoint branches.
 - **Temporary Subphase / Feature Branches**:
-  - Create a short-lived branch for each subphase or atomic task (`feat/subphase-*` or `feat/task-*`, `fix/*`, `refactor/*`, `docs/*`, `test/*`).
-  - Delete temporary feature branches only after PR merge into `main` (or after phase signoff).
+  - Create a short-lived branch off `develop` for each subphase or atomic task (`feat/subphase-*` or `feat/task-*`, `fix/*`, `refactor/*`, `docs/*`, `test/*`).
+  - Open PR targeting `develop` (base: `develop` <- compare: `feat/...`).
+  - Delete temporary feature branches after PR merge into `develop`.
+  - At Phase Completion: Open a release PR from `develop` into `main` (base: `main` <- compare: `develop`), verify CI, merge, and create the annotated milestone tag (`v0.X.0` and `phase-X`).
 - **Agent Concurrency**: One modifying agent per task branch. Parallel modifying agents must use separate branches and preferably separate Git worktrees—never allow uncoordinated concurrent edits to the same files.
 - **Logical Checkpoint Commits**: Commit at coherent, working checkpoints rather than after every micro-edit. Format changed files, run lint/typecheck and tests, review diffs, and ensure zero secrets/`.env` files before committing.
-- **Standard Flow**: Follow the full lifecycle (`develop` → temporary feature branch → implement & test → security check → logical commits locally → user manually pushes, creates PR & merges → create Phase milestone checkpoint branch locally).
+- **Standard Flow**: Follow the full lifecycle (`develop` → temporary feature branch → implement & test → security check → logical commits locally → user manually pushes to remote, creates PR to `develop` & merges → release PR `develop` -> `main` at phase completion → tag milestone).
 - **STRICT REMOTE WORKFLOW RULE (AGENT NEVER PUSHES)**:
   - The agent must **NEVER** execute `git push`, `gh pr create`, `gh pr merge`, or remote branch deletion commands.
-  - All push, pull request creation, merging, and remote branch management are strictly handled **by the user manually**.
-  - The agent's role is strictly limited to local operations: creating local branches, writing code/tests, running quality checks, creating local commits, and reminding the user when it is time to push, merge into `develop`/`main`, or sync persistent checkpoint branches.
+  - All push, pull request creation, merging, tag pushing, and remote branch management are strictly handled **by the user manually**.
+  - The agent's role is strictly limited to local operations: creating local branches, writing code/tests, running quality checks, creating local commits/tags, and reminding the user when it is time to push, merge into `develop`/`main`, or push milestone tags.
