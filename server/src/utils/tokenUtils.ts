@@ -32,6 +32,7 @@ export const generateRefreshToken = (
 ): string => {
   return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
     expiresIn: expiresIn as jwt.SignOptions['expiresIn'],
+    jwtid: crypto.randomUUID(),
   });
 };
 

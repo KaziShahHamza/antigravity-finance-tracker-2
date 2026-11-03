@@ -18,6 +18,7 @@ export interface IUser extends Document {
   passwordResetOtpHash?: string;
   passwordResetOtpExpiresAt?: Date;
   resendCooldownUntil?: Date;
+  refreshTokenHash?: string;
   defaultCurrency: string;
   monthlyBudgetLimit?: number;
   customExchangeRates?: Map<string, number>;
@@ -81,6 +82,10 @@ const userSchema = new Schema<IUser>(
     },
     resendCooldownUntil: {
       type: Date,
+      default: null,
+    },
+    refreshTokenHash: {
+      type: String,
       default: null,
     },
     defaultCurrency: {
