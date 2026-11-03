@@ -1,8 +1,9 @@
 // client/src/app/layout.tsx
 
-// Root HTML layout establishing font, styling, ThemeProvider, and metadata for the application.
+// Root HTML layout establishing font, styling, ThemeProvider, QueryProvider, and metadata for the application.
 
 import { ThemeProvider } from '@/context/ThemeProvider';
+import { QueryProvider } from '@/context/QueryProvider';
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="page-shell">
-        <ThemeProvider>{children}</ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
