@@ -48,12 +48,12 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 2.1: Email/Password Signup, OTP Verification & JWT Session API
 
-- [ ] **Task 2.1.1 — JWT Token Utilities, Auth Middleware & Unit Tests**: Implement `server/src/utils/tokenUtils.ts` (sign/verify access & refresh JWTs, 6-digit OTP generator/hasher), `server/src/middlewares/authMiddleware.ts`, and `server/tests/unit/tokenUtils.test.ts`.
-- [ ] **Task 2.1.2 — Resend Email Service with Console/Test Fallback**: Implement `server/src/services/emailService.ts` with HTML templates for 6-digit Verification OTP and Password Reset codes, falling back to a formatted console log box when `RESEND_API_KEY` is omitted.
-- [ ] **Task 2.1.3 — Onboarding Default Seed Service**: Implement `server/src/services/seedService.ts` to idempotently seed the 12 default categories and a default `'Main Checking'` account on first user verification.
-- [ ] **Task 2.1.4 — Register, Verify OTP & Resend OTP Endpoints**: Implement `POST /api/auth/register`, `POST /api/auth/verify-otp` (15m expiry), and `POST /api/auth/resend-otp` (60s cooldown) with Zod schemas and auth rate limiters.
-- [ ] **Task 2.1.5 — Login, Refresh & Logout Endpoints + `docs/API.md`**: Implement `POST /api/auth/login`, `POST /api/auth/refresh`, and `POST /api/auth/logout`; initialize `docs/API.md` with Auth endpoint contracts.
-- [ ] **Task 2.1.6 — Auth & Onboarding Seed Integration Tests**: Add `server/tests/integration/auth.test.ts` covering register -> OTP expiry/cooldown/verify -> onboarding seed -> login -> refresh -> logout and unauthorized edge cases.
+- [x] **Task 2.1.1 — JWT Token Utilities, Auth Middleware & Unit Tests**: Implement `server/src/utils/tokenUtils.ts` (sign/verify access & refresh JWTs, 6-digit OTP generator/hasher), `server/src/middlewares/authMiddleware.ts`, and `server/tests/unit/tokenUtils.test.ts`.
+- [x] **Task 2.1.2 — Resend Email Service with Console/Test Fallback**: Implement `server/src/services/emailService.ts` with HTML templates for 6-digit Verification OTP and Password Reset codes, falling back to a formatted console log box when `RESEND_API_KEY` is omitted.
+- [x] **Task 2.1.3 — Onboarding Default Seed Service**: Implement `server/src/services/seedService.ts` to idempotently seed the 12 default categories and a default `'Main Checking'` account on first user verification.
+- [x] **Task 2.1.4 — Register, Verify OTP & Resend OTP Endpoints**: Implement `POST /api/auth/register`, `POST /api/auth/verify-otp` (15m expiry), and `POST /api/auth/resend-otp` (60s cooldown) with Zod schemas and auth rate limiters.
+- [x] **Task 2.1.5 — Login, Refresh & Logout Endpoints + `docs/API.md`**: Implement `POST /api/auth/login`, `POST /api/auth/refresh`, and `POST /api/auth/logout`; initialize `docs/API.md` with Auth endpoint contracts.
+- [x] **Task 2.1.6 — Auth & Onboarding Seed Integration Tests**: Add `server/tests/integration/auth.test.ts` covering register -> OTP expiry/cooldown/verify -> onboarding seed -> login -> refresh -> logout and unauthorized edge cases.
 
 ### Subphase 2.2: Forgot/Reset Password & Google OAuth Verification API
 

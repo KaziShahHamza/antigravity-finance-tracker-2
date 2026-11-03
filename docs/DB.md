@@ -40,6 +40,7 @@ Stores user profile information, authentication credentials, security codes, and
 | `passwordResetOtpHash`      | `String`      | No          | `null`      | SHA-256 hash of password reset code                            |
 | `passwordResetOtpExpiresAt` | `Date`        | No          | `null`      | Reset code expiration (15 minutes)                             |
 | `resendCooldownUntil`       | `Date`        | No          | `null`      | 60-second cooldown timestamp for OTP resends                   |
+| `refreshTokenHash`          | `String`      | No          | `null`      | SHA-256 hash of active refresh token for rotation / revocation |
 | `defaultCurrency`           | `String`      | Yes         | `'USD'`     | User base currency (uppercase, e.g. `'USD'`, `'BDT'`, `'EUR'`) |
 | `monthlyBudgetLimit`        | `Number`      | No          | `null`      | Overall monthly spending ceiling                               |
 | `customExchangeRates`       | `Map<Number>` | No          | `{}`        | Key-value map of user custom currency exchange overrides       |
