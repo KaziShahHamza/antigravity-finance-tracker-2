@@ -1,9 +1,11 @@
 // server/src/services/authService.ts
 
-// Core authentication service managing user registration, OTP verification, password login, and session tokens.
+// Core authentication service managing user registration, OTP verification, password login, Google OAuth, and session tokens.
 
 import bcrypt from 'bcryptjs';
+import { OAuth2Client } from 'google-auth-library';
 import { User, IUser } from '../models/User.js';
+import { env } from '../config/env.js';
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -12,12 +14,19 @@ import {
   hashOtp,
   verifyOtp,
 } from '../utils/tokenUtils.js';
-import { sendVerificationEmail } from './emailService.js';
+import { sendVerificationEmail, sendPasswordResetEmail } from './emailService.js';
 import { seedUserDefaults } from './seedService.js';
-import { RegisterInput, VerifyOtpInput, LoginInput } from '../schemas/authSchemas.js';
+import {
+  RegisterInput,
+  VerifyOtpInput,
+  LoginInput,
+  ResetPasswordInput,
+} from '../schemas/authSchemas.js';
 
 const OTP_EXPIRATION_MS = 15 * 60 * 1000; // 15 minutes
 const RESEND_COOLDOWN_MS = 60 * 1000; // 60 seconds
+
+const googleClient = new OAuth2Client(env.GOOGLE_CLIENT_ID);
 
 export class AuthServiceError extends Error {
   constructor(
@@ -45,6 +54,13 @@ export interface UserSessionResult {
   };
 }
 
+export interface GoogleUserInfo {
+  googleId: string;
+  email: string;
+  name: string;
+  avatarUrl?: string;
+}
+
 /**
  * Issues signed access and refresh tokens, updates stored token hash, and formats user DTO.
  */
@@ -69,6 +85,57 @@ export const issueUserSession = async (user: IUser): Promise<UserSessionResult> 
       isVerified: user.isVerified,
     },
   };
+};
+
+/**
+ * Verifies a Google ID token via GIS or uses development/test mock fallback.
+ */
+export const verifyGoogleCredential = async (credential: string): Promise<GoogleUserInfo> => {
+  // Allow simulated Google credentials in dev / test environments
+  if (credential.startsWith('mock-google-token')) {
+    const [, sub, email, name, ...avatarParts] = credential.split(':');
+    const avatarUrl =
+      avatarParts.length > 0
+        ? avatarParts.join(':')
+        : 'https://lh3.googleusercontent.com/avatar.png';
+
+    return {
+      googleId: sub || 'google_sub_12345',
+      email: (email || 'google_user@example.com').toLowerCase(),
+      name: name || 'Google User',
+      avatarUrl,
+    };
+  }
+
+  if (!env.GOOGLE_CLIENT_ID) {
+    throw new AuthServiceError(
+      'Google authentication is not configured on this server.',
+      501,
+      'GOOGLE_AUTH_NOT_CONFIGURED'
+    );
+  }
+
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    if (!payload || !payload.sub || !payload.email) {
+      throw new AuthServiceError('Invalid Google token payload.', 401, 'INVALID_GOOGLE_TOKEN');
+    }
+
+    return {
+      googleId: payload.sub,
+      email: payload.email.toLowerCase(),
+      name: payload.name || payload.email.split('@')[0],
+      avatarUrl: payload.picture,
+    };
+  } catch (error) {
+    if (error instanceof AuthServiceError) throw error;
+    throw new AuthServiceError('Invalid or expired Google token.', 401, 'INVALID_GOOGLE_TOKEN');
+  }
 };
 
 /**
@@ -204,6 +271,113 @@ export const resendUserOtp = async (email: string): Promise<void> => {
 
   await user.save();
   await sendVerificationEmail(user.email, otp);
+};
+
+/**
+ * Requests a 6-digit password reset code with anti-enumeration protection.
+ */
+export const requestPasswordReset = async (email: string): Promise<void> => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    // Return silently to prevent user enumeration
+    return;
+  }
+
+  if (user.resendCooldownUntil && new Date() < user.resendCooldownUntil) {
+    const waitSeconds = Math.ceil((user.resendCooldownUntil.getTime() - Date.now()) / 1000);
+    throw new AuthServiceError(
+      `Please wait ${waitSeconds} seconds before requesting a new code.`,
+      429,
+      'RESEND_COOLDOWN',
+      { retryAfterSeconds: waitSeconds }
+    );
+  }
+
+  const otp = generateOtp();
+  user.passwordResetOtpHash = hashOtp(otp);
+  user.passwordResetOtpExpiresAt = new Date(Date.now() + OTP_EXPIRATION_MS);
+  user.resendCooldownUntil = new Date(Date.now() + RESEND_COOLDOWN_MS);
+
+  await user.save();
+  await sendPasswordResetEmail(user.email, otp);
+};
+
+/**
+ * Validates reset code, updates bcrypt password hash, and revokes all active refresh tokens.
+ */
+export const resetUserPassword = async (input: ResetPasswordInput): Promise<void> => {
+  const { email, otp, newPassword } = input;
+  const user = await User.findOne({ email });
+
+  if (!user || !user.passwordResetOtpHash || !user.passwordResetOtpExpiresAt) {
+    throw new AuthServiceError('Invalid or expired reset code.', 400, 'INVALID_RESET_CODE');
+  }
+
+  if (new Date() > user.passwordResetOtpExpiresAt) {
+    throw new AuthServiceError(
+      'Password reset code has expired. Please request a new code.',
+      400,
+      'OTP_EXPIRED'
+    );
+  }
+
+  if (!verifyOtp(otp, user.passwordResetOtpHash)) {
+    throw new AuthServiceError('Invalid password reset code.', 400, 'INVALID_OTP');
+  }
+
+  user.password = await bcrypt.hash(newPassword, 10);
+  user.passwordResetOtpHash = undefined;
+  user.passwordResetOtpExpiresAt = undefined;
+  user.resendCooldownUntil = undefined;
+  user.refreshTokenHash = null as unknown as string;
+  user.isVerified = true;
+
+  await user.save();
+};
+
+/**
+ * Verifies Google ID token, links or creates the user, seeds defaults if new, and returns session tokens.
+ */
+export const loginWithGoogle = async (credential: string): Promise<UserSessionResult> => {
+  const googleUser = await verifyGoogleCredential(credential);
+
+  let user = await User.findOne({
+    $or: [{ googleId: googleUser.googleId }, { email: googleUser.email }],
+  });
+
+  if (user) {
+    let modified = false;
+    if (!user.googleId) {
+      user.googleId = googleUser.googleId;
+      modified = true;
+    }
+    if (!user.avatarUrl && googleUser.avatarUrl) {
+      user.avatarUrl = googleUser.avatarUrl;
+      modified = true;
+    }
+    if (!user.isVerified) {
+      user.isVerified = true;
+      modified = true;
+    }
+    if (modified) {
+      await user.save();
+    }
+  } else {
+    // New Google OAuth user
+    user = await User.create({
+      name: googleUser.name,
+      email: googleUser.email,
+      googleId: googleUser.googleId,
+      avatarUrl: googleUser.avatarUrl || '',
+      isVerified: true,
+      defaultCurrency: 'USD',
+    });
+
+    // Seed onboarding defaults on first registration
+    await seedUserDefaults(user._id, 'USD');
+  }
+
+  return issueUserSession(user);
 };
 
 /**

@@ -13,8 +13,12 @@ export interface CreateTestUserOptions {
   isVerified?: boolean;
   otp?: string;
   otpExpiresInMs?: number;
+  passwordResetOtp?: string;
+  passwordResetOtpExpiresInMs?: number;
   resendCooldownInMs?: number;
   defaultCurrency?: string;
+  googleId?: string;
+  avatarUrl?: string;
 }
 
 /**
@@ -28,13 +32,21 @@ export const createTestUser = async (options: CreateTestUserOptions): Promise<IU
     isVerified = false,
     otp,
     otpExpiresInMs = 15 * 60 * 1000,
+    passwordResetOtp,
+    passwordResetOtpExpiresInMs = 15 * 60 * 1000,
     resendCooldownInMs,
     defaultCurrency = 'USD',
+    googleId,
+    avatarUrl,
   } = options;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
   const otpHash = otp ? hashOtp(otp) : undefined;
   const otpExpiresAt = otp ? new Date(Date.now() + otpExpiresInMs) : undefined;
+  const resetOtpHash = passwordResetOtp ? hashOtp(passwordResetOtp) : undefined;
+  const resetOtpExpiresAt = passwordResetOtp
+    ? new Date(Date.now() + passwordResetOtpExpiresInMs)
+    : undefined;
   const resendCooldown = resendCooldownInMs ? new Date(Date.now() + resendCooldownInMs) : undefined;
 
   return User.create({
@@ -44,7 +56,11 @@ export const createTestUser = async (options: CreateTestUserOptions): Promise<IU
     isVerified,
     verificationOtpHash: otpHash,
     verificationOtpExpiresAt: otpExpiresAt,
+    passwordResetOtpHash: resetOtpHash,
+    passwordResetOtpExpiresAt: resetOtpExpiresAt,
     resendCooldownUntil: resendCooldown,
     defaultCurrency,
+    googleId,
+    avatarUrl,
   });
 };

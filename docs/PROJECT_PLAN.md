@@ -57,8 +57,8 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 2.2: Forgot/Reset Password & Google OAuth Verification API
 
-- [ ] **Task 2.2.1 — Forgot & Reset Password Endpoints**: Implement `POST /api/auth/forgot-password` and `POST /api/auth/reset-password` (verifies 6-digit reset code, updates bcrypt password, invalidates old refresh token).
-- [ ] **Task 2.2.2 — Google Identity Services Verification Endpoint & Tests**: Install `google-auth-library` in `server/`, implement `POST /api/auth/google` (verifies Google ID token, links/creates verified user, triggers `seedService` if new), add integration tests (`server/tests/integration/passwordAndGoogleAuth.test.ts`), and update `docs/API.md`.
+- [x] **Task 2.2.1 — Forgot & Reset Password Endpoints**: Implement `POST /api/auth/forgot-password` and `POST /api/auth/reset-password` (verifies 6-digit reset code, updates bcrypt password, invalidates old refresh token).
+- [x] **Task 2.2.2 — Google Identity Services Verification Endpoint & Tests**: Install `google-auth-library` in `server/`, implement `POST /api/auth/google` (verifies Google ID token, links/creates verified user, triggers `seedService` if new), add integration tests (`server/tests/integration/passwordAndGoogleAuth.test.ts`), and update `docs/API.md`.
 
 ### Subphase 2.3: Frontend Auth Context, Auth Screens & Dashboard Shell
 

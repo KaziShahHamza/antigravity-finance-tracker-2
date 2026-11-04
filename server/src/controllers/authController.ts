@@ -11,6 +11,9 @@ import {
   loginUser,
   refreshUserSession,
   logoutUser,
+  requestPasswordReset,
+  resetUserPassword,
+  loginWithGoogle,
 } from '../services/authService.js';
 import {
   RegisterInput,
@@ -18,6 +21,9 @@ import {
   ResendOtpInput,
   LoginInput,
   RefreshTokenInput,
+  ForgotPasswordInput,
+  ResetPasswordInput,
+  GoogleAuthInput,
 } from '../schemas/authSchemas.js';
 
 /**
@@ -127,6 +133,55 @@ export const logout = async (req: Request, res: Response, next: NextFunction): P
     res.status(200).json({
       success: true,
       message: 'Logged out successfully.',
+    });
+  } catch (error) {
+    handleAuthError(error, res, next);
+  }
+};
+
+export const forgotPassword = async (
+  req: Request<unknown, unknown, ForgotPasswordInput>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    await requestPasswordReset(req.body.email);
+    res.status(200).json({
+      success: true,
+      message: 'If an account exists with this email, a password reset code has been sent.',
+    });
+  } catch (error) {
+    handleAuthError(error, res, next);
+  }
+};
+
+export const resetPassword = async (
+  req: Request<unknown, unknown, ResetPasswordInput>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    await resetUserPassword(req.body);
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successful. Please sign in with your new password.',
+    });
+  } catch (error) {
+    handleAuthError(error, res, next);
+  }
+};
+
+export const googleAuth = async (
+  req: Request<unknown, unknown, GoogleAuthInput>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const session = await loginWithGoogle(req.body.credential);
+    res.status(200).json({
+      success: true,
+      message: 'Google authentication successful.',
+      ...session,
     });
   } catch (error) {
     handleAuthError(error, res, next);
