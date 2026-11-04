@@ -66,8 +66,8 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 - [x] **Task 2.3.2 — Login & Register Pages**: Build `/login` and `/register` pages under `client/src/app/(auth)/` with client validation and unverified-user redirection to `/verify-otp`.
 - [x] **Task 2.3.3 — 6-Digit OTP Verification Page**: Build `/verify-otp` page with 6 auto-advancing digit inputs, clipboard paste support, and a live 60-second resend countdown timer.
 - [x] **Task 2.3.4 — Forgot & Reset Password Pages**: Build `/forgot-password` and `/reset-password` pages under `client/src/app/(auth)/`.
-- [ ] **Task 2.3.5 — Responsive Protected Dashboard Shell**: Build `Sidebar.tsx`, mobile drawer navigation, `Navbar.tsx`, and `client/src/app/(dashboard)/layout.tsx` route guard.
-- [ ] **Task 2.3.6 — Auth Flow Playwright E2E Test**: Add `client/e2e/auth.spec.ts` covering register -> OTP verification -> protected dashboard access -> logout -> login.
+- [x] **Task 2.3.5 — Responsive Protected Dashboard Shell**: Build `Sidebar.tsx`, mobile drawer navigation, `Navbar.tsx`, and `client/src/app/(dashboard)/layout.tsx` route guard.
+- [x] **Task 2.3.6 — Auth Flow Playwright E2E Test**: Add `client/e2e/auth.spec.ts` covering register -> OTP verification -> protected dashboard access -> logout -> login.
 
 ### Subphase 2.4: User Profile, Settings Page & Demo Data Seeder
 
