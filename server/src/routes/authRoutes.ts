@@ -11,6 +11,9 @@ import {
   resendOtpSchema,
   loginSchema,
   refreshTokenSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  googleAuthSchema,
 } from '../schemas/authSchemas.js';
 import {
   register,
@@ -19,6 +22,9 @@ import {
   login,
   refresh,
   logout,
+  forgotPassword,
+  resetPassword,
+  googleAuth,
 } from '../controllers/authController.js';
 
 const router = Router();
@@ -41,5 +47,23 @@ router.post('/login', authLimiter, validateRequest({ body: loginSchema }), login
 router.post('/refresh', validateRequest({ body: refreshTokenSchema }), refresh);
 
 router.post('/logout', logout);
+
+// Password recovery
+router.post(
+  '/forgot-password',
+  authLimiter,
+  validateRequest({ body: forgotPasswordSchema }),
+  forgotPassword
+);
+
+router.post(
+  '/reset-password',
+  authLimiter,
+  validateRequest({ body: resetPasswordSchema }),
+  resetPassword
+);
+
+// Google OAuth
+router.post('/google', authLimiter, validateRequest({ body: googleAuthSchema }), googleAuth);
 
 export default router;

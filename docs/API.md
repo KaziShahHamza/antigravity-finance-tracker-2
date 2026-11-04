@@ -206,3 +206,90 @@ This document defines the REST API endpoints, schemas, authentication contracts,
     "message": "Logged out successfully."
   }
   ```
+
+---
+
+### 2.7 Forgot Password
+
+- **Method**: `POST`
+- **Path**: `/api/auth/forgot-password`
+- **Access**: Public (Subject to `authLimiter` + 60s cooldown)
+- **Request Body**:
+
+  | Field   | Type     | Required | Description              |
+  | :------ | :------- | :------- | :----------------------- |
+  | `email` | `string` | Yes      | Registered email address |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "If an account exists with this email, a password reset code has been sent."
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` — Invalid email format.
+  - `429 Too Many Requests` (`RESEND_COOLDOWN`) — Cooldown active before requesting a new code.
+
+---
+
+### 2.8 Reset Password
+
+- **Method**: `POST`
+- **Path**: `/api/auth/reset-password`
+- **Access**: Public (Subject to `authLimiter`)
+- **Request Body**:
+
+  | Field         | Type     | Required | Description                                    |
+  | :------------ | :------- | :------- | :--------------------------------------------- |
+  | `email`       | `string` | Yes      | Registered email address                       |
+  | `otp`         | `string` | Yes      | Exactly 6-digit numeric reset code             |
+  | `newPassword` | `string` | Yes      | Min 8 characters, at least 1 letter & 1 number |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Password reset successful. Please sign in with your new password."
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` (`INVALID_OTP`) — Code does not match.
+  - `400 Bad Request` (`OTP_EXPIRED`) — Code has expired.
+  - `400 Bad Request` (`INVALID_RESET_CODE`) — No reset requested or code already used.
+
+---
+
+### 2.9 Google OAuth Sign-In
+
+- **Method**: `POST`
+- **Path**: `/api/auth/google`
+- **Access**: Public (Subject to `authLimiter`)
+- **Description**: Verifies Google Identity Services ID token, links or creates verified user, seeds defaults if first signup, and returns session tokens.
+- **Request Body**:
+
+  | Field        | Type     | Required | Description                               |
+  | :----------- | :------- | :------- | :---------------------------------------- |
+  | `credential` | `string` | Yes      | Google ID token (JWT) from GIS button/pop |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Google authentication successful.",
+    "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
+    "user": {
+      "id": "65f1234567890abcdef12345",
+      "name": "Alex Doe",
+      "email": "alex@gmail.com",
+      "defaultCurrency": "USD",
+      "themePreference": "system",
+      "avatarUrl": "https://lh3.googleusercontent.com/...",
+      "isVerified": true
+    }
+  }
+  ```
+- **Error Responses**:
+  - `401 Unauthorized` (`INVALID_GOOGLE_TOKEN`) — Invalid, tampered, or expired token.
+  - `501 Not Implemented` (`GOOGLE_AUTH_NOT_CONFIGURED`) — Server missing `GOOGLE_CLIENT_ID`.
