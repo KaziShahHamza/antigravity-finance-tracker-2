@@ -3,6 +3,11 @@
 // Playwright configuration for browser-level end-to-end testing in the client workspace.
 
 import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   testDir: './e2e',
@@ -23,6 +28,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npx next start -p 3000 -H 127.0.0.1',
+    cwd: __dirname,
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
