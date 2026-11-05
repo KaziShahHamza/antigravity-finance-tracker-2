@@ -41,6 +41,8 @@ export interface AuthContextType {
   loginWithGoogle: (credential: string) => Promise<void>;
   logout: () => Promise<void>;
   setUnverifiedEmail: (email: string | null) => void;
+  updateUser: (updatedUser: Partial<User>) => void;
+  refreshUser: () => Promise<User | null>;
 }
 
 const STORAGE_KEYS = {
@@ -235,6 +237,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [handleAuthSuccess]
   );
 
+  const updateUser = React.useCallback((updated: Partial<User>) => {
+    setUser((prev) => {
+      if (!prev) return null;
+      const nextUser = { ...prev, ...updated };
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(nextUser));
+      }
+      return nextUser;
+    });
+  }, []);
+
+  const refreshUser = React.useCallback(async () => {
+    try {
+      const res = await apiClient<{ user: User }>('/users/me');
+      if (res.user) {
+        setUser(res.user);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(res.user));
+        }
+        return res.user;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }, []);
+
   const logout = React.useCallback(async () => {
     const currentRefreshToken =
       typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN) : null;
@@ -265,6 +294,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginWithGoogle,
       logout,
       setUnverifiedEmail,
+      updateUser,
+      refreshUser,
     }),
     [
       user,
@@ -279,6 +310,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginWithGoogle,
       logout,
       setUnverifiedEmail,
+      updateUser,
+      refreshUser,
     ]
   );
 

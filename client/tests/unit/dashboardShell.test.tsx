@@ -59,6 +59,8 @@ describe('Dashboard Shell Components', () => {
         loginWithGoogle: vi.fn(),
         logout: mockLogout,
         setUnverifiedEmail: vi.fn(),
+        updateUser: vi.fn(),
+        refreshUser: vi.fn(),
       });
 
       render(<Sidebar />);
@@ -96,6 +98,8 @@ describe('Dashboard Shell Components', () => {
         loginWithGoogle: vi.fn(),
         logout: mockLogout,
         setUnverifiedEmail: vi.fn(),
+        updateUser: vi.fn(),
+        refreshUser: vi.fn(),
       });
 
       const onOpenMobileNav = vi.fn();
@@ -129,6 +133,8 @@ describe('Dashboard Shell Components', () => {
         loginWithGoogle: vi.fn(),
         logout: mockLogout,
         setUnverifiedEmail: vi.fn(),
+        updateUser: vi.fn(),
+        refreshUser: vi.fn(),
       });
 
       render(
@@ -163,6 +169,8 @@ describe('Dashboard Shell Components', () => {
         loginWithGoogle: vi.fn(),
         logout: mockLogout,
         setUnverifiedEmail: vi.fn(),
+        updateUser: vi.fn(),
+        refreshUser: vi.fn(),
       });
 
       render(
