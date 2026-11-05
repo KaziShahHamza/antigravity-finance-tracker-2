@@ -71,9 +71,9 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 2.4: User Profile, Settings Page & Demo Data Seeder
 
-- [ ] **Task 2.4.1 — User Profile & Password Change API**: Implement `GET /api/users/me`, `PATCH /api/users/profile` (name, `defaultCurrency`, `monthlyBudgetLimit`, `themePreference`, `customExchangeRates`), and `PATCH /api/users/password`.
-- [ ] **Task 2.4.2 — Demo Data Seeder Endpoint & User API Integration Tests**: Implement `POST /api/users/demo-data` (sample Cash, Bank, bKash, Nagad wallets, budgets, and transactions), add `server/tests/integration/users.test.ts`, and update `docs/API.md`.
-- [ ] **Task 2.4.3 — Frontend Settings Page (`/settings`) & Phase 2 Gate**: Build `/settings` page (Profile, Currency & Theme preferences, Change Password, Load Demo Data) and run Phase 2 quality gate.
+- [x] **Task 2.4.1 — User Profile & Password Change API**: Implement `GET /api/users/me`, `PATCH /api/users/profile` (name, `defaultCurrency`, `monthlyBudgetLimit`, `themePreference`, `customExchangeRates`), and `PATCH /api/users/password`.
+- [x] **Task 2.4.2 — Demo Data Seeder Endpoint & User API Integration Tests**: Implement `POST /api/users/demo-data` (sample Cash, Bank, bKash, Nagad wallets, budgets, and transactions), add `server/tests/integration/users.test.ts`, and update `docs/API.md`.
+- [x] **Task 2.4.3 — Frontend Settings Page (`/settings`) & Phase 2 Gate**: Build `/settings` page (Profile, Currency & Theme preferences, Change Password, Load Demo Data) and run Phase 2 quality gate.
 
 ---
 
