@@ -107,6 +107,15 @@ export const seedDemoData = async (userId: string): Promise<DemoDataResult> => {
       currency: curr,
     }));
 
+  // Clean up any existing budgets for these categories in the current month/year to avoid unique key conflicts
+  const targetCategoryIds = demoBudgetsData.map((b) => b.categoryId);
+  await Budget.deleteMany({
+    userId: userObjectId,
+    categoryId: { $in: targetCategoryIds },
+    month: currentMonth,
+    year: currentYear,
+  });
+
   const createdBudgets = await Budget.insertMany(demoBudgetsData);
 
   // 3. Seed demo transactions (spread over past 30 days)
