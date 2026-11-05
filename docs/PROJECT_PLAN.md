@@ -57,23 +57,23 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 2.2: Forgot/Reset Password & Google OAuth Verification API
 
-- [ ] **Task 2.2.1 — Forgot & Reset Password Endpoints**: Implement `POST /api/auth/forgot-password` and `POST /api/auth/reset-password` (verifies 6-digit reset code, updates bcrypt password, invalidates old refresh token).
-- [ ] **Task 2.2.2 — Google Identity Services Verification Endpoint & Tests**: Install `google-auth-library` in `server/`, implement `POST /api/auth/google` (verifies Google ID token, links/creates verified user, triggers `seedService` if new), add integration tests (`server/tests/integration/passwordAndGoogleAuth.test.ts`), and update `docs/API.md`.
+- [x] **Task 2.2.1 — Forgot & Reset Password Endpoints**: Implement `POST /api/auth/forgot-password` and `POST /api/auth/reset-password` (verifies 6-digit reset code, updates bcrypt password, invalidates old refresh token).
+- [x] **Task 2.2.2 — Google Identity Services Verification Endpoint & Tests**: Install `google-auth-library` in `server/`, implement `POST /api/auth/google` (verifies Google ID token, links/creates verified user, triggers `seedService` if new), add integration tests (`server/tests/integration/passwordAndGoogleAuth.test.ts`), and update `docs/API.md`.
 
 ### Subphase 2.3: Frontend Auth Context, Auth Screens & Dashboard Shell
 
-- [ ] **Task 2.3.1 — Frontend AuthContext & Google OAuth Button**: Implement `client/src/context/AuthContext.tsx` (user state, login/register/verify/logout helpers) and `client/src/components/auth/GoogleSignInButton.tsx`.
-- [ ] **Task 2.3.2 — Login & Register Pages**: Build `/login` and `/register` pages under `client/src/app/(auth)/` with client validation and unverified-user redirection to `/verify-otp`.
-- [ ] **Task 2.3.3 — 6-Digit OTP Verification Page**: Build `/verify-otp` page with 6 auto-advancing digit inputs, clipboard paste support, and a live 60-second resend countdown timer.
-- [ ] **Task 2.3.4 — Forgot & Reset Password Pages**: Build `/forgot-password` and `/reset-password` pages under `client/src/app/(auth)/`.
-- [ ] **Task 2.3.5 — Responsive Protected Dashboard Shell**: Build `Sidebar.tsx`, mobile drawer navigation, `Navbar.tsx`, and `client/src/app/(dashboard)/layout.tsx` route guard.
-- [ ] **Task 2.3.6 — Auth Flow Playwright E2E Test**: Add `client/e2e/auth.spec.ts` covering register -> OTP verification -> protected dashboard access -> logout -> login.
+- [x] **Task 2.3.1 — Frontend AuthContext & Google OAuth Button**: Implement `client/src/context/AuthContext.tsx` (user state, login/register/verify/logout helpers) and `client/src/components/auth/GoogleSignInButton.tsx`.
+- [x] **Task 2.3.2 — Login & Register Pages**: Build `/login` and `/register` pages under `client/src/app/(auth)/` with client validation and unverified-user redirection to `/verify-otp`.
+- [x] **Task 2.3.3 — 6-Digit OTP Verification Page**: Build `/verify-otp` page with 6 auto-advancing digit inputs, clipboard paste support, and a live 60-second resend countdown timer.
+- [x] **Task 2.3.4 — Forgot & Reset Password Pages**: Build `/forgot-password` and `/reset-password` pages under `client/src/app/(auth)/`.
+- [x] **Task 2.3.5 — Responsive Protected Dashboard Shell**: Build `Sidebar.tsx`, mobile drawer navigation, `Navbar.tsx`, and `client/src/app/(dashboard)/layout.tsx` route guard.
+- [x] **Task 2.3.6 — Auth Flow Playwright E2E Test**: Add `client/e2e/auth.spec.ts` covering register -> OTP verification -> protected dashboard access -> logout -> login.
 
 ### Subphase 2.4: User Profile, Settings Page & Demo Data Seeder
 
-- [ ] **Task 2.4.1 — User Profile & Password Change API**: Implement `GET /api/users/me`, `PATCH /api/users/profile` (name, `defaultCurrency`, `monthlyBudgetLimit`, `themePreference`, `customExchangeRates`), and `PATCH /api/users/password`.
-- [ ] **Task 2.4.2 — Demo Data Seeder Endpoint & User API Integration Tests**: Implement `POST /api/users/demo-data` (sample Cash, Bank, bKash, Nagad wallets, budgets, and transactions), add `server/tests/integration/users.test.ts`, and update `docs/API.md`.
-- [ ] **Task 2.4.3 — Frontend Settings Page (`/settings`) & Phase 2 Gate**: Build `/settings` page (Profile, Currency & Theme preferences, Change Password, Load Demo Data) and run Phase 2 quality gate.
+- [x] **Task 2.4.1 — User Profile & Password Change API**: Implement `GET /api/users/me`, `PATCH /api/users/profile` (name, `defaultCurrency`, `monthlyBudgetLimit`, `themePreference`, `customExchangeRates`), and `PATCH /api/users/password`.
+- [x] **Task 2.4.2 — Demo Data Seeder Endpoint & User API Integration Tests**: Implement `POST /api/users/demo-data` (sample Cash, Bank, bKash, Nagad wallets, budgets, and transactions), add `server/tests/integration/users.test.ts`, and update `docs/API.md`.
+- [x] **Task 2.4.3 — Frontend Settings Page (`/settings`) & Phase 2 Gate**: Build `/settings` page (Profile, Currency & Theme preferences, Change Password, Load Demo Data) and run Phase 2 quality gate.
 
 ---
 

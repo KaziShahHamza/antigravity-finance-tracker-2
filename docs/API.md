@@ -206,3 +206,223 @@ This document defines the REST API endpoints, schemas, authentication contracts,
     "message": "Logged out successfully."
   }
   ```
+
+---
+
+### 2.7 Forgot Password
+
+- **Method**: `POST`
+- **Path**: `/api/auth/forgot-password`
+- **Access**: Public (Subject to `authLimiter` + 60s cooldown)
+- **Request Body**:
+
+  | Field   | Type     | Required | Description              |
+  | :------ | :------- | :------- | :----------------------- |
+  | `email` | `string` | Yes      | Registered email address |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "If an account exists with this email, a password reset code has been sent."
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` — Invalid email format.
+  - `429 Too Many Requests` (`RESEND_COOLDOWN`) — Cooldown active before requesting a new code.
+
+---
+
+### 2.8 Reset Password
+
+- **Method**: `POST`
+- **Path**: `/api/auth/reset-password`
+- **Access**: Public (Subject to `authLimiter`)
+- **Request Body**:
+
+  | Field         | Type     | Required | Description                                    |
+  | :------------ | :------- | :------- | :--------------------------------------------- |
+  | `email`       | `string` | Yes      | Registered email address                       |
+  | `otp`         | `string` | Yes      | Exactly 6-digit numeric reset code             |
+  | `newPassword` | `string` | Yes      | Min 8 characters, at least 1 letter & 1 number |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Password reset successful. Please sign in with your new password."
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` (`INVALID_OTP`) — Code does not match.
+  - `400 Bad Request` (`OTP_EXPIRED`) — Code has expired.
+  - `400 Bad Request` (`INVALID_RESET_CODE`) — No reset requested or code already used.
+
+---
+
+### 2.9 Google OAuth Sign-In
+
+- **Method**: `POST`
+- **Path**: `/api/auth/google`
+- **Access**: Public (Subject to `authLimiter`)
+- **Description**: Verifies Google Identity Services ID token, links or creates verified user, seeds defaults if first signup, and returns session tokens.
+- **Request Body**:
+
+  | Field        | Type     | Required | Description                               |
+  | :----------- | :------- | :------- | :---------------------------------------- |
+  | `credential` | `string` | Yes      | Google ID token (JWT) from GIS button/pop |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Google authentication successful.",
+    "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
+    "user": {
+      "id": "65f1234567890abcdef12345",
+      "name": "Alex Doe",
+      "email": "alex@gmail.com",
+      "defaultCurrency": "USD",
+      "themePreference": "system",
+      "avatarUrl": "https://lh3.googleusercontent.com/...",
+      "isVerified": true
+    }
+  }
+  ```
+- **Error Responses**:
+  - `401 Unauthorized` (`INVALID_GOOGLE_TOKEN`) — Invalid, tampered, or expired token.
+  - `501 Not Implemented` (`GOOGLE_AUTH_NOT_CONFIGURED`) — Server missing `GOOGLE_CLIENT_ID`.
+
+---
+
+## 3. User Profile, Preferences & Demo Data API (`/api/users`)
+
+All endpoints in this section require an authenticated user access token:
+
+```http
+Authorization: Bearer <JWT_ACCESS_TOKEN>
+```
+
+### 3.1 Get Current User Profile
+
+- **Method**: `GET`
+- **Path**: `/api/users/me`
+- **Access**: Private (Authenticated)
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "user": {
+      "id": "65f1234567890abcdef12345",
+      "name": "Alex Doe",
+      "email": "alex@example.com",
+      "avatarUrl": "",
+      "isVerified": true,
+      "defaultCurrency": "USD",
+      "monthlyBudgetLimit": 3000,
+      "customExchangeRates": {
+        "BDT": 130.5,
+        "EUR": 0.92
+      },
+      "themePreference": "system",
+      "createdAt": "2026-11-04T12:00:00.000Z"
+    }
+  }
+  ```
+- **Error Responses**:
+  - `401 Unauthorized` (`UNAUTHORIZED` / `TOKEN_EXPIRED`) — Missing or invalid Bearer token.
+  - `404 Not Found` (`USER_NOT_FOUND`) — Account not found.
+
+---
+
+### 3.2 Update User Profile & Preferences
+
+- **Method**: `PATCH`
+- **Path**: `/api/users/profile`
+- **Access**: Private (Authenticated)
+- **Request Body**:
+
+  | Field                 | Type                        | Required | Description                                                  |
+  | :-------------------- | :-------------------------- | :------- | :----------------------------------------------------------- |
+  | `name`                | `string`                    | No       | Full name (2–100 characters)                                 |
+  | `defaultCurrency`     | `string`                    | No       | 3-letter ISO code (e.g. `USD`, `BDT`, `EUR`, `GBP`)          |
+  | `monthlyBudgetLimit`  | `number \| null`            | No       | Optional monthly overall spending threshold ($\ge 0$)        |
+  | `themePreference`     | `'light'\|'dark'\|'system'` | No       | UI color scheme preference                                   |
+  | `customExchangeRates` | `Record<string, number>`    | No       | Map of target currency codes to custom user conversion rates |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Profile updated successfully.",
+    "user": {
+      "id": "65f1234567890abcdef12345",
+      "name": "Alex Doe",
+      "email": "alex@example.com",
+      "avatarUrl": "",
+      "isVerified": true,
+      "defaultCurrency": "BDT",
+      "monthlyBudgetLimit": 50000,
+      "customExchangeRates": {
+        "USD": 0.0083
+      },
+      "themePreference": "dark",
+      "createdAt": "2026-11-04T12:00:00.000Z"
+    }
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` — Validation failed (e.g., negative budget limit, invalid currency code length).
+  - `401 Unauthorized` (`UNAUTHORIZED`) — Missing or invalid token.
+
+---
+
+### 3.3 Change Password
+
+- **Method**: `PATCH`
+- **Path**: `/api/users/password`
+- **Access**: Private (Authenticated)
+- **Description**: Verifies the current password, updates to a new bcrypt hash, and invalidates existing refresh tokens.
+- **Request Body**:
+
+  | Field             | Type     | Required | Description                                                    |
+  | :---------------- | :------- | :------- | :------------------------------------------------------------- |
+  | `currentPassword` | `string` | Yes      | Existing password                                              |
+  | `newPassword`     | `string` | Yes      | Min 8 characters, at least 1 letter and 1 number (must differ) |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Password updated successfully. Please sign in with your new password on other devices."
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` (`INVALID_CURRENT_PASSWORD`) — Provided current password does not match.
+  - `400 Bad Request` (`PASSWORD_NOT_SET`) — Google OAuth user without local password credentials.
+  - `400 Bad Request` — Validation error (weak password or same as current password).
+  - `401 Unauthorized` (`UNAUTHORIZED`) — Missing or invalid token.
+
+---
+
+### 3.4 Seed Demo Financial Data
+
+- **Method**: `POST`
+- **Path**: `/api/users/demo-data`
+- **Access**: Private (Authenticated)
+- **Description**: Populates realistic sample Cash, Bank, bKash, and Credit Card accounts, monthly budgets, and 12+ categorized transactions for the authenticated user.
+- **Response (201 Created)**:
+  ```json
+  {
+    "success": true,
+    "message": "Demo financial data loaded successfully.",
+    "data": {
+      "accountsCreated": 4,
+      "budgetsCreated": 4,
+      "transactionsCreated": 12
+    }
+  }
+  ```
+- **Error Responses**:
+  - `401 Unauthorized` (`UNAUTHORIZED`) — Missing or invalid token.

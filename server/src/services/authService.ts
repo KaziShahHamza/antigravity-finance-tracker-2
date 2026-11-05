@@ -3,21 +3,31 @@
 // Core authentication service managing user registration, OTP verification, password login, and session tokens.
 
 import bcrypt from 'bcryptjs';
-import { User, IUser } from '../models/User.js';
+import { IUser, User } from '../models/User.js';
+import { LoginInput, RegisterInput, VerifyOtpInput } from '../schemas/authSchemas.js';
 import {
   generateAccessToken,
-  generateRefreshToken,
-  verifyRefreshToken,
   generateOtp,
+  generateRefreshToken,
   hashOtp,
   verifyOtp,
+  verifyRefreshToken,
 } from '../utils/tokenUtils.js';
 import { sendVerificationEmail } from './emailService.js';
+import { GoogleUserInfo, loginWithGoogle, verifyGoogleCredential } from './googleAuthService.js';
+import { requestPasswordReset, resetUserPassword } from './passwordResetService.js';
 import { seedUserDefaults } from './seedService.js';
-import { RegisterInput, VerifyOtpInput, LoginInput } from '../schemas/authSchemas.js';
 
-const OTP_EXPIRATION_MS = 15 * 60 * 1000; // 15 minutes
-const RESEND_COOLDOWN_MS = 60 * 1000; // 60 seconds
+export {
+  GoogleUserInfo,
+  loginWithGoogle,
+  requestPasswordReset,
+  resetUserPassword,
+  verifyGoogleCredential,
+};
+
+export const OTP_EXPIRATION_MS = 15 * 60 * 1000; // 15 minutes
+export const RESEND_COOLDOWN_MS = 60 * 1000; // 60 seconds
 
 export class AuthServiceError extends Error {
   constructor(

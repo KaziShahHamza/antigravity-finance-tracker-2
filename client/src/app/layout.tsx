@@ -2,8 +2,9 @@
 
 // Root HTML layout establishing font, styling, ThemeProvider, QueryProvider, and metadata for the application.
 
-import { ThemeProvider } from '@/context/ThemeProvider';
+import { AuthProvider } from '@/context/AuthContext';
 import { QueryProvider } from '@/context/QueryProvider';
+import { ThemeProvider } from '@/context/ThemeProvider';
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="page-shell">
         <QueryProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </ThemeProvider>
         </QueryProvider>
       </body>
     </html>

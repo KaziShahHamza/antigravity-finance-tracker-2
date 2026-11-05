@@ -13,8 +13,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   CLIENT_URL: z.string().default('http://localhost:3000'),
 
-  MONGODB_URI: z.string().default('mongodb://localhost:27017/finance_tracker'),
-  MONGODB_TEST_URI: z.string().default('mongodb://localhost:27017/finance_tracker_test'),
+  MONGODB_URI: z.string().default('mongodb://127.0.0.1:27017/finance_tracker'),
+  MONGODB_TEST_URI: z.string().default('mongodb://127.0.0.1:27017/finance_tracker_test'),
 
   JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
   JWT_REFRESH_SECRET: z.string().min(32, 'JWT_REFRESH_SECRET must be at least 32 characters'),

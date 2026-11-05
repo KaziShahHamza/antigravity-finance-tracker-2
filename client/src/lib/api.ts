@@ -17,12 +17,19 @@ export class ApiError extends Error {
 }
 
 let accessToken: string | null = null;
+let refreshToken: string | null = null;
 
 export const setAccessToken = (token: string | null) => {
   accessToken = token;
 };
 
 export const getAccessToken = () => accessToken;
+
+export const setRefreshToken = (token: string | null) => {
+  refreshToken = token;
+};
+
+export const getRefreshToken = () => refreshToken;
 
 const getBaseUrl = () => {
   return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
@@ -66,18 +73,28 @@ export async function apiClient<T = unknown>(
   // Handle 401 Unauthorized with silent refresh attempt
   if (response.status === 401 && retryOnUnauthorized && !skipAuth) {
     try {
+      const refreshBody = refreshToken ? JSON.stringify({ refreshToken }) : undefined;
       const refreshResponse = await fetch(`${getBaseUrl()}/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: refreshBody,
       });
 
       if (refreshResponse.ok) {
         const refreshText = await refreshResponse.text();
         const refreshData = (refreshText ? JSON.parse(refreshText) : {}) as ApiResponse<{
           accessToken: string;
-        }>;
-        if (refreshData.data?.accessToken) {
-          setAccessToken(refreshData.data.accessToken);
+          refreshToken?: string;
+        }> & { accessToken?: string; refreshToken?: string };
+
+        const newAccessToken = refreshData.data?.accessToken || refreshData.accessToken;
+        const newRefreshToken = refreshData.data?.refreshToken || refreshData.refreshToken;
+
+        if (newAccessToken) {
+          setAccessToken(newAccessToken);
+          if (newRefreshToken) {
+            setRefreshToken(newRefreshToken);
+          }
           return apiClient<T>(endpoint, {
             ...options,
             retryOnUnauthorized: false,
