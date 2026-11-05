@@ -14,17 +14,10 @@ import {
   verifyRefreshToken,
 } from '../utils/tokenUtils.js';
 import { sendVerificationEmail } from './emailService.js';
-import { GoogleUserInfo, loginWithGoogle, verifyGoogleCredential } from './googleAuthService.js';
 import { requestPasswordReset, resetUserPassword } from './passwordResetService.js';
 import { seedUserDefaults } from './seedService.js';
 
-export {
-  GoogleUserInfo,
-  loginWithGoogle,
-  requestPasswordReset,
-  resetUserPassword,
-  verifyGoogleCredential,
-};
+export { requestPasswordReset, resetUserPassword };
 
 export const OTP_EXPIRATION_MS = 15 * 60 * 1000; // 15 minutes
 export const RESEND_COOLDOWN_MS = 60 * 1000; // 60 seconds

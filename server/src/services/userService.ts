@@ -5,9 +5,9 @@
 import bcrypt from 'bcryptjs';
 import { IUser, User } from '../models/User.js';
 import type { UpdatePasswordInput, UpdateProfileInput } from '../schemas/userSchemas.js';
-import { DemoDataResult, seedDemoData } from './demoDataService.js';
+import { seedDemoData, type DemoDataResult } from './demoDataService.js';
 
-export { DemoDataResult, seedDemoData };
+export { seedDemoData, type DemoDataResult };
 
 export interface UserProfileResponse {
   id: string;

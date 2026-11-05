@@ -13,8 +13,8 @@ import {
   logoutUser,
   requestPasswordReset,
   resetUserPassword,
-  loginWithGoogle,
 } from '../services/authService.js';
+import { loginWithGoogle } from '../services/googleAuthService.js';
 import {
   RegisterInput,
   VerifyOtpInput,
