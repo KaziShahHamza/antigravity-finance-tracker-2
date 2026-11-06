@@ -22,6 +22,7 @@ export interface User {
 
 export interface Account {
   id: string;
+  _id?: string;
   name: string;
   type: WalletType;
   balance: number;
@@ -33,6 +34,7 @@ export interface Account {
 
 export interface Category {
   id: string;
+  _id?: string;
   name: string;
   type: 'income' | 'expense';
   icon: string;
@@ -40,23 +42,81 @@ export interface Category {
   isDefault: boolean;
 }
 
+export interface PopulatedAccount {
+  _id?: string;
+  id?: string;
+  name: string;
+  type: WalletType;
+  currency: string;
+  color?: string;
+  icon?: string;
+}
+
+export interface PopulatedCategory {
+  _id?: string;
+  id?: string;
+  name: string;
+  type: 'income' | 'expense';
+  icon?: string;
+  color?: string;
+}
+
 export interface Transaction {
-  id: string;
-  accountId: string;
+  _id?: string;
+  id?: string;
+  accountId: string | PopulatedAccount;
   type: TransactionType;
   amount: number;
   currency: string;
   convertedAmount: number;
-  destinationAccountId?: string;
+  destinationAccountId?: string | PopulatedAccount;
   destinationAmount?: number;
   destinationCurrency?: string;
-  categoryId?: string;
+  categoryId?: string | PopulatedCategory;
   date: string;
   description: string;
   vendor?: string;
   receiptUrl?: string;
   receiptOcrData?: Record<string, unknown>;
   isDemo?: boolean;
+}
+
+export interface ReceiptItem {
+  name: string;
+  price: number;
+  quantity?: number;
+}
+
+export interface ReceiptOcrResult {
+  vendor: string;
+  date: string;
+  totalAmount: number;
+  currency: string;
+  suggestedCategory: string;
+  items: ReceiptItem[];
+  receiptUrl: string;
+  isMock?: boolean;
+}
+
+export interface PaginationMeta {
+  totalCount: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
+export interface TransactionFilterParams {
+  search?: string;
+  type?: TransactionType | '';
+  accountId?: string;
+  categoryId?: string;
+  startDate?: string;
+  endDate?: string;
+  sortBy?: 'date' | 'amount' | 'convertedAmount' | 'createdAt';
+  sortOrder?: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
 }
 
 export interface Budget {

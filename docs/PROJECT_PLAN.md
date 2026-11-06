@@ -120,10 +120,10 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 4.3: Transactions Page (`/transactions`), Filters & OCR Modal
 
-- [ ] **Task 4.3.1 — Receipt Uploader & AI Auto-Fill Component**: Build `ReceiptUploader.tsx` in `client/src/components/transactions/` with drag-and-drop preview, scanning indicator, and callback to populate transaction fields.
-- [ ] **Task 4.3.2 — Add/Edit Transaction Modal & Custom Category Creator**: Build `TransactionModal.tsx` (Income, Expense, Transfer tabs + OCR integration + inline custom Category creation).
-- [ ] **Task 4.3.3 — Transaction Filters Toolbar**: Build `FiltersBar.tsx` with debounced search input, date range filter, wallet filter, category filter, type filter, and sort selector.
-- [ ] **Task 4.3.4 — Transactions Page, History Table & E2E Check**: Build `TransactionTable.tsx` and `/transactions` page, add `client/e2e/transactionsAndOcr.spec.ts` (transaction CRUD + mock receipt OCR auto-fill), and run Phase 4 quality gate.
+- [x] **Task 4.3.1 — Receipt Uploader & AI Auto-Fill Component**: Build `ReceiptUploader.tsx` in `client/src/components/transactions/` with drag-and-drop preview, scanning indicator, and callback to populate transaction fields.
+- [x] **Task 4.3.2 — Add/Edit Transaction Modal & Custom Category Creator**: Build `TransactionModal.tsx` (Income, Expense, Transfer tabs + OCR integration + inline custom Category creation).
+- [x] **Task 4.3.3 — Transaction Filters Toolbar**: Build `FiltersBar.tsx` with debounced search input, date range filter, wallet filter, category filter, type filter, and sort selector.
+- [x] **Task 4.3.4 — Transactions Page, History Table & E2E Check**: Build `TransactionTable.tsx` and `/transactions` page, add `client/e2e/transactionsAndOcr.spec.ts` (transaction CRUD + mock receipt OCR auto-fill), and run Phase 4 quality gate.
 
 ---
 

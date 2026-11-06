@@ -134,6 +134,12 @@ export const api = {
       body: body ? JSON.stringify(body) : undefined,
       ...options,
     }),
+  postForm: <T = unknown>(endpoint: string, formData: FormData, options?: RequestOptions) =>
+    apiClient<T>(endpoint, {
+      method: 'POST',
+      body: formData,
+      ...options,
+    }),
   patch: <T = unknown>(endpoint: string, body?: unknown, options?: RequestOptions) =>
     apiClient<T>(endpoint, {
       method: 'PATCH',
