@@ -108,22 +108,22 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 4.1: Categories & Transaction CRUD + Search/Filter/Sort API
 
-- [ ] **Task 4.1.1 — Category CRUD Endpoints**: Implement `GET /api/categories`, `POST /api/categories`, `PATCH /api/categories/:id`, and `DELETE /api/categories/:id` (protecting system defaults).
-- [ ] **Task 4.1.2 — Transaction Create, Update & Delete with Balance Reconciliation**: Implement `POST /api/transactions`, `PATCH /api/transactions/:id` (reverses prior balance impact before applying updated amount/account/type), and `DELETE /api/transactions/:id`.
-- [ ] **Task 4.1.3 — Transaction Search, Filter, Sort & Pagination Endpoint**: Implement `GET /api/transactions` supporting `search`, `type`, `accountId`, `categoryId`, `startDate`, `endDate`, `sortBy`, `sortOrder`, `page`, and `limit`; update `docs/API.md`.
-- [ ] **Task 4.1.4 — Transaction & Balance Reconciliation Integration Tests**: Add `server/tests/integration/transactions.test.ts` verifying wallet balance math across create/edit/delete (including account/type switches), cross-user access denial, and search/filter pagination.
+- [x] **Task 4.1.1 — Category CRUD Endpoints**: Implement `GET /api/categories`, `POST /api/categories`, `PATCH /api/categories/:id`, and `DELETE /api/categories/:id` (protecting system defaults).
+- [x] **Task 4.1.2 — Transaction Create, Update & Delete with Balance Reconciliation**: Implement `POST /api/transactions`, `PATCH /api/transactions/:id` (reverses prior balance impact before applying updated amount/account/type), and `DELETE /api/transactions/:id`.
+- [x] **Task 4.1.3 — Transaction Search, Filter, Sort & Pagination Endpoint**: Implement `GET /api/transactions` supporting `search`, `type`, `accountId`, `categoryId`, `startDate`, `endDate`, `sortBy`, `sortOrder`, `page`, and `limit`; update `docs/API.md`.
+- [x] **Task 4.1.4 — Transaction & Balance Reconciliation Integration Tests**: Add `server/tests/integration/transactions.test.ts` verifying wallet balance math across create/edit/delete (including account/type switches), cross-user access denial, and search/filter pagination.
 
 ### Subphase 4.2: Cloudinary Upload & Gemini Vision OCR Service
 
-- [ ] **Task 4.2.1 — Cloudinary & Gemini Vision OCR Service**: Install `cloudinary` and `@google/genai` in `server/`; implement `server/src/services/ocrService.ts` to upload receipt images (max 5MB) and extract `{ vendor, date, totalAmount, currency, suggestedCategory, items }` with deterministic mock fallback when keys are missing.
-- [ ] **Task 4.2.2 — Receipt OCR Endpoint & Integration Tests**: Implement `POST /api/ocr/receipt` with `multer` memory storage, MIME/size validation (`image/jpeg`, `image/png`, `image/webp`, `<=5MB`), rate limiting, `server/tests/integration/ocr.test.ts` (mock fallback + invalid file rejection), and `docs/API.md` update.
+- [x] **Task 4.2.1 — Cloudinary & Gemini Vision OCR Service**: Install `cloudinary` and `@google/genai` in `server/`; implement `server/src/services/ocrService.ts` to upload receipt images (max 5MB) and extract `{ vendor, date, totalAmount, currency, suggestedCategory, items }` with deterministic mock fallback when keys are missing.
+- [x] **Task 4.2.2 — Receipt OCR Endpoint & Integration Tests**: Implement `POST /api/ocr/receipt` with `multer` memory storage, MIME/size validation (`image/jpeg`, `image/png`, `image/webp`, `<=5MB`), rate limiting, `server/tests/integration/ocr.test.ts` (mock fallback + invalid file rejection), and `docs/API.md` update.
 
 ### Subphase 4.3: Transactions Page (`/transactions`), Filters & OCR Modal
 
-- [ ] **Task 4.3.1 — Receipt Uploader & AI Auto-Fill Component**: Build `ReceiptUploader.tsx` in `client/src/components/transactions/` with drag-and-drop preview, scanning indicator, and callback to populate transaction fields.
-- [ ] **Task 4.3.2 — Add/Edit Transaction Modal & Custom Category Creator**: Build `TransactionModal.tsx` (Income, Expense, Transfer tabs + OCR integration + inline custom Category creation).
-- [ ] **Task 4.3.3 — Transaction Filters Toolbar**: Build `FiltersBar.tsx` with debounced search input, date range filter, wallet filter, category filter, type filter, and sort selector.
-- [ ] **Task 4.3.4 — Transactions Page, History Table & E2E Check**: Build `TransactionTable.tsx` and `/transactions` page, add `client/e2e/transactionsAndOcr.spec.ts` (transaction CRUD + mock receipt OCR auto-fill), and run Phase 4 quality gate.
+- [x] **Task 4.3.1 — Receipt Uploader & AI Auto-Fill Component**: Build `ReceiptUploader.tsx` in `client/src/components/transactions/` with drag-and-drop preview, scanning indicator, and callback to populate transaction fields.
+- [x] **Task 4.3.2 — Add/Edit Transaction Modal & Custom Category Creator**: Build `TransactionModal.tsx` (Income, Expense, Transfer tabs + OCR integration + inline custom Category creation).
+- [x] **Task 4.3.3 — Transaction Filters Toolbar**: Build `FiltersBar.tsx` with debounced search input, date range filter, wallet filter, category filter, type filter, and sort selector.
+- [x] **Task 4.3.4 — Transactions Page, History Table & E2E Check**: Build `TransactionTable.tsx` and `/transactions` page, add `client/e2e/transactionsAndOcr.spec.ts` (transaction CRUD + mock receipt OCR auto-fill), and run Phase 4 quality gate.
 
 ---
 

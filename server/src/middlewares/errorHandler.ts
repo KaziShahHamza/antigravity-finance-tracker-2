@@ -9,6 +9,7 @@ import { env } from '../config/env.js';
 export interface AppError extends Error {
   statusCode?: number;
   errors?: unknown;
+  code?: string;
 }
 
 export class HttpError extends Error {
@@ -44,6 +45,7 @@ export const errorHandler = (
   res.status(statusCode).json({
     success: false,
     message,
+    ...(err.code ? { code: err.code } : {}),
     ...(err.errors ? { errors: err.errors } : {}),
     ...(env.NODE_ENV !== 'production' && { stack: err.stack }),
   });

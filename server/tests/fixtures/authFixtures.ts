@@ -17,6 +17,7 @@ export interface CreateTestUserOptions {
   passwordResetOtpExpiresInMs?: number;
   resendCooldownInMs?: number;
   defaultCurrency?: string;
+  customExchangeRates?: Map<string, number> | Record<string, number>;
   googleId?: string;
   avatarUrl?: string;
 }
@@ -60,6 +61,7 @@ export const createTestUser = async (options: CreateTestUserOptions): Promise<IU
     passwordResetOtpExpiresAt: resetOtpExpiresAt,
     resendCooldownUntil: resendCooldown,
     defaultCurrency,
+    customExchangeRates: options.customExchangeRates,
     googleId,
     avatarUrl,
   });

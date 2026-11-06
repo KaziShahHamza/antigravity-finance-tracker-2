@@ -34,3 +34,18 @@ export const otpLimiter = rateLimit({
   },
   skip: () => env.NODE_ENV === 'test',
 });
+
+/**
+ * Rate limiter for AI receipt scanning and OCR extraction.
+ */
+export const ocrLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: env.NODE_ENV === 'test' ? 1000 : 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many receipt scans, please try again after 15 minutes.',
+  },
+  skip: () => env.NODE_ENV === 'test',
+});
