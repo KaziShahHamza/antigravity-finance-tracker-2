@@ -124,3 +124,22 @@ export async function apiClient<T = unknown>(
 
   return (data.data !== undefined ? data.data : (data as unknown)) as T;
 }
+
+export const api = {
+  get: <T = unknown>(endpoint: string, options?: RequestOptions) =>
+    apiClient<T>(endpoint, { method: 'GET', ...options }),
+  post: <T = unknown>(endpoint: string, body?: unknown, options?: RequestOptions) =>
+    apiClient<T>(endpoint, {
+      method: 'POST',
+      body: body ? JSON.stringify(body) : undefined,
+      ...options,
+    }),
+  patch: <T = unknown>(endpoint: string, body?: unknown, options?: RequestOptions) =>
+    apiClient<T>(endpoint, {
+      method: 'PATCH',
+      body: body ? JSON.stringify(body) : undefined,
+      ...options,
+    }),
+  delete: <T = unknown>(endpoint: string, options?: RequestOptions) =>
+    apiClient<T>(endpoint, { method: 'DELETE', ...options }),
+};

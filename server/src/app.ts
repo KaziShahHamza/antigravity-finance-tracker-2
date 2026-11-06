@@ -8,6 +8,7 @@ import helmet from 'helmet';
 import { env } from './config/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import authRoutes from './routes/authRoutes.js';
+import ratesRoutes from './routes/ratesRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
 export const createApp = (): Application => {
@@ -41,6 +42,7 @@ export const createApp = (): Application => {
 
   // API Routes
   app.use('/api/auth', authRoutes);
+  app.use('/api/rates', ratesRoutes);
   app.use('/api/users', userRoutes);
 
   // Catch-all 404 handler for undefined routes

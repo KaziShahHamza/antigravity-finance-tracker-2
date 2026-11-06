@@ -83,8 +83,8 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 3.1: Exchange Rates Cache & Conversion Service
 
-- [ ] **Task 3.1.1 — Backend Exchange Rates Service, Endpoint & Unit Tests**: Implement `server/src/services/ratesService.ts` (24h MongoDB cache from `open.er-api.com`, static fallback rates, user custom rate overrides, 2-decimal conversion), `GET /api/rates`, and `server/tests/unit/ratesService.test.ts`.
-- [ ] **Task 3.1.2 — Frontend CurrencyContext, Formatters & Unit Tests**: Create `client/src/context/CurrencyContext.tsx`, `client/src/lib/formatters.ts` (`formatCurrency`, `convertAmount`, date helpers), and `client/src/lib/__tests__/formatters.test.ts`.
+- [x] **Task 3.1.1 — Backend Exchange Rates Service, Endpoint & Unit Tests**: Implement `server/src/services/ratesService.ts` (24h MongoDB cache from `open.er-api.com`, static fallback rates, user custom rate overrides, 2-decimal conversion), `GET /api/rates`, and `server/tests/unit/ratesService.test.ts`.
+- [x] **Task 3.1.2 — Frontend CurrencyContext, Formatters & Unit Tests**: Create `client/src/context/CurrencyContext.tsx`, `client/src/lib/formatters.ts` (`formatCurrency`, `convertAmount`, date helpers), and `client/src/lib/__tests__/formatters.test.ts`.
 
 ### Subphase 3.2: Account & Wallet CRUD API
 
