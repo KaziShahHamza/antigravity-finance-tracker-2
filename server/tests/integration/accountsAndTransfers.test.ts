@@ -41,7 +41,11 @@ describe('Accounts & Transfers API (/api/accounts)', () => {
     it('returns accounts with converted balances and enforces user isolation', async () => {
       if (!isDbConnected) return;
 
-      const userA = await createTestUser({ email: 'usera@example.com', defaultCurrency: 'USD' });
+      const userA = await createTestUser({
+        email: 'usera@example.com',
+        defaultCurrency: 'USD',
+        customExchangeRates: new Map([['BDT', 110]]),
+      });
       const userB = await createTestUser({ email: 'userb@example.com', defaultCurrency: 'USD' });
 
       await Account.create([
@@ -99,7 +103,7 @@ describe('Accounts & Transfers API (/api/accounts)', () => {
         .send({
           name: 'Personal Savings',
           type: 'bank',
-          balance: 2500.555,
+          balance: 2500.556,
           currency: 'USD',
           color: '#3b82f6',
         });
@@ -297,7 +301,10 @@ describe('Accounts & Transfers API (/api/accounts)', () => {
     it('executes cross-currency transfer with exchange rate conversion', async () => {
       if (!isDbConnected) return;
 
-      const user = await createTestUser({ email: 'crosstransfer@example.com' });
+      const user = await createTestUser({
+        email: 'crosstransfer@example.com',
+        customExchangeRates: new Map([['BDT', 110]]),
+      });
       const token = generateAccessToken({ userId: user._id.toString(), email: user.email });
 
       // USD Bank ($1000) -> BDT bKash (0 BDT)

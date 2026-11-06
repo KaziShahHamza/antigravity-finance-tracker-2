@@ -108,10 +108,10 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 4.1: Categories & Transaction CRUD + Search/Filter/Sort API
 
-- [ ] **Task 4.1.1 — Category CRUD Endpoints**: Implement `GET /api/categories`, `POST /api/categories`, `PATCH /api/categories/:id`, and `DELETE /api/categories/:id` (protecting system defaults).
-- [ ] **Task 4.1.2 — Transaction Create, Update & Delete with Balance Reconciliation**: Implement `POST /api/transactions`, `PATCH /api/transactions/:id` (reverses prior balance impact before applying updated amount/account/type), and `DELETE /api/transactions/:id`.
-- [ ] **Task 4.1.3 — Transaction Search, Filter, Sort & Pagination Endpoint**: Implement `GET /api/transactions` supporting `search`, `type`, `accountId`, `categoryId`, `startDate`, `endDate`, `sortBy`, `sortOrder`, `page`, and `limit`; update `docs/API.md`.
-- [ ] **Task 4.1.4 — Transaction & Balance Reconciliation Integration Tests**: Add `server/tests/integration/transactions.test.ts` verifying wallet balance math across create/edit/delete (including account/type switches), cross-user access denial, and search/filter pagination.
+- [x] **Task 4.1.1 — Category CRUD Endpoints**: Implement `GET /api/categories`, `POST /api/categories`, `PATCH /api/categories/:id`, and `DELETE /api/categories/:id` (protecting system defaults).
+- [x] **Task 4.1.2 — Transaction Create, Update & Delete with Balance Reconciliation**: Implement `POST /api/transactions`, `PATCH /api/transactions/:id` (reverses prior balance impact before applying updated amount/account/type), and `DELETE /api/transactions/:id`.
+- [x] **Task 4.1.3 — Transaction Search, Filter, Sort & Pagination Endpoint**: Implement `GET /api/transactions` supporting `search`, `type`, `accountId`, `categoryId`, `startDate`, `endDate`, `sortBy`, `sortOrder`, `page`, and `limit`; update `docs/API.md`.
+- [x] **Task 4.1.4 — Transaction & Balance Reconciliation Integration Tests**: Add `server/tests/integration/transactions.test.ts` verifying wallet balance math across create/edit/delete (including account/type switches), cross-user access denial, and search/filter pagination.
 
 ### Subphase 4.2: Cloudinary Upload & Gemini Vision OCR Service
 

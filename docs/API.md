@@ -625,3 +625,154 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
     }
   }
   ```
+
+---
+
+## 6. Categories API (`/api/categories`)
+
+### 6.1 List Categories
+
+- **Method**: `GET`
+- **Path**: `/api/categories`
+- **Access**: Private (Authenticated)
+- **Query Parameters**:
+  - `type` (`'income' | 'expense'`, optional): Filters categories by type.
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "_id": "65f123...",
+        "name": "Food & Dining",
+        "type": "expense",
+        "icon": "Utensils",
+        "color": "#f97316",
+        "isDefault": true
+      }
+    ]
+  }
+  ```
+
+### 6.2 Create Category
+
+- **Method**: `POST`
+- **Path**: `/api/categories`
+- **Access**: Private (Authenticated)
+- **Request Body**:
+  | Field   | Type     | Required | Description                                    |
+  | :------ | :------- | :------- | :--------------------------------------------- |
+  | `name`  | `string` | Yes      | 1–100 characters, unique per type for the user |
+  | `type`  | `string` | Yes      | `'income' \| 'expense'`                        |
+  | `icon`  | `string` | No       | Lucide icon name (default: `'Tag'`)            |
+  | `color` | `string` | No       | Hex color code (default: `'#64748b'`)          |
+- **Response (201 Created)**
+
+### 6.3 Update Category
+
+- **Method**: `PATCH`
+- **Path**: `/api/categories/:id`
+- **Access**: Private (Authenticated)
+- **Request Body**: `name` (string), `icon` (string), `color` (string).
+- **Response (200 OK)**
+
+### 6.4 Delete Category
+
+- **Method**: `DELETE`
+- **Path**: `/api/categories/:id`
+- **Access**: Private (Authenticated)
+- **Rules**: System default categories (`isDefault: true`) cannot be deleted (`400 Bad Request`). Categories with linked transactions cannot be deleted (`400 Bad Request`).
+- **Response (200 OK)**
+
+---
+
+## 7. Transactions API (`/api/transactions`)
+
+### 7.1 List & Filter Transactions
+
+- **Method**: `GET`
+- **Path**: `/api/transactions`
+- **Access**: Private (Authenticated)
+- **Query Parameters**:
+  - `search` (string): Search vendor or description (case-insensitive).
+  - `type` (`'income' | 'expense' | 'transfer'`): Filter by transaction type.
+  - `accountId` (ObjectId): Filter transactions involving this wallet.
+  - `categoryId` (ObjectId): Filter transactions by category.
+  - `startDate` (ISO string): Transactions on or after date.
+  - `endDate` (ISO string): Transactions on or before date.
+  - `sortBy` (`'date' | 'amount' | 'convertedAmount' | 'createdAt'`): Default `'date'`.
+  - `sortOrder` (`'asc' | 'desc'`): Default `'desc'`.
+  - `page` (number): Page index (default: 1).
+  - `limit` (number): Items per page (default: 20, max: 100).
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "_id": "65f123...",
+        "type": "expense",
+        "amount": 24.5,
+        "currency": "USD",
+        "convertedAmount": 24.5,
+        "description": "Starbucks Coffee",
+        "vendor": "Starbucks",
+        "date": "2026-11-06T10:00:00.000Z",
+        "accountId": { "_id": "...", "name": "Checking", "currency": "USD" },
+        "categoryId": { "_id": "...", "name": "Food & Dining", "icon": "Utensils" }
+      }
+    ],
+    "pagination": {
+      "totalCount": 42,
+      "page": 1,
+      "limit": 20,
+      "totalPages": 3,
+      "hasMore": true
+    }
+  }
+  ```
+
+### 7.2 Get Transaction by ID
+
+- **Method**: `GET`
+- **Path**: `/api/transactions/:id`
+- **Access**: Private (Authenticated)
+
+### 7.3 Create Transaction
+
+- **Method**: `POST`
+- **Path**: `/api/transactions`
+- **Access**: Private (Authenticated)
+- **Description**: Records income, expense, or transfer and atomically adjusts account balances.
+- **Request Body**:
+  | Field                  | Type     | Required     | Description                                      |
+  | :--------------------- | :------- | :----------- | :----------------------------------------------- |
+  | `accountId`            | `string` | Yes          | Source account ObjectId                          |
+  | `type`                 | `string` | Yes          | `'income' \| 'expense' \| 'transfer'`            |
+  | `amount`               | `number` | Yes          | Positive number                                  |
+  | `currency`             | `string` | No           | 3-letter currency (defaults to account currency) |
+  | `destinationAccountId` | `string` | For transfer | Destination account ObjectId                     |
+  | `destinationAmount`    | `number` | No           | Overridden destination amount for transfer       |
+  | `categoryId`           | `string` | No           | Category ObjectId                                |
+  | `date`                 | `string` | No           | ISO Date string (defaults to now)                |
+  | `description`          | `string` | Yes          | 1–255 characters                                 |
+  | `vendor`               | `string` | No           | Merchant name (max 100 characters)               |
+  | `receiptUrl`           | `string` | No           | Receipt image URL                                |
+  | `receiptOcrData`       | `object` | No           | Extracted OCR structured payload                 |
+- **Response (201 Created)**
+
+### 7.4 Update Transaction (with Prior Balance Reversal)
+
+- **Method**: `PATCH`
+- **Path**: `/api/transactions/:id`
+- **Access**: Private (Authenticated)
+- **Description**: Reverses the previous balance impact on old accounts, then applies the updated amount, type, and account balances atomically.
+- **Response (200 OK)**
+
+### 7.5 Delete Transaction (with Balance Reversal)
+
+- **Method**: `DELETE`
+- **Path**: `/api/transactions/:id`
+- **Access**: Private (Authenticated)
+- **Description**: Reverses the transaction's balance impact on affected accounts and removes the transaction record.
+- **Response (200 OK)**
