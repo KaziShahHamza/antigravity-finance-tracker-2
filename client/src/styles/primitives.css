@@ -115,11 +115,15 @@
 
   /* Modal Primitives */
   .modal-backdrop {
-    @apply fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm;
+    @apply fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm;
   }
 
   .modal-panel {
-    @apply relative w-full max-w-lg rounded-xl border border-border-subtle bg-surface p-6 shadow-xl;
+    @apply relative flex max-h-[90vh] w-full max-w-lg flex-col rounded-xl border border-border-subtle bg-surface p-6 shadow-xl;
+  }
+
+  .modal-body {
+    @apply flex-1 overflow-y-auto min-h-0 -mr-2 pr-2;
   }
 
   /* Navigation & Sidebar Primitives */

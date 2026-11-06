@@ -52,7 +52,7 @@ export function Modal({
       }}
     >
       <div className={`modal-panel ${className}`.trim()}>
-        <div className="card-header">
+        <div className="card-header shrink-0 mb-4">
           <div>
             {title && <h2 className="card-title">{title}</h2>}
             {description && <p className="card-description">{description}</p>}
@@ -67,7 +67,7 @@ export function Modal({
             <X className="h-4 w-4" />
           </Button>
         </div>
-        <div>{children}</div>
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );
