@@ -106,24 +106,28 @@ export default function DashboardPage() {
       </div>
 
       {/* Placeholder for Analytics & Cash Flow Chart (Implemented in Phase 5) */}
-      <Card
-        title="Financial Activity & Cash Flow"
-        description="Detailed analytics and charts will populate here as you record transactions."
-        className="text-center py-12"
-      >
-        <div className="mx-auto flex max-w-sm flex-col items-center gap-3 text-fg-muted">
-          <PieChart className="h-12 w-12 text-fg-subtle" />
-          <p className="text-sm">
-            Ready to track income and expenses. Go to{' '}
-            <Link href="/transactions" className="font-semibold text-brand-600 hover:underline">
-              Transactions
-            </Link>{' '}
-            or load sample data in{' '}
-            <Link href="/settings" className="font-semibold text-brand-600 hover:underline">
-              Settings
-            </Link>
-            .
-          </p>
+      <Card className="py-12">
+        <div className="mx-auto flex max-w-md flex-col items-center gap-4 text-center">
+          <div>
+            <h3 className="text-lg font-semibold text-fg">Financial Activity & Cash Flow</h3>
+            <p className="mt-1 text-sm text-fg-muted">
+              Detailed analytics and charts will populate here as you record transactions.
+            </p>
+          </div>
+          <div className="flex flex-col items-center gap-3 text-fg-muted">
+            <PieChart className="h-12 w-12 text-fg-subtle" />
+            <p className="text-sm">
+              Ready to track income and expenses. Go to{' '}
+              <Link href="/transactions" className="font-semibold text-brand-600 hover:underline">
+                Transactions
+              </Link>{' '}
+              or load sample data in{' '}
+              <Link href="/settings" className="font-semibold text-brand-600 hover:underline">
+                Settings
+              </Link>
+              .
+            </p>
+          </div>
         </div>
       </Card>
     </div>

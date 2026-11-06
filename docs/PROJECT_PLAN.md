@@ -83,22 +83,22 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 3.1: Exchange Rates Cache & Conversion Service
 
-- [ ] **Task 3.1.1 — Backend Exchange Rates Service, Endpoint & Unit Tests**: Implement `server/src/services/ratesService.ts` (24h MongoDB cache from `open.er-api.com`, static fallback rates, user custom rate overrides, 2-decimal conversion), `GET /api/rates`, and `server/tests/unit/ratesService.test.ts`.
-- [ ] **Task 3.1.2 — Frontend CurrencyContext, Formatters & Unit Tests**: Create `client/src/context/CurrencyContext.tsx`, `client/src/lib/formatters.ts` (`formatCurrency`, `convertAmount`, date helpers), and `client/src/lib/__tests__/formatters.test.ts`.
+- [x] **Task 3.1.1 — Backend Exchange Rates Service, Endpoint & Unit Tests**: Implement `server/src/services/ratesService.ts` (24h MongoDB cache from `open.er-api.com`, static fallback rates, user custom rate overrides, 2-decimal conversion), `GET /api/rates`, and `server/tests/unit/ratesService.test.ts`.
+- [x] **Task 3.1.2 — Frontend CurrencyContext, Formatters & Unit Tests**: Create `client/src/context/CurrencyContext.tsx`, `client/src/lib/formatters.ts` (`formatCurrency`, `convertAmount`, date helpers), and `client/src/lib/__tests__/formatters.test.ts`.
 
 ### Subphase 3.2: Account & Wallet CRUD API
 
-- [ ] **Task 3.2.1 — Account CRUD Controller, Routes & Docs**: Implement `GET /api/accounts` (with converted balances & aggregate Total Balance), `POST /api/accounts`, `PATCH /api/accounts/:id`, and `DELETE /api/accounts/:id` supporting `'cash' | 'bank' | 'bkash' | 'nagad' | 'credit' | 'other'`; update `docs/API.md`.
+- [x] **Task 3.2.1 — Account CRUD Controller, Routes & Docs**: Implement `GET /api/accounts` (with converted balances & aggregate Total Balance), `POST /api/accounts`, `PATCH /api/accounts/:id`, and `DELETE /api/accounts/:id` supporting `'cash' | 'bank' | 'bkash' | 'nagad' | 'credit' | 'other'`; update `docs/API.md`.
 
 ### Subphase 3.3: Atomic Inter-Account Transfer Engine
 
-- [ ] **Task 3.3.1 — Inter-Account Transfer Service & Endpoint**: Implement `POST /api/accounts/transfer` to atomically deduct from source wallet, apply currency conversion (or manual rate override), credit destination wallet, and create a linked `transfer` transaction record; update `docs/API.md`.
-- [ ] **Task 3.3.2 — Accounts & Cross-Currency Transfer Integration Tests**: Add `server/tests/integration/accountsAndTransfers.test.ts` verifying `userId` isolation, wallet CRUD, cross-currency conversion accuracy, and transfer rollback/deletion safety.
+- [x] **Task 3.3.1 — Inter-Account Transfer Service & Endpoint**: Implement `POST /api/accounts/transfer` to atomically deduct from source wallet, apply currency conversion (or manual rate override), credit destination wallet, and create a linked `transfer` transaction record; update `docs/API.md`.
+- [x] **Task 3.3.2 — Accounts & Cross-Currency Transfer Integration Tests**: Add `server/tests/integration/accountsAndTransfers.test.ts` verifying `userId` isolation, wallet CRUD, cross-currency conversion accuracy, and transfer rollback/deletion safety.
 
 ### Subphase 3.4: Wallets & Accounts Frontend (`/accounts`)
 
-- [ ] **Task 3.4.1 — Wallet Cards & Accounts Page Layout**: Build `AccountCard.tsx` (distinct badges/styling for Cash, Bank, bKash, Nagad, Credit Card) and `/accounts` overview page with Total Balance header.
-- [ ] **Task 3.4.2 — Add/Edit Wallet Modal, Transfer Modal & E2E Check**: Build `AccountModal.tsx` and `TransferModal.tsx` (with live exchange rate preview), add `client/e2e/accounts.spec.ts` for wallet creation & transfer, and run Phase 3 quality gate.
+- [x] **Task 3.4.1 — Wallet Cards & Accounts Page Layout**: Build `AccountCard.tsx` (distinct badges/styling for Cash, Bank, bKash, Nagad, Credit Card) and `/accounts` overview page with Total Balance header.
+- [x] **Task 3.4.2 — Add/Edit Wallet Modal, Transfer Modal & E2E Check**: Build `AccountModal.tsx` and `TransferModal.tsx` (with live exchange rate preview), add `client/e2e/accounts.spec.ts` for wallet creation & transfer, and run Phase 3 quality gate.
 
 ---
 

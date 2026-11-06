@@ -250,5 +250,31 @@ describe('User Profile & Preferences API (/api/users)', () => {
       // Verify all seeded transactions are marked as isDemo
       expect(userTransactions.every((tx) => tx.isDemo === true)).toBe(true);
     });
+
+    it('is idempotent and allows reloading demo data without duplicate key errors', async () => {
+      if (!isDbConnected) return;
+
+      const user = await createTestUser({
+        email: 'demo-reload-user@example.com',
+        defaultCurrency: 'USD',
+        isVerified: true,
+      });
+
+      const token = generateAccessToken({ userId: user._id.toString(), email: user.email });
+
+      // First call
+      const res1 = await request(app)
+        .post('/api/users/demo-data')
+        .set('Authorization', `Bearer ${token}`);
+      expect(res1.status).toBe(201);
+
+      // Second call (reload)
+      const res2 = await request(app)
+        .post('/api/users/demo-data')
+        .set('Authorization', `Bearer ${token}`);
+      expect(res2.status).toBe(201);
+      expect(res2.body.success).toBe(true);
+      expect(res2.body.data.budgetsCreated).toBe(4);
+    });
   });
 });

@@ -23,15 +23,16 @@ export function DemoDataCard() {
     setIsLoadingDemo(true);
     try {
       const res = await apiClient<{
-        success: boolean;
-        message: string;
-        data: { accountsCreated: number; budgetsCreated: number; transactionsCreated: number };
+        accountsCreated: number;
+        budgetsCreated: number;
+        transactionsCreated: number;
       }>('/users/demo-data', {
         method: 'POST',
       });
+      const stats = (res as { data?: typeof res }).data || res;
       setDemoMessage({
         type: 'success',
-        text: `Loaded ${res.data.accountsCreated} accounts, ${res.data.budgetsCreated} budgets, and ${res.data.transactionsCreated} demo transactions!`,
+        text: `Loaded ${stats.accountsCreated} accounts, ${stats.budgetsCreated} budgets, and ${stats.transactionsCreated} demo transactions!`,
       });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to load demo data.';
