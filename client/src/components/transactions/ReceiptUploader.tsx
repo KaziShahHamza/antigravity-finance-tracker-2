@@ -104,7 +104,7 @@ export function ReceiptUploader({ onScanComplete, className = '' }: ReceiptUploa
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
+          className={`flex flex-col items-center justify-center p-4 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
             isDragging
               ? 'border-brand-500 bg-brand-500/10'
               : 'border-border-subtle hover:border-brand-500/50 bg-surface-muted/30'
@@ -121,11 +121,11 @@ export function ReceiptUploader({ onScanComplete, className = '' }: ReceiptUploa
               }
             }}
           />
-          <div className="flex items-center justify-center w-12 h-12 mb-3 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400">
-            <Upload className="w-6 h-6" />
+          <div className="flex items-center justify-center w-10 h-10 mb-2 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400">
+            <Upload className="w-5 h-5" />
           </div>
           <p className="text-sm font-medium text-fg">Click to upload or drag & drop receipt</p>
-          <p className="text-xs text-fg-muted mt-1">JPEG, PNG, or WebP (max 5MB)</p>
+          <p className="text-xs text-fg-muted mt-0.5">JPEG, PNG, or WebP (max 5MB)</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3 p-4 border border-border-subtle rounded-xl bg-surface-muted/20">
@@ -149,7 +149,7 @@ export function ReceiptUploader({ onScanComplete, className = '' }: ReceiptUploa
           </div>
 
           {previewUrl && (
-            <div className="relative w-full h-36 rounded-lg overflow-hidden bg-black/5 dark:bg-black/20 border border-border-subtle">
+            <div className="relative w-full h-32 rounded-lg overflow-hidden bg-black/5 dark:bg-black/20 border border-border-subtle">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewUrl}

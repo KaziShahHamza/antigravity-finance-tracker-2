@@ -458,7 +458,7 @@ export function TransactionModal({
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-border-subtle">
+        <div className="sticky bottom-0 -mx-1 bg-surface px-1 pt-3 pb-1 border-t border-border-subtle flex items-center justify-end gap-3 shrink-0 z-10">
           <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </Button>

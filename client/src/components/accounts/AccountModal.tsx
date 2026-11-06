@@ -184,7 +184,7 @@ export function AccountModal({ isOpen, onClose, account, onSaved }: AccountModal
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-subtle">
+        <div className="sticky bottom-0 -mx-1 bg-surface px-1 pt-4 pb-1 border-t border-border-subtle flex items-center justify-end gap-3 shrink-0 z-10">
           <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </Button>
