@@ -97,8 +97,8 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 3.4: Wallets & Accounts Frontend (`/accounts`)
 
-- [ ] **Task 3.4.1 — Wallet Cards & Accounts Page Layout**: Build `AccountCard.tsx` (distinct badges/styling for Cash, Bank, bKash, Nagad, Credit Card) and `/accounts` overview page with Total Balance header.
-- [ ] **Task 3.4.2 — Add/Edit Wallet Modal, Transfer Modal & E2E Check**: Build `AccountModal.tsx` and `TransferModal.tsx` (with live exchange rate preview), add `client/e2e/accounts.spec.ts` for wallet creation & transfer, and run Phase 3 quality gate.
+- [x] **Task 3.4.1 — Wallet Cards & Accounts Page Layout**: Build `AccountCard.tsx` (distinct badges/styling for Cash, Bank, bKash, Nagad, Credit Card) and `/accounts` overview page with Total Balance header.
+- [x] **Task 3.4.2 — Add/Edit Wallet Modal, Transfer Modal & E2E Check**: Build `AccountModal.tsx` and `TransferModal.tsx` (with live exchange rate preview), add `client/e2e/accounts.spec.ts` for wallet creation & transfer, and run Phase 3 quality gate.
 
 ---
 
