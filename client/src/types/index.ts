@@ -134,3 +134,17 @@ export interface ApiResponse<T = unknown> {
   data?: T;
   errors?: unknown;
 }
+
+export interface AuthResponse {
+  success: boolean;
+  message?: string;
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+}
+
+export interface RegisterResponse {
+  success: boolean;
+  message: string;
+  email: string;
+}

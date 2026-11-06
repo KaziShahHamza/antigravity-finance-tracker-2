@@ -5,22 +5,17 @@
 'use client';
 
 import { apiClient, setAccessToken, setRefreshToken } from '@/lib/api';
-import type { User } from '@/types';
+import {
+  getStoredRefreshToken,
+  getStoredUnverifiedEmail,
+  getStoredUser,
+  setStoredRefreshToken,
+  setStoredUnverifiedEmail,
+  setStoredUser,
+  clearAllAuthStorage,
+} from '@/lib/authStorage';
+import type { AuthResponse, RegisterResponse, User } from '@/types';
 import * as React from 'react';
-
-interface AuthResponse {
-  success: boolean;
-  message?: string;
-  accessToken: string;
-  refreshToken: string;
-  user: User;
-}
-
-interface RegisterResponse {
-  success: boolean;
-  message: string;
-  email: string;
-}
 
 export interface AuthContextType {
   user: User | null;
@@ -45,12 +40,6 @@ export interface AuthContextType {
   refreshUser: () => Promise<User | null>;
 }
 
-const STORAGE_KEYS = {
-  REFRESH_TOKEN: 'aft_refresh_token',
-  USER: 'aft_user',
-  UNVERIFIED_EMAIL: 'aft_unverified_email',
-} as const;
-
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -60,13 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const setUnverifiedEmail = React.useCallback((email: string | null) => {
     setUnverifiedEmailState(email);
-    if (typeof window !== 'undefined') {
-      if (email) {
-        localStorage.setItem(STORAGE_KEYS.UNVERIFIED_EMAIL, email);
-      } else {
-        localStorage.removeItem(STORAGE_KEYS.UNVERIFIED_EMAIL);
-      }
-    }
+    setStoredUnverifiedEmail(email);
   }, []);
 
   const handleAuthSuccess = React.useCallback(
@@ -75,11 +58,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setRefreshToken(authData.refreshToken);
       setUser(authData.user);
       setUnverifiedEmail(null);
-
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, authData.refreshToken);
-        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(authData.user));
-      }
+      setStoredRefreshToken(authData.refreshToken);
+      setStoredUser(authData.user);
     },
     [setUnverifiedEmail]
   );
@@ -88,28 +68,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAccessToken(null);
     setRefreshToken(null);
     setUser(null);
-
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.USER);
-    }
+    clearAllAuthStorage();
   }, []);
 
   // Hydrate session from localStorage and refresh token on mount
   React.useEffect(() => {
     const hydrateSession = async () => {
-      if (typeof window === 'undefined') {
-        setIsLoading(false);
-        return;
-      }
-
-      const storedEmail = localStorage.getItem(STORAGE_KEYS.UNVERIFIED_EMAIL);
+      const storedEmail = getStoredUnverifiedEmail();
       if (storedEmail) {
         setUnverifiedEmailState(storedEmail);
       }
 
-      const storedRefreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
-      const storedUser = localStorage.getItem(STORAGE_KEYS.USER);
+      const storedRefreshToken = getStoredRefreshToken();
+      const storedUser = getStoredUser();
 
       if (!storedRefreshToken) {
         setIsLoading(false);
@@ -119,11 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         setRefreshToken(storedRefreshToken);
         if (storedUser) {
-          try {
-            setUser(JSON.parse(storedUser));
-          } catch {
-            // Non-fatal if cached user JSON was malformed
-          }
+          setUser(storedUser);
         }
 
         const refreshed = await apiClient<{ accessToken: string; refreshToken?: string }>(
@@ -139,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setAccessToken(refreshed.accessToken);
           if (refreshed.refreshToken) {
             setRefreshToken(refreshed.refreshToken);
-            localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshed.refreshToken);
+            setStoredRefreshToken(refreshed.refreshToken);
           }
         }
       } catch {
@@ -241,9 +208,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser((prev) => {
       if (!prev) return null;
       const nextUser = { ...prev, ...updated };
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(nextUser));
-      }
+      setStoredUser(nextUser);
       return nextUser;
     });
   }, []);
@@ -253,9 +218,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await apiClient<{ user: User }>('/users/me');
       if (res.user) {
         setUser(res.user);
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(res.user));
-        }
+        setStoredUser(res.user);
         return res.user;
       }
       return null;
@@ -265,8 +228,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = React.useCallback(async () => {
-    const currentRefreshToken =
-      typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN) : null;
+    const currentRefreshToken = getStoredRefreshToken();
     try {
       await apiClient('/auth/logout', {
         method: 'POST',
