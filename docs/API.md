@@ -776,3 +776,41 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
 - **Access**: Private (Authenticated)
 - **Description**: Reverses the transaction's balance impact on affected accounts and removes the transaction record.
 - **Response (200 OK)**
+
+---
+
+## 8. Receipt OCR API (`/api/ocr`)
+
+### 8.1 Scan & Extract Receipt Data
+
+- **Method**: `POST`
+- **Path**: `/api/ocr/receipt`
+- **Access**: Private (Authenticated, subject to `ocrLimiter`: max 20 scans / 15m)
+- **Content-Type**: `multipart/form-data`
+- **Request Parameters**:
+  - `receipt`: Image file (`image/jpeg`, `image/png`, or `image/webp`), max `5MB` (enforced via in-memory multer).
+- **Description**: Uploads image buffer to Cloudinary (if configured) or generates a data URI fallback, and processes receipt via Gemini Vision OCR (or returns deterministic mock fallback when `GEMINI_API_KEY` is omitted).
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Receipt parsed successfully",
+    "data": {
+      "vendor": "Supermarket Fresh Mart",
+      "date": "2026-11-06",
+      "totalAmount": 47.85,
+      "currency": "USD",
+      "suggestedCategory": "Groceries",
+      "items": [
+        { "name": "Organic Milk 1 Gallon", "price": 4.99, "quantity": 1 },
+        { "name": "Whole Wheat Bread", "price": 3.49, "quantity": 1 }
+      ],
+      "receiptUrl": "https://...",
+      "isMock": false
+    }
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` — No file uploaded or unsupported file format.
+  - `413 Payload Too Large` — File exceeds 5MB memory guardrail.
+  - `429 Too Many Requests` — Rate limit exceeded.

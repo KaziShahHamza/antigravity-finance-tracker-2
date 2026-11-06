@@ -115,8 +115,8 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 4.2: Cloudinary Upload & Gemini Vision OCR Service
 
-- [ ] **Task 4.2.1 — Cloudinary & Gemini Vision OCR Service**: Install `cloudinary` and `@google/genai` in `server/`; implement `server/src/services/ocrService.ts` to upload receipt images (max 5MB) and extract `{ vendor, date, totalAmount, currency, suggestedCategory, items }` with deterministic mock fallback when keys are missing.
-- [ ] **Task 4.2.2 — Receipt OCR Endpoint & Integration Tests**: Implement `POST /api/ocr/receipt` with `multer` memory storage, MIME/size validation (`image/jpeg`, `image/png`, `image/webp`, `<=5MB`), rate limiting, `server/tests/integration/ocr.test.ts` (mock fallback + invalid file rejection), and `docs/API.md` update.
+- [x] **Task 4.2.1 — Cloudinary & Gemini Vision OCR Service**: Install `cloudinary` and `@google/genai` in `server/`; implement `server/src/services/ocrService.ts` to upload receipt images (max 5MB) and extract `{ vendor, date, totalAmount, currency, suggestedCategory, items }` with deterministic mock fallback when keys are missing.
+- [x] **Task 4.2.2 — Receipt OCR Endpoint & Integration Tests**: Implement `POST /api/ocr/receipt` with `multer` memory storage, MIME/size validation (`image/jpeg`, `image/png`, `image/webp`, `<=5MB`), rate limiting, `server/tests/integration/ocr.test.ts` (mock fallback + invalid file rejection), and `docs/API.md` update.
 
 ### Subphase 4.3: Transactions Page (`/transactions`), Filters & OCR Modal
 
