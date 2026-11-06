@@ -426,3 +426,202 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
   ```
 - **Error Responses**:
   - `401 Unauthorized` (`UNAUTHORIZED`) — Missing or invalid token.
+
+---
+
+## 4. Exchange Rates API (`/api/rates`)
+
+### 4.1 Get Multi-Currency Exchange Rates
+
+- **Method**: `GET`
+- **Path**: `/api/rates`
+- **Access**: Public / Optional Authentication (merges user `customExchangeRates` if authenticated)
+- **Description**: Returns foreign exchange rates against USD, cached for 24h from `open.er-api.com` with baseline fallback rates when offline.
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "baseCurrency": "USD",
+      "rates": {
+        "USD": 1.0,
+        "BDT": 110.0,
+        "EUR": 0.92,
+        "GBP": 0.79,
+        "INR": 83.0,
+        "CAD": 1.36,
+        "AUD": 1.52,
+        "JPY": 155.0
+      },
+      "fetchedAt": "2026-11-06T12:00:00.000Z",
+      "isFallback": false
+    }
+  }
+  ```
+
+---
+
+## 5. Accounts & Wallets API (`/api/accounts`)
+
+### 5.1 List Accounts & Total Balance Summary
+
+- **Method**: `GET`
+- **Path**: `/api/accounts`
+- **Access**: Private (Authenticated)
+- **Query Parameters**:
+  - `includeArchived` (`boolean`, optional, default: `false`)
+- **Description**: Fetches all user wallets/accounts, with each account balance converted to the user's `defaultCurrency` and an aggregated `totalBalance`.
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "accounts": [
+        {
+          "id": "64f1a2b3c4d5e6f7a8b9c0d1",
+          "name": "Main Checking",
+          "type": "bank",
+          "balance": 1500.0,
+          "currency": "USD",
+          "convertedBalance": 1500.0,
+          "color": "#10b981",
+          "icon": "Building",
+          "isArchived": false,
+          "createdAt": "2026-11-06T12:00:00.000Z",
+          "updatedAt": "2026-11-06T12:00:00.000Z"
+        }
+      ],
+      "totalBalance": 1500.0,
+      "currency": "USD"
+    }
+  }
+  ```
+
+### 5.2 Get Account by ID
+
+- **Method**: `GET`
+- **Path**: `/api/accounts/:id`
+- **Access**: Private (Authenticated)
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "id": "64f1a2b3c4d5e6f7a8b9c0d1",
+      "name": "bKash Personal",
+      "type": "bkash",
+      "balance": 12500.0,
+      "currency": "BDT",
+      "color": "#e11d48",
+      "icon": "Smartphone",
+      "isArchived": false
+    }
+  }
+  ```
+- **Error Responses**:
+  - `404 Not Found` — Account not found or unauthorized.
+
+### 5.3 Create Account
+
+- **Method**: `POST`
+- **Path**: `/api/accounts`
+- **Access**: Private (Authenticated)
+- **Request Body**:
+
+  | Field      | Type     | Required | Description                                                     |
+  | :--------- | :------- | :------- | :-------------------------------------------------------------- |
+  | `name`     | `string` | Yes      | 1–100 characters                                                |
+  | `type`     | `string` | Yes      | `'cash' \| 'bank' \| 'bkash' \| 'nagad' \| 'credit' \| 'other'` |
+  | `balance`  | `number` | No       | Initial balance (default 0)                                     |
+  | `currency` | `string` | No       | 3-letter currency code (default `'USD'`)                        |
+  | `color`    | `string` | No       | Hex color code (default `'#10b981'`)                            |
+  | `icon`     | `string` | No       | Icon identifier (default `'Wallet'`)                            |
+
+- **Response (201 Created)**:
+  ```json
+  {
+    "success": true,
+    "message": "Account created successfully",
+    "data": {
+      "id": "64f1a2b3c4d5e6f7a8b9c0d1",
+      "name": "Nagad Wallet",
+      "type": "nagad",
+      "balance": 5000.0,
+      "currency": "BDT",
+      "color": "#ea580c",
+      "icon": "Smartphone",
+      "isArchived": false
+    }
+  }
+  ```
+
+### 5.4 Update Account
+
+- **Method**: `PATCH`
+- **Path**: `/api/accounts/:id`
+- **Access**: Private (Authenticated)
+- **Request Body**: All fields in `POST /api/accounts` are optional, plus `isArchived` (`boolean`).
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Account updated successfully",
+    "data": {
+      "id": "64f1a2b3c4d5e6f7a8b9c0d1",
+      "name": "Updated Wallet",
+      "balance": 6000.0
+    }
+  }
+  ```
+
+### 5.5 Delete or Archive Account
+
+- **Method**: `DELETE`
+- **Path**: `/api/accounts/:id`
+- **Access**: Private (Authenticated)
+- **Description**: Hard-deletes account if no transactions exist. If transaction history exists, safely archives it (`isArchived: true`) to preserve audit trail.
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Account deleted successfully.",
+    "data": { "archived": false }
+  }
+  ```
+
+### 5.6 Inter-Account Fund Transfer
+
+- **Method**: `POST`
+- **Path**: `/api/accounts/transfer`
+- **Access**: Private (Authenticated)
+- **Description**: Atomically deducts source wallet, performs cross-currency conversion (or uses manual destination amount override), credits destination wallet, and creates a linked `transfer` transaction.
+- **Request Body**:
+
+  | Field               | Type     | Required | Description                                             |
+  | :------------------ | :------- | :------- | :------------------------------------------------------ |
+  | `fromAccountId`     | `string` | Yes      | 24-character ObjectId of source wallet                  |
+  | `toAccountId`       | `string` | Yes      | 24-character ObjectId of destination wallet             |
+  | `amount`            | `number` | Yes      | Positive amount in source currency                      |
+  | `destinationAmount` | `number` | No       | Optional manual override amount in destination currency |
+  | `description`       | `string` | No       | Optional description                                    |
+  | `date`              | `string` | No       | ISO Date string (defaults to now)                       |
+
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Transfer completed successfully",
+    "data": {
+      "transaction": {
+        "id": "64f1a2b3c4d5e6f7a8b9c0d9",
+        "type": "transfer",
+        "amount": 100.0,
+        "currency": "USD",
+        "destinationAmount": 11000.0,
+        "destinationCurrency": "BDT"
+      },
+      "fromAccount": { "id": "...", "balance": 900.0 },
+      "toAccount": { "id": "...", "balance": 21000.0 }
+    }
+  }
+  ```

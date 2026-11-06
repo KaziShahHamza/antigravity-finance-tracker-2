@@ -3,6 +3,7 @@
 // Root HTML layout establishing font, styling, ThemeProvider, QueryProvider, and metadata for the application.
 
 import { AuthProvider } from '@/context/AuthContext';
+import { CurrencyProvider } from '@/context/CurrencyContext';
 import { QueryProvider } from '@/context/QueryProvider';
 import { ThemeProvider } from '@/context/ThemeProvider';
 import type { Metadata } from 'next';
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body className="page-shell">
         <QueryProvider>
           <ThemeProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <CurrencyProvider>{children}</CurrencyProvider>
+            </AuthProvider>
           </ThemeProvider>
         </QueryProvider>
       </body>
