@@ -69,11 +69,37 @@ describe('ratesService Unit Tests', () => {
         lean: vi.fn().mockResolvedValue(null),
       } as unknown as ReturnType<typeof ExchangeRate.findOne>);
 
-      // fetch will fail in unit test environment or return null
+      // Explicitly mock network failure so unit test never calls real network or attempts DB save
+      vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('Network offline'));
+
       const result = await getExchangeRates();
       expect(result.baseCurrency).toBe('USD');
+      expect(result.isFallback).toBe(true);
       expect(result.rates.USD).toBe(1.0);
       expect(result.rates.BDT).toBe(BASELINE_RATES.BDT);
+    });
+
+    it('fetches fresh rates and updates cache when cache is missing and fetch succeeds', async () => {
+      vi.spyOn(ExchangeRate, 'findOne').mockReturnValue({
+        lean: vi.fn().mockResolvedValue(null),
+      } as unknown as ReturnType<typeof ExchangeRate.findOne>);
+
+      const mockFindOneAndUpdate = vi
+        .spyOn(ExchangeRate, 'findOneAndUpdate')
+        .mockResolvedValue({} as unknown as ReturnType<typeof ExchangeRate.findOneAndUpdate>);
+
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: 'success',
+          rates: { USD: 1.0, BDT: 115.0, EUR: 0.95 },
+        }),
+      } as unknown as Response);
+
+      const result = await getExchangeRates();
+      expect(result.isFallback).toBe(false);
+      expect(result.rates.BDT).toBe(115.0);
+      expect(mockFindOneAndUpdate).toHaveBeenCalled();
     });
 
     it('returns cached rates if valid cache exists in MongoDB', async () => {
