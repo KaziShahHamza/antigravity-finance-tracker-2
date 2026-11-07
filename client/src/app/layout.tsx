@@ -12,6 +12,11 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Finance Tracker',
   description: 'Track multi-currency wallets, budgets, transactions, and analytics.',
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }, { url: '/favicon.ico' }],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
