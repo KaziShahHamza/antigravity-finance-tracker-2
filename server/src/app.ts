@@ -9,6 +9,7 @@ import { env } from './config/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import accountRoutes from './routes/accountRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import budgetRoutes from './routes/budgetRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import ocrRoutes from './routes/ocrRoutes.js';
 import ratesRoutes from './routes/ratesRoutes.js';
@@ -47,6 +48,7 @@ export const createApp = (): Application => {
   // API Routes
   app.use('/api/accounts', accountRoutes);
   app.use('/api/auth', authRoutes);
+  app.use('/api/budgets', budgetRoutes);
   app.use('/api/categories', categoryRoutes);
   app.use('/api/ocr', ocrRoutes);
   app.use('/api/rates', ratesRoutes);

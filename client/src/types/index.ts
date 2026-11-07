@@ -121,11 +121,40 @@ export interface TransactionFilterParams {
 
 export interface Budget {
   id: string;
-  categoryId: string;
+  _id?: string;
+  categoryId: string | PopulatedCategory;
   month: number;
   year: number;
   limitAmount: number;
   currency: string;
+}
+
+export type AlertTier = 'normal' | 'warning' | 'exceeded';
+
+export interface BudgetProgressItem {
+  id: string;
+  _id?: string;
+  categoryId: PopulatedCategory;
+  month: number;
+  year: number;
+  limitAmount: number;
+  currency: string;
+  spent: number;
+  remaining: number;
+  percentage: number;
+  alertTier: AlertTier;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface MonthlyBudgetsData {
+  budgets: BudgetProgressItem[];
+  totalBudgeted: number;
+  totalSpent: number;
+  remaining: number;
+  overallPercentage: number;
+  month: number;
+  year: number;
 }
 
 export interface ApiResponse<T = unknown> {

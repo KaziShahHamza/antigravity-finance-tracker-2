@@ -814,3 +814,122 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
   - `400 Bad Request` — No file uploaded or unsupported file format.
   - `413 Payload Too Large` — File exceeds 5MB memory guardrail.
   - `429 Too Many Requests` — Rate limit exceeded.
+
+---
+
+## 9. Budgets API (`/api/budgets`)
+
+### 9.1 Get Monthly Budgets with Spending Progress
+
+- **Method**: `GET`
+- **Path**: `/api/budgets?month=&year=`
+- **Access**: Private (Authenticated)
+- **Query Parameters**:
+  - `month` (optional number 1–12, defaults to current month)
+  - `year` (optional number 2020–2100, defaults to current year)
+- **Description**: Computes category-level monthly expense totals against budget limits, calculates percentage used and remaining balances, and determines 3-tier visual alerts (`normal` < 80%, `warning` 80–99%, `exceeded` >= 100%).
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Monthly budgets retrieved successfully",
+    "data": {
+      "budgets": [
+        {
+          "id": "672f1234567890abcdef1234",
+          "categoryId": {
+            "_id": "672f1234567890abcdef0001",
+            "name": "Groceries",
+            "icon": "ShoppingCart",
+            "color": "#10b981",
+            "type": "expense"
+          },
+          "month": 11,
+          "year": 2026,
+          "limitAmount": 500,
+          "currency": "USD",
+          "spent": 420.5,
+          "remaining": 79.5,
+          "percentage": 84,
+          "alertTier": "warning",
+          "createdAt": "2026-11-01T00:00:00.000Z",
+          "updatedAt": "2026-11-01T00:00:00.000Z"
+        }
+      ],
+      "totalBudgeted": 500,
+      "totalSpent": 420.5,
+      "remaining": 79.5,
+      "overallPercentage": 84,
+      "month": 11,
+      "year": 2026
+    }
+  }
+  ```
+
+---
+
+### 9.2 Create Category Budget Limit
+
+- **Method**: `POST`
+- **Path**: `/api/budgets`
+- **Access**: Private (Authenticated)
+- **Request Body**:
+  ```json
+  {
+    "categoryId": "672f1234567890abcdef0001",
+    "month": 11,
+    "year": 2026,
+    "limitAmount": 500,
+    "currency": "USD"
+  }
+  ```
+- **Response (201 Created)**:
+  ```json
+  {
+    "success": true,
+    "message": "Budget limit created successfully",
+    "data": { ... }
+  }
+  ```
+- **Error Responses**:
+  - `400 Bad Request` — Validation error (non-positive limit, invalid category ID format).
+  - `404 Not Found` — Category not found or does not belong to user.
+  - `409 Conflict` (`BUDGET_ALREADY_EXISTS`) — Budget limit already exists for this category, month, and year.
+
+---
+
+### 9.3 Update Budget Limit
+
+- **Method**: `PATCH`
+- **Path**: `/api/budgets/:id`
+- **Access**: Private (Authenticated)
+- **Request Body**:
+  ```json
+  {
+    "limitAmount": 600,
+    "currency": "USD"
+  }
+  ```
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Budget limit updated successfully",
+    "data": { ... }
+  }
+  ```
+
+---
+
+### 9.4 Delete Budget Limit
+
+- **Method**: `DELETE`
+- **Path**: `/api/budgets/:id`
+- **Access**: Private (Authenticated)
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Budget limit deleted successfully"
+  }
+  ```
