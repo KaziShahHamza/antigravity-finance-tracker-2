@@ -133,20 +133,20 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 5.1: Budget Management & Overspending Alerts (`/budgets`)
 
-- [ ] **Task 5.1.1 — Budget CRUD, Monthly Progress API & Integration Tests**: Implement `GET /api/budgets?month=&year=` (computes category spend, percentage used, and alert tier: `'normal' | 'warning' | 'exceeded'`), `POST /api/budgets`, `PATCH /api/budgets/:id`, `DELETE /api/budgets/:id`, `server/tests/integration/budgets.test.ts`, and `docs/API.md` update.
-- [ ] **Task 5.1.2 — Budgets Page & Overspending Alert Cards**: Build `BudgetCard.tsx` (`<80%` Emerald, `80–99%` Amber Warning, `100%+` Red Overspent alert badge), `BudgetModal.tsx`, and `/budgets` page.
+- [x] **Task 5.1.1 — Budget CRUD, Monthly Progress API & Integration Tests**: Implement `GET /api/budgets?month=&year=` (computes category spend, percentage used, and alert tier: `'normal' | 'warning' | 'exceeded'`), `POST /api/budgets`, `PATCH /api/budgets/:id`, `DELETE /api/budgets/:id`, `server/tests/integration/budgets.test.ts`, and `docs/API.md` update.
+- [x] **Task 5.1.2 — Budgets Page & Overspending Alert Cards**: Build `BudgetCard.tsx` (`<80%` Emerald, `80–99%` Amber Warning, `100%+` Red Overspent alert badge), `BudgetModal.tsx`, and `/budgets` page.
 
 ### Subphase 5.2: Dashboard Aggregation API & Interactive UI (`/dashboard`)
 
-- [ ] **Task 5.2.1 — Dashboard Summary API & Integration Tests**: Implement `GET /api/dashboard/summary` (Total Balance, Monthly Income/Expenses, Net Savings Rate, 6-month Cash Flow series, Category Breakdown, Recent Transactions, Budget Alerts), `server/tests/integration/dashboard.test.ts`, and `docs/API.md` update.
-- [ ] **Task 5.2.2 — Hydration-Safe Local AM/PM Greeting & Metric Cards**: Build `TimeGreeting.tsx` (`"Good morning/afternoon/evening, [Name]"` + live `12-hour AM/PM` local time guarded against SSR mismatch) and `MetricCards.tsx`.
-- [ ] **Task 5.2.3 — Recharts Cash Flow & Expense Breakdown Charts**: Build `CashFlowChart.tsx` (Income vs. Expense grouped bar chart) and `ExpenseBreakdownChart.tsx` (category donut chart) with dark/light mode tooltips.
-- [ ] **Task 5.2.4 — Recent Transactions Widget & Dashboard Page Assembly**: Build `RecentTransactions.tsx` and assemble `/dashboard` with quick actions (`+ Add Transaction`, `Transfer`, `Scan Receipt`).
+- [x] **Task 5.2.1 — Dashboard Summary API & Integration Tests**: Implement `GET /api/dashboard/summary` (Total Balance, Monthly Income/Expenses, Net Savings Rate, 6-month Cash Flow series, Category Breakdown, Recent Transactions, Budget Alerts), `server/tests/integration/dashboard.test.ts`, and `docs/API.md` update.
+- [x] **Task 5.2.2 — Hydration-Safe Local AM/PM Greeting & Metric Cards**: Build `TimeGreeting.tsx` (`"Good morning/afternoon/evening, [Name]"` + live `12-hour AM/PM` local time guarded against SSR mismatch) and `MetricCards.tsx`.
+- [x] **Task 5.2.3 — Recharts Cash Flow & Expense Breakdown Charts**: Build `CashFlowChart.tsx` (Income vs. Expense grouped bar chart) and `ExpenseBreakdownChart.tsx` (category donut chart) with dark/light mode tooltips.
+- [x] **Task 5.2.4 — Recent Transactions Widget & Dashboard Page Assembly**: Build `RecentTransactions.tsx` and assemble `/dashboard` with quick actions (`+ Add Transaction`, `Transfer`, `Scan Receipt`).
 
 ### Subphase 5.3: Client-Side CSV & PDF Financial Reports
 
-- [ ] **Task 5.3.1 — Client-Side CSV & PDF Export Utilities + Unit Tests**: Implement `client/src/lib/exportCsv.ts` (`papaparse`) and `client/src/lib/exportPdf.ts` (`jspdf` + `jspdf-autotable` statement), unit tests (`client/src/lib/__tests__/exports.test.ts`), and wire export buttons into `/transactions` and `/dashboard`.
-- [ ] **Task 5.3.2 — Budgets, Dashboard & Export E2E Tests + Phase 5 Gate**: Add `client/e2e/budgetsAndExports.spec.ts` verifying budget overspending alerts, AM/PM dashboard rendering, and CSV/PDF download triggers; run Phase 5 quality gate.
+- [x] **Task 5.3.1 — Client-Side CSV & PDF Export Utilities + Unit Tests**: Implement `client/src/lib/exportCsv.ts` (`papaparse`) and `client/src/lib/exportPdf.ts` (`jspdf` + `jspdf-autotable` statement), unit tests (`client/src/lib/__tests__/exports.test.ts`), and wire export buttons into `/transactions` and `/dashboard`.
+- [x] **Task 5.3.2 — Budgets, Dashboard & Export E2E Tests + Phase 5 Gate**: Add `client/e2e/budgetsAndExports.spec.ts` verifying budget overspending alerts, AM/PM dashboard rendering, and CSV/PDF download triggers; run Phase 5 quality gate.
 
 ---
 

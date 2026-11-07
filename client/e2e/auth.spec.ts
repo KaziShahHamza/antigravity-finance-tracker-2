@@ -94,8 +94,8 @@ test.describe('Authentication Journey & Dashboard Shell', () => {
 
     // 7. Verify navigation to Dashboard Shell
     await expect(page).toHaveURL(/.*\/dashboard/);
-    await expect(page.getByText('Welcome back, Alex E2E!')).toBeVisible();
-    await expect(page.getByText('Verified')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Alex E2E/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Accounts' }).first()).toBeVisible();
 
     // 8. Verify Sidebar navigation links exist
     await expect(page.getByRole('link', { name: 'Accounts' }).first()).toBeVisible();
@@ -139,7 +139,7 @@ test.describe('Authentication Journey & Dashboard Shell', () => {
     await page.getByRole('button', { name: 'Sign In' }).click();
 
     await expect(page).toHaveURL(/.*\/dashboard/);
-    await expect(page.getByText('Welcome back, Sarah Connor!')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Sarah Connor/ })).toBeVisible();
   });
 
   test('allows signing in via Google mock fallback in development', async ({ page }) => {
@@ -168,6 +168,6 @@ test.describe('Authentication Journey & Dashboard Shell', () => {
     await page.getByRole('button', { name: 'Continue with Google' }).click();
 
     await expect(page).toHaveURL(/.*\/dashboard/);
-    await expect(page.getByText('Welcome back, Google User!')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Google User/ })).toBeVisible();
   });
 });

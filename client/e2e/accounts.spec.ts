@@ -8,7 +8,31 @@ test.describe('Wallets & Accounts Management (/accounts)', () => {
   test.beforeEach(async ({ page }) => {
     // Mock user profile / authentication
     await page.addInitScript(() => {
-      window.localStorage.setItem('accessToken', 'mock_e2e_token');
+      window.localStorage.setItem('aft_refresh_token', 'mock_refresh_token');
+      window.localStorage.setItem(
+        'aft_user',
+        JSON.stringify({
+          id: 'u123',
+          name: 'Alex E2E',
+          email: 'alex@example.com',
+          defaultCurrency: 'USD',
+          isVerified: true,
+          themePreference: 'system',
+        })
+      );
+    });
+
+    // Mock /api/auth/refresh
+    await page.route('**/api/auth/refresh', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          accessToken: 'mock_refreshed_access_token',
+          refreshToken: 'mock_refresh_token',
+        }),
+      });
     });
 
     // Mock /api/users/me
@@ -192,7 +216,7 @@ test.describe('Wallets & Accounts Management (/accounts)', () => {
 
     // Transfer Modal appears
     await expect(page.getByRole('dialog')).toBeVisible();
-    await expect(page.getByText('Transfer Funds')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Transfer Funds' })).toBeVisible();
 
     // Enter transfer amount
     await page.getByLabel(/transfer amount/i).fill('200');

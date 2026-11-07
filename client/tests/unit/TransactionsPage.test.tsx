@@ -29,6 +29,20 @@ vi.mock('@/context/CurrencyContext', () => ({
   }),
 }));
 
+vi.mock('@/context/AuthContext', () => ({
+  useAuth: () => ({
+    user: {
+      id: 'test-user',
+      name: 'Test User',
+      email: 'test@example.com',
+      defaultCurrency: 'USD',
+      isVerified: true,
+      themePreference: 'system',
+    },
+    isAuthenticated: true,
+  }),
+}));
+
 describe('TransactionsPage Component', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
