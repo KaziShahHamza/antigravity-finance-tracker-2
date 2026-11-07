@@ -16,8 +16,9 @@ import { ExpenseBreakdownChart } from '@/components/dashboard/ExpenseBreakdownCh
 import { RecentTransactions } from '@/components/dashboard/RecentTransactions';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
+import { exportTransactionsToPdf } from '@/lib/exportPdf';
 import { DashboardSummary } from '@/types';
-import { AlertCircle, AlertTriangle, PieChart, PlusCircle, Wallet } from 'lucide-react';
+import { AlertCircle, AlertTriangle, FileText, PieChart, PlusCircle, Wallet } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -74,6 +75,23 @@ export default function DashboardPage() {
               <span>Budgets</span>
             </Button>
           </Link>
+          {summary && summary.recentTransactions.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 text-xs text-fg-muted hover:text-fg"
+              onClick={() =>
+                exportTransactionsToPdf({
+                  transactions: summary.recentTransactions,
+                  user,
+                  baseCurrency: summary.currency,
+                })
+              }
+            >
+              <FileText className="h-4 w-4" />
+              <span>Export Statement</span>
+            </Button>
+          )}
         </div>
       </Card>
 
