@@ -995,3 +995,22 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
     }
   }
   ```
+
+---
+
+## 11. System Health API (`/api/health`)
+
+### 11.1 Server Health & Heartbeat
+
+- **Method**: `GET`
+- **Path**: `/api/health`
+- **Access**: Public
+- **Description**: Monitored by Render/cloud load balancers and deployment probes to verify service uptime and operational status.
+- **Response (200 OK)**:
+  ```json
+  {
+    "status": "ok",
+    "uptime": 1284.56,
+    "timestamp": "2026-11-07T16:40:00.000Z"
+  }
+  ```

@@ -156,12 +156,12 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 6.1: UX Polish, Landing Page & Empty States
 
-- [ ] **Task 6.1.1 — Modern Landing Page & Empty/Loading Skeletons**: Build `client/src/app/page.tsx` landing page with feature highlights and auth CTAs, plus skeleton loaders and empty states across dashboard views.
+- [x] **Task 6.1.1 — Modern Landing Page & Empty/Loading Skeletons**: Build `client/src/app/page.tsx` landing page with feature highlights and auth CTAs, plus skeleton loaders and empty states across dashboard views.
 
 ### Subphase 6.2: Security Audit, Full Test Suite & Production Build Verification
 
-- [ ] **Task 6.2.1 — Five-Point Security Review, Audits & Full Suite Gate**: Execute the [`QUALITY.md`](QUALITY.md) 5 security checks (auth/ownership, Zod validation, secret hygiene, rate/upload limits, atomic balance integrity), run `npm run audit`, `npm test`, `npm run test:e2e`, and `npm run build` across `server/` and `client/`.
+- [x] **Task 6.2.1 — Five-Point Security Review, Audits & Full Suite Gate**: Execute the [`QUALITY.md`](QUALITY.md) 5 security checks (auth/ownership, Zod validation, secret hygiene, rate/upload limits, atomic balance integrity), run `npm run audit`, `npm test`, `npm run test:e2e`, and `npm run build` across `server/` and `client/`.
 
 ### Subphase 6.3: Deployment Configuration & Final Documentation
 
-- [ ] **Task 6.3.1 — Deployment Blueprints & `docs/DEPLOYMENT.md`**: Create `render.yaml`, verify Vercel config in `client/next.config.ts`, synchronize `docs/DB.md` and `docs/API.md`, and write `docs/DEPLOYMENT.md` with step-by-step setup for MongoDB Atlas, Resend, Google OAuth, Cloudinary, Gemini API, Render, and Vercel.
+- [x] **Task 6.3.1 — Deployment Blueprints & `docs/DEPLOYMENT.md`**: Create `render.yaml`, verify Vercel config in `client/next.config.ts`, synchronize `docs/DB.md` and `docs/API.md`, and write `docs/DEPLOYMENT.md` with step-by-step setup for MongoDB Atlas, Resend, Google OAuth, Cloudinary, Gemini API, Render, and Vercel.

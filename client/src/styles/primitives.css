@@ -19,11 +19,23 @@
   }
 
   .hero-title {
-    @apply text-4xl font-extrabold tracking-tight sm:text-5xl;
+    @apply text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-fg;
   }
 
   .hero-subtitle {
-    @apply mt-4 max-w-lg text-fg-muted;
+    @apply mt-5 max-w-2xl text-base sm:text-lg text-fg-muted;
+  }
+
+  .landing-section {
+    @apply py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  }
+
+  .landing-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .feature-card {
+    @apply card flex flex-col gap-3 p-6 transition-all duration-200 hover:border-brand-500/40 hover:shadow-md;
   }
 
   /* Button Primitives */
