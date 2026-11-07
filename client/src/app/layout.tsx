@@ -10,7 +10,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Antigravity Finance Tracker',
+  title: 'Finance Tracker',
   description: 'Track multi-currency wallets, budgets, transactions, and analytics.',
 };
 

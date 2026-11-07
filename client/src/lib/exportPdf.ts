@@ -44,7 +44,7 @@ export function exportTransactionsToPdf({
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
-  doc.text('ANTIGRAVITY FINANCE', 40, 34);
+  doc.text('FINANCE TRACKER', 40, 34);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);

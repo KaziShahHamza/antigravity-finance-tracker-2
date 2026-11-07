@@ -99,7 +99,7 @@ export function HeroSection() {
                 <div className="w-3 h-3 rounded-full bg-amber-500" />
                 <div className="w-3 h-3 rounded-full bg-emerald-500" />
                 <span className="text-xs text-fg-muted font-mono ml-2">
-                  antigravity-finance // overview
+                  finance-tracker // overview
                 </span>
               </div>
               <Badge variant="success">Reconciled & Synced</Badge>

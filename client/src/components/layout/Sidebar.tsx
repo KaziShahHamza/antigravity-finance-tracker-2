@@ -47,7 +47,7 @@ export function Sidebar({ onClose, isMobile = false }: SidebarProps) {
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">
               <Wallet className="h-5 w-5" />
             </span>
-            <span>Antigravity</span>
+            <span>Finance Tracker</span>
           </Link>
           {isMobile && onClose && (
             <button

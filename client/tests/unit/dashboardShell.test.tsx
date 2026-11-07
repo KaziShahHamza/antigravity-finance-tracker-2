@@ -65,7 +65,7 @@ describe('Dashboard Shell Components', () => {
 
       render(<Sidebar />);
 
-      expect(screen.getByText('Antigravity')).toBeInTheDocument();
+      expect(screen.getByText('Finance Tracker')).toBeInTheDocument();
       expect(screen.getByText('Dashboard')).toBeInTheDocument();
       expect(screen.getByText('Accounts')).toBeInTheDocument();
       expect(screen.getByText('Transactions')).toBeInTheDocument();

@@ -28,7 +28,7 @@ export function LandingHeader() {
           <div className="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-sm">
             <TrendingUp className="w-5 h-5" />
           </div>
-          <span>Antigravity Finance</span>
+          <span>Finance Tracker</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-fg-muted">

@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">
             <Wallet className="h-5 w-5" />
           </span>
-          <span className="hidden sm:inline">Antigravity Finance</span>
+          <span className="hidden sm:inline">Finance Tracker</span>
         </Link>
         <ThemeToggle />
       </header>
@@ -29,7 +29,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       {/* Footer copyright */}
       <footer className="mt-8 text-center text-xs text-fg-subtle">
-        &copy; {new Date().getFullYear()} Antigravity Finance Tracker. All rights reserved.
+        &copy; {new Date().getFullYear()} Finance Tracker. All rights reserved.
       </footer>
     </div>
   );

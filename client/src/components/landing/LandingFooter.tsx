@@ -12,7 +12,7 @@ export function LandingFooter() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 font-semibold text-fg">
           <TrendingUp className="w-4 h-4 text-brand-600" />
-          <span>Antigravity Finance</span>
+          <span>Finance Tracker</span>
         </div>
 
         <div className="flex items-center gap-6 text-xs">
@@ -31,7 +31,7 @@ export function LandingFooter() {
         </div>
 
         <div className="text-xs text-fg-subtle">
-          &copy; {new Date().getFullYear()} Antigravity Finance. All rights reserved.
+          &copy; {new Date().getFullYear()} Finance Tracker. All rights reserved.
         </div>
       </div>
     </footer>
