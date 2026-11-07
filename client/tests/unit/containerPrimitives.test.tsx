@@ -1,9 +1,10 @@
 // client/tests/unit/containerPrimitives.test.tsx
 
-// Unit tests for Card, Modal, Badge, Spinner, Toast, and Skeleton UI primitives.
+// Unit tests for Card, Modal, Badge, Spinner, Toast, Skeleton, and EmptyState UI primitives.
 
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { Modal } from '@/components/ui/Modal';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
@@ -86,5 +87,20 @@ describe('Skeleton Primitive', () => {
     const skeleton = container.firstChild as HTMLElement;
     expect(skeleton.getAttribute('aria-hidden')).toBe('true');
     expect(skeleton.className).toContain('skeleton');
+  });
+});
+
+describe('EmptyState Primitive', () => {
+  it('renders title, description, and action button', () => {
+    render(
+      <EmptyState
+        title="No Transactions Found"
+        description="Try adjusting your filter options"
+        action={<button>Clear Filters</button>}
+      />
+    );
+    expect(screen.getByText('No Transactions Found')).toBeDefined();
+    expect(screen.getByText('Try adjusting your filter options')).toBeDefined();
+    expect(screen.getByRole('button', { name: 'Clear Filters' })).toBeDefined();
   });
 });

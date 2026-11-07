@@ -156,7 +156,7 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 6.1: UX Polish, Landing Page & Empty States
 
-- [ ] **Task 6.1.1 — Modern Landing Page & Empty/Loading Skeletons**: Build `client/src/app/page.tsx` landing page with feature highlights and auth CTAs, plus skeleton loaders and empty states across dashboard views.
+- [x] **Task 6.1.1 — Modern Landing Page & Empty/Loading Skeletons**: Build `client/src/app/page.tsx` landing page with feature highlights and auth CTAs, plus skeleton loaders and empty states across dashboard views.
 
 ### Subphase 6.2: Security Audit, Full Test Suite & Production Build Verification
 
