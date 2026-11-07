@@ -160,7 +160,7 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 6.2: Security Audit, Full Test Suite & Production Build Verification
 
-- [ ] **Task 6.2.1 — Five-Point Security Review, Audits & Full Suite Gate**: Execute the [`QUALITY.md`](QUALITY.md) 5 security checks (auth/ownership, Zod validation, secret hygiene, rate/upload limits, atomic balance integrity), run `npm run audit`, `npm test`, `npm run test:e2e`, and `npm run build` across `server/` and `client/`.
+- [x] **Task 6.2.1 — Five-Point Security Review, Audits & Full Suite Gate**: Execute the [`QUALITY.md`](QUALITY.md) 5 security checks (auth/ownership, Zod validation, secret hygiene, rate/upload limits, atomic balance integrity), run `npm run audit`, `npm test`, `npm run test:e2e`, and `npm run build` across `server/` and `client/`.
 
 ### Subphase 6.3: Deployment Configuration & Final Documentation
 
