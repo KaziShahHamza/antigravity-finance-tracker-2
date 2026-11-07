@@ -113,4 +113,7 @@ Built-in **local development fallbacks** allow the app to run immediately even b
 - [Architecture Specification](docs/ARCHITECTURE.md)
 - [Phased Project Plan](docs/PROJECT_PLAN.md)
 - [Quality, Testing & Review Workflow](docs/QUALITY.md)
+- [Database & Mongoose Schema Reference](docs/DB.md)
+- [REST API Endpoint Documentation](docs/API.md)
+- [Production Deployment Guide (Vercel + Render + Atlas)](docs/DEPLOYMENT.md)
 - [Agent Guidelines](AGENTS.md)

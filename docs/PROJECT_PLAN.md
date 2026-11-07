@@ -164,4 +164,4 @@ Every subphase is broken down into **numbered 2–5 minute Atomic Tasks** (`Task
 
 ### Subphase 6.3: Deployment Configuration & Final Documentation
 
-- [ ] **Task 6.3.1 — Deployment Blueprints & `docs/DEPLOYMENT.md`**: Create `render.yaml`, verify Vercel config in `client/next.config.ts`, synchronize `docs/DB.md` and `docs/API.md`, and write `docs/DEPLOYMENT.md` with step-by-step setup for MongoDB Atlas, Resend, Google OAuth, Cloudinary, Gemini API, Render, and Vercel.
+- [x] **Task 6.3.1 — Deployment Blueprints & `docs/DEPLOYMENT.md`**: Create `render.yaml`, verify Vercel config in `client/next.config.ts`, synchronize `docs/DB.md` and `docs/API.md`, and write `docs/DEPLOYMENT.md` with step-by-step setup for MongoDB Atlas, Resend, Google OAuth, Cloudinary, Gemini API, Render, and Vercel.

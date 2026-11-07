@@ -39,9 +39,7 @@ describe('HomePage Landing Component', () => {
     render(<HomePage />);
 
     expect(screen.getAllByText('Antigravity Finance').length).toBeGreaterThan(0);
-    expect(
-      screen.getByText(/Take Command of Your Wealth/i)
-    ).toBeDefined();
+    expect(screen.getByText(/Take Command of Your Wealth/i)).toBeDefined();
     expect(screen.getByText('Multi-Currency Wallets')).toBeDefined();
     expect(screen.getByText('AI Receipt Scanning (OCR)')).toBeDefined();
     expect(screen.getByText('Budgets & Overspending Alerts')).toBeDefined();
