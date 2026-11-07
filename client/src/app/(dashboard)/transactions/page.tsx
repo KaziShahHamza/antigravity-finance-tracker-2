@@ -5,7 +5,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus, Sparkles, AlertCircle } from 'lucide-react';
+import { Plus, Sparkles, AlertCircle, FileSpreadsheet, FileText } from 'lucide-react';
 import type {
   Account,
   Category,
@@ -17,6 +17,9 @@ import { Button } from '@/components/ui/Button';
 import { FiltersBar } from '@/components/transactions/FiltersBar';
 import { TransactionTable } from '@/components/transactions/TransactionTable';
 import { TransactionModal } from '@/components/transactions/TransactionModal';
+import { useAuth } from '@/context/AuthContext';
+import { exportTransactionsToCsv } from '@/lib/exportCsv';
+import { exportTransactionsToPdf } from '@/lib/exportPdf';
 import { api } from '@/lib/api';
 
 interface TransactionsApiResponse {
@@ -25,6 +28,7 @@ interface TransactionsApiResponse {
 }
 
 export default function TransactionsPage() {
+  const { user } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [pagination, setPagination] = useState<PaginationMeta>({
     totalCount: 0,
@@ -174,12 +178,42 @@ export default function TransactionsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => exportTransactionsToCsv(transactions)}
+            disabled={transactions.length === 0}
+            className="flex items-center gap-1.5"
+            title="Export transactions to CSV spreadsheet"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Export CSV</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              exportTransactionsToPdf({
+                transactions,
+                user,
+                baseCurrency: user?.defaultCurrency || 'USD',
+              })
+            }
+            disabled={transactions.length === 0}
+            className="flex items-center gap-1.5"
+            title="Export styled financial statement PDF"
+          >
+            <FileText className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+            <span>Export PDF</span>
+          </Button>
+
           <Button
             variant="primary"
-            size="md"
+            size="sm"
             onClick={handleAddNew}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
             <span>Add Transaction</span>
