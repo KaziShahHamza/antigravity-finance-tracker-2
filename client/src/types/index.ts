@@ -157,6 +157,40 @@ export interface MonthlyBudgetsData {
   year: number;
 }
 
+export interface CashFlowPoint {
+  month: string;
+  year: number;
+  income: number;
+  expense: number;
+  net: number;
+}
+
+export interface CategoryBreakdownPoint {
+  categoryId: string;
+  name: string;
+  color: string;
+  icon: string;
+  amount: number;
+  percentage: number;
+}
+
+export interface DashboardSummary {
+  totalBalance: number;
+  monthlyIncome: number;
+  monthlyExpenses: number;
+  netSavings: number;
+  savingsRate: number;
+  currency: string;
+  cashFlowSeries: CashFlowPoint[];
+  categoryBreakdown: CategoryBreakdownPoint[];
+  recentTransactions: Transaction[];
+  budgetAlerts: {
+    warningCount: number;
+    exceededCount: number;
+    items: BudgetProgressItem[];
+  };
+}
+
 export interface ApiResponse<T = unknown> {
   success: boolean;
   message?: string;

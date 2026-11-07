@@ -199,10 +199,7 @@ export const createBudget = async (userId: string, input: CreateBudgetInput): Pr
     year: input.year,
   });
   if (existing) {
-    throw new HttpError(
-      'A budget limit already exists for this category, month, and year',
-      409
-    );
+    throw new HttpError('A budget limit already exists for this category, month, and year', 409);
   }
 
   const user = await User.findById(userId).select('defaultCurrency').lean();

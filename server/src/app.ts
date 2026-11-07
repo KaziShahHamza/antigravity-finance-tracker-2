@@ -11,6 +11,7 @@ import accountRoutes from './routes/accountRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import budgetRoutes from './routes/budgetRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 import ocrRoutes from './routes/ocrRoutes.js';
 import ratesRoutes from './routes/ratesRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
@@ -50,6 +51,7 @@ export const createApp = (): Application => {
   app.use('/api/auth', authRoutes);
   app.use('/api/budgets', budgetRoutes);
   app.use('/api/categories', categoryRoutes);
+  app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/ocr', ocrRoutes);
   app.use('/api/rates', ratesRoutes);
   app.use('/api/transactions', transactionRoutes);

@@ -933,3 +933,65 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
     "message": "Budget limit deleted successfully"
   }
   ```
+
+---
+
+## 10. Dashboard API (`/api/dashboard`)
+
+### 10.1 Get Unified Dashboard Summary
+
+- **Method**: `GET`
+- **Path**: `/api/dashboard/summary`
+- **Access**: Private (Authenticated)
+- **Description**: Returns consolidated financial analytics for the authenticated user, including Total Balance across wallets (in defaultCurrency), Monthly Income, Monthly Expense, Net Savings Rate %, 6-month Cash Flow series, category expense breakdown, recent 5 transactions, and budget alert counts.
+- **Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "message": "Dashboard summary retrieved successfully",
+    "data": {
+      "totalBalance": 2500,
+      "monthlyIncome": 4000,
+      "monthlyExpenses": 1000,
+      "netSavings": 3000,
+      "savingsRate": 75,
+      "currency": "USD",
+      "cashFlowSeries": [
+        { "month": "Jun", "year": 2026, "income": 3200, "expense": 1800, "net": 1400 },
+        { "month": "Jul", "year": 2026, "income": 3500, "expense": 1900, "net": 1600 },
+        { "month": "Aug", "year": 2026, "income": 3100, "expense": 2100, "net": 1000 },
+        { "month": "Sep", "year": 2026, "income": 3800, "expense": 2000, "net": 1800 },
+        { "month": "Oct", "year": 2026, "income": 4100, "expense": 2200, "net": 1900 },
+        { "month": "Nov", "year": 2026, "income": 4000, "expense": 1000, "net": 3000 }
+      ],
+      "categoryBreakdown": [
+        {
+          "categoryId": "672f1234567890abcdef0002",
+          "name": "Dining",
+          "color": "#ef4444",
+          "icon": "Utensils",
+          "amount": 1000,
+          "percentage": 100
+        }
+      ],
+      "recentTransactions": [
+        {
+          "id": "672f1234567890abcdef0010",
+          "type": "expense",
+          "amount": 1000,
+          "currency": "USD",
+          "convertedAmount": 1000,
+          "description": "Groceries & Dinners",
+          "date": "2026-11-10T00:00:00.000Z",
+          "accountId": { "name": "City Bank", "type": "bank", "currency": "USD" },
+          "categoryId": { "name": "Dining", "icon": "Utensils", "color": "#ef4444", "type": "expense" }
+        }
+      ],
+      "budgetAlerts": {
+        "warningCount": 0,
+        "exceededCount": 1,
+        "items": [ ... ]
+      }
+    }
+  }
+  ```
