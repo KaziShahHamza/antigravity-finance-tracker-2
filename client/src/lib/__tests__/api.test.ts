@@ -2,8 +2,37 @@
 
 // Unit tests for the frontend API client verifying header injection, 401 retry, and error parsing.
 
-import { apiClient, ApiError, getAccessToken, setAccessToken } from '@/lib/api';
+import { apiClient, ApiError, getAccessToken, getBaseUrl, setAccessToken } from '@/lib/api';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+describe('getBaseUrl', () => {
+  const originalEnv = process.env.NEXT_PUBLIC_API_URL;
+
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_API_URL = originalEnv;
+  });
+
+  it('defaults to http://localhost:5000/api when unset', () => {
+    delete process.env.NEXT_PUBLIC_API_URL;
+    expect(getBaseUrl()).toBe('http://localhost:5000/api');
+  });
+
+  it('normalizes base URL missing /api suffix and trailing slashes', () => {
+    process.env.NEXT_PUBLIC_API_URL = 'https://antigravity-finance-tracker-2.onrender.com';
+    expect(getBaseUrl()).toBe('https://antigravity-finance-tracker-2.onrender.com/api');
+
+    process.env.NEXT_PUBLIC_API_URL = 'https://antigravity-finance-tracker-2.onrender.com/';
+    expect(getBaseUrl()).toBe('https://antigravity-finance-tracker-2.onrender.com/api');
+  });
+
+  it('preserves /api suffix when already present', () => {
+    process.env.NEXT_PUBLIC_API_URL = 'https://antigravity-finance-tracker-2.onrender.com/api';
+    expect(getBaseUrl()).toBe('https://antigravity-finance-tracker-2.onrender.com/api');
+
+    process.env.NEXT_PUBLIC_API_URL = 'https://antigravity-finance-tracker-2.onrender.com/api/';
+    expect(getBaseUrl()).toBe('https://antigravity-finance-tracker-2.onrender.com/api');
+  });
+});
 
 describe('apiClient', () => {
   beforeEach(() => {

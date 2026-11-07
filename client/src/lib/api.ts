@@ -31,8 +31,10 @@ export const setRefreshToken = (token: string | null) => {
 
 export const getRefreshToken = () => refreshToken;
 
-const getBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+export const getBaseUrl = () => {
+  const raw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const trimmed = raw.replace(/\/+$/, '');
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
 };
 
 interface RequestOptions extends RequestInit {

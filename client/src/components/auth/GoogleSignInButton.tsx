@@ -61,31 +61,44 @@ export function GoogleSignInButton({
     [loginWithGoogle, onSuccess, onError]
   );
 
+  const callbackRef = React.useRef(handleCredentialResponse);
+  React.useEffect(() => {
+    callbackRef.current = handleCredentialResponse;
+  });
+
+  const isInitializedRef = React.useRef(false);
+
   React.useEffect(() => {
     if (!clientId || typeof window === 'undefined') return;
 
-    if (!document.getElementById('google-gis-script')) {
+    const initGis = () => {
+      if (window.google?.accounts?.id && !isInitializedRef.current) {
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: (res) => callbackRef.current?.(res.credential),
+        });
+        isInitializedRef.current = true;
+      }
+    };
+
+    const existingScript = document.getElementById('google-gis-script') as HTMLScriptElement | null;
+    if (!existingScript) {
       const script = document.createElement('script');
       script.id = 'google-gis-script';
       script.src = 'https://accounts.google.com/gsi/client';
       script.async = true;
       script.defer = true;
-      script.onload = () => {
-        if (window.google?.accounts?.id) {
-          window.google.accounts.id.initialize({
-            client_id: clientId,
-            callback: (res) => handleCredentialResponse(res.credential),
-          });
-        }
-      };
+      script.onload = initGis;
       document.body.appendChild(script);
     } else if (window.google?.accounts?.id) {
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: (res) => handleCredentialResponse(res.credential),
-      });
+      initGis();
+    } else {
+      existingScript.addEventListener('load', initGis);
+      return () => {
+        existingScript.removeEventListener('load', initGis);
+      };
     }
-  }, [clientId, handleCredentialResponse]);
+  }, [clientId]);
 
   const handleClick = async () => {
     if (clientId && window.google?.accounts?.id) {
