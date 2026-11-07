@@ -1,44 +1,22 @@
 // client/src/app/(dashboard)/budgets/page.tsx
 
-// Monthly budgets overview page with spending progress bars, overspending alert badges, and limit controls.
+// Monthly budgets overview page coordinating month navigation, progress cards, overspending alerts, and limit modals.
 
 'use client';
 
 import * as React from 'react';
-import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { Spinner } from '@/components/ui/Spinner';
 import { Toast } from '@/components/ui/Toast';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { BudgetCard } from '@/components/budgets/BudgetCard';
 import { BudgetModal } from '@/components/budgets/BudgetModal';
+import { BudgetMonthNavigator, MONTH_NAMES } from '@/components/budgets/BudgetMonthNavigator';
+import { BudgetOverviewBanner } from '@/components/budgets/BudgetOverviewBanner';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
-import { formatCurrency } from '@/lib/formatters';
 import { BudgetProgressItem, Category, MonthlyBudgetsData } from '@/types';
-import {
-  AlertCircle,
-  AlertTriangle,
-  ChevronLeft,
-  ChevronRight,
-  PieChart,
-  PlusCircle,
-} from 'lucide-react';
-
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+import { PieChart, PlusCircle } from 'lucide-react';
 
 export default function BudgetsPage() {
   const { user } = useAuth();
@@ -163,104 +141,25 @@ export default function BudgetsPage() {
       </div>
 
       {/* Month Navigator Toolbar */}
-      <Card className="flex flex-wrap items-center justify-between gap-4 p-4">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handlePrevMonth}
-            className="h-9 w-9 p-0"
-            aria-label="Previous month"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="min-w-36 text-center font-semibold text-fg">
-            {MONTH_NAMES[month - 1]} {year}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleNextMonth}
-            className="h-9 w-9 p-0"
-            aria-label="Next month"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleCurrentMonth}
-            className="text-xs text-fg-muted hover:text-fg"
-          >
-            Current Month
-          </Button>
-        </div>
-
-        {/* Quick Alert Summary Pills */}
-        <div className="flex items-center gap-2">
-          {exceededCount > 0 && (
-            <Badge variant="danger" className="gap-1 text-xs">
-              <AlertCircle className="h-3 w-3" />
-              <span>{exceededCount} Overspent</span>
-            </Badge>
-          )}
-          {warningCount > 0 && (
-            <Badge variant="warning" className="gap-1 text-xs">
-              <AlertTriangle className="h-3 w-3" />
-              <span>{warningCount} Approaching Limit</span>
-            </Badge>
-          )}
-        </div>
-      </Card>
+      <BudgetMonthNavigator
+        month={month}
+        year={year}
+        warningCount={warningCount}
+        exceededCount={exceededCount}
+        onPrevMonth={handlePrevMonth}
+        onNextMonth={handleNextMonth}
+        onCurrentMonth={handleCurrentMonth}
+      />
 
       {/* Overall Progress Banner */}
       {data && (
-        <Card className="bg-gradient-to-br from-surface to-surface-muted">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
-              <p className="text-xs font-medium text-fg-muted">Total Budgeted</p>
-              <p className="mt-1 text-2xl font-bold text-fg">
-                {formatCurrency(data.totalBudgeted, defaultCurrency)}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-fg-muted">Total Spent</p>
-              <p className="mt-1 text-2xl font-bold text-fg">
-                {formatCurrency(data.totalSpent, defaultCurrency)}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs font-medium text-fg-muted">Overall Remaining</p>
-              <p
-                className={`mt-1 text-2xl font-bold ${
-                  data.remaining < 0 ? 'text-rose-500' : 'text-emerald-600 dark:text-emerald-400'
-                }`}
-              >
-                {formatCurrency(data.remaining, defaultCurrency)}
-              </p>
-            </div>
-          </div>
-
-          {/* Overall Percentage Bar */}
-          <div className="mt-4 border-t border-border-subtle pt-4">
-            <div className="flex justify-between text-xs text-fg-muted">
-              <span>Overall Utilization</span>
-              <span className="font-semibold text-fg">{data.overallPercentage}%</span>
-            </div>
-            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface-muted">
-              <div
-                className={`h-full rounded-full transition-all duration-300 ${
-                  data.overallPercentage >= 100
-                    ? 'bg-rose-500'
-                    : data.overallPercentage >= 80
-                      ? 'bg-amber-500'
-                      : 'bg-emerald-500'
-                }`}
-                style={{ width: `${Math.min(data.overallPercentage, 100)}%` }}
-              />
-            </div>
-          </div>
-        </Card>
+        <BudgetOverviewBanner
+          totalBudgeted={data.totalBudgeted}
+          totalSpent={data.totalSpent}
+          remaining={data.remaining}
+          overallPercentage={data.overallPercentage}
+          defaultCurrency={defaultCurrency}
+        />
       )}
 
       {/* Loading state */}
@@ -287,23 +186,17 @@ export default function BudgetsPage() {
 
       {/* Empty State */}
       {!loading && data && data.budgets.length === 0 && (
-        <Card className="py-12">
-          <div className="mx-auto flex max-w-sm flex-col items-center gap-3 text-center">
-            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-muted text-fg-muted">
-              <PieChart className="h-6 w-6 text-fg-subtle" />
-            </span>
-            <h3 className="font-semibold text-fg">
-              No budgets set for {MONTH_NAMES[month - 1]} {year}
-            </h3>
-            <p className="text-xs text-fg-muted">
-              Take control of your spending by defining monthly targets for your expense categories.
-            </p>
-            <Button variant="primary" size="sm" className="mt-2 gap-2" onClick={handleOpenCreate}>
+        <EmptyState
+          icon={<PieChart className="h-6 w-6 text-fg-subtle" />}
+          title={`No budgets set for ${MONTH_NAMES[month - 1]} ${year}`}
+          description="Take control of your spending by defining monthly targets for your expense categories."
+          action={
+            <Button variant="primary" size="sm" className="gap-2" onClick={handleOpenCreate}>
               <PlusCircle className="h-4 w-4" />
               <span>Set Category Budget</span>
             </Button>
-          </div>
-        </Card>
+          }
+        />
       )}
 
       {/* Modal for Create/Edit */}
